@@ -15,10 +15,12 @@ public class TiamatActions
     public static final String NAME = "Tiamat Actions";
     public static final String VERSION = "1.12.2.000";
 
+
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(TiamatActions.class);
+        MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
     }
 
     @SubscribeEvent
