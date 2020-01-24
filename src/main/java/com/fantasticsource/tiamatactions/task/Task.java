@@ -42,5 +42,5 @@ public abstract class Task
     public abstract String getDescription();
 
 
-    public abstract boolean run(ICommandSender controller, Object... actionArgs);
+    public abstract boolean run(ICommandSender controller);
 }

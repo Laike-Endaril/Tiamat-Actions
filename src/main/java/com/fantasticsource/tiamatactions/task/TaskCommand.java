@@ -18,7 +18,7 @@ public class TaskCommand extends Task
     }
 
     @Override
-    public boolean run(ICommandSender controller, Object... actionArgs)
+    public boolean run(ICommandSender controller)
     {
         if (!valid()) return false;
         return FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(controller, taskArgs[0].replaceAll("@p|@P", controller.getName())) > 0;
