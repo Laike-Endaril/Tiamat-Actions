@@ -5,16 +5,22 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TaskCommand extends Task
 {
-    protected String command;
-
-    public TaskCommand(String command)
+    @Override
+    public boolean valid()
     {
-        this.command = command;
+        return taskArgs.length == 1;
     }
 
     @Override
-    public void run(ICommandSender controller, Object... args)
+    public String getDescription()
     {
-        FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(controller, command.replaceAll("@p|@P", controller.getName()));
+        return valid() ? "Run Command: " + taskArgs[0] : "Run Command";
+    }
+
+    @Override
+    public boolean run(ICommandSender controller, Object... actionArgs)
+    {
+        if (!valid()) return false;
+        return FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(controller, taskArgs[0].replaceAll("@p|@P", controller.getName())) > 0;
     }
 }

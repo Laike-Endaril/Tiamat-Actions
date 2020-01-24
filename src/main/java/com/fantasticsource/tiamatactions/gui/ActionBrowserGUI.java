@@ -7,7 +7,7 @@ import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
-import com.fantasticsource.tiamatactions.Action;
+import com.fantasticsource.tiamatactions.action.Action;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 

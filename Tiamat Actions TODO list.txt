@@ -1,0 +1,8 @@
+New layout; line numbers instead of times
+Task: delay
+Task: cone selector (options for modifiers)
+Task: damage (calculation
+Task: goto (action:line, wait, inherit interrupts)
+
+Task: enable active item attributes
+Task: disable active item attributes

@@ -10,7 +10,7 @@ import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterInt;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
-import com.fantasticsource.tiamatactions.Action;
+import com.fantasticsource.tiamatactions.action.Action;
 import com.fantasticsource.tools.datastructures.Color;
 import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
 import net.minecraft.client.Minecraft;
