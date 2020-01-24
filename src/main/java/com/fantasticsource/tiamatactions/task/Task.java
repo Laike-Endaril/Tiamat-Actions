@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.task;
 
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBoolean;
+import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import net.minecraft.command.ICommandSender;
 
 public abstract class Task
@@ -43,4 +44,7 @@ public abstract class Task
 
 
     public abstract boolean run(ICommandSender controller);
+
+
+    public abstract TaskGUI getTaskGUI();
 }
