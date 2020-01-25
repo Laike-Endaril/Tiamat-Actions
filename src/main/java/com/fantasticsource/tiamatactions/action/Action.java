@@ -9,11 +9,13 @@ import java.util.Stack;
 public class Action
 {
     protected ArrayList<Task> onRunTasks = new ArrayList<>(), onEnqueueTasks = new ArrayList<>();
-    protected Stack<Task> onCancelTasks = new Stack<>();
+    protected Stack<Task> onEndTasks = new Stack<>();
+    protected String[] tags;
 
-    protected Action(String name)
+    protected Action(String name, String... tags)
     {
         Actions.allActions.put(name, this);
+        this.tags = tags;
     }
 
     public boolean enqueue(ICommandSender controller)
@@ -24,17 +26,32 @@ public class Action
         }
 
         //TODO if no action is currently queued, run immediate
-        //TODO else, queue action
+        //TODO else, queue this action
         return true;
     }
 
-    public boolean run(ICommandSender controller)
+    protected boolean run(ICommandSender controller)
     {
+        boolean result = true;
+
+        //TODO Set current action to this action
+
         for (Task task : onRunTasks)
         {
-            if (task.getStopOnFailure() && !task.run(controller)) return false;
+            if (task.getStopOnFailure() && !task.run(controller))
+            {
+                result = false;
+                break;
+            }
         }
 
-        return true;
+        for (Task task : onEndTasks)
+        {
+            task.run(controller);
+        }
+
+        //TODO Set current action to null
+
+        return result;
     }
 }

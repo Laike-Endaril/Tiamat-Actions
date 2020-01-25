@@ -1,8 +1,44 @@
 New layout; line numbers instead of times
+
+
+
+Action tagging system
+
+
+
+Action argument: activating item (for when an action is activated from an item; combos, item abilities)
+
+
+
+Task: comment
 Task: delay
-Task: cone selector (options for modifiers)
 Task: damage (calculation
-Task: goto (action:line, wait, inherit interrupts)
+Task: goto (action:line, wait, inherit interrupts) (does not change what the current action is)
+Task: set queued action
+Task: end this action
 
 Task: enable active item attributes
 Task: disable active item attributes
+
+
+Task: selector ()
+...cone
+
+Task: condition
+...not
+...and
+...or
+...current action is (none, action selector) (used in "on enqueue tasks" for chaining from one action to another)
+...action
+
+
+
+COMBO EXAMPLE
+
+Sword Combo
+on enqueue:
+* if current action is Sword Attack 1, queue Sword Attack 2
+* else queue Sword Attack 1
+
+
+
