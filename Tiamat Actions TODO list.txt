@@ -39,6 +39,3 @@ Sword Combo
 on enqueue:
 * if current action is Sword Attack 1, queue Sword Attack 2
 * else queue Sword Attack 1
-
-
-
