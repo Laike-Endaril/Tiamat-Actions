@@ -1,18 +1,11 @@
 package com.fantasticsource.tiamatactions.task;
 
-import com.fantasticsource.tiamatactions.action.Action;
 import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
 
 public class CTaskDelay extends CTask
 {
-    protected int delay = 20, elapsed = 0;
-
-
-    public CTaskDelay(Action action)
-    {
-        super(action);
-    }
+    public int delay = 20, elapsed = 0;
 
 
     @Override

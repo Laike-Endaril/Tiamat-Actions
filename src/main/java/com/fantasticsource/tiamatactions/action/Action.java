@@ -3,9 +3,12 @@ package com.fantasticsource.tiamatactions.action;
 import com.fantasticsource.tiamatactions.task.CTask;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class Action
 {
+    public static LinkedHashMap<String, Action> allActions = new LinkedHashMap<>();
+
     public final String NAME;
     protected String[] tags;
     public final ArrayList<CTask> tasks = new ArrayList<>();
@@ -13,7 +16,15 @@ public class Action
     protected Action(String name, String... tags)
     {
         NAME = name;
-        Actions.allActions.put(name, this);
+        allActions.put(name, this);
         this.tags = tags;
+    }
+
+
+    public static Action getInstance(String name)
+    {
+        if (name == null || name.equals("") || name.equals("New Action")) throw new IllegalArgumentException("Action name must not be null, empty, or default (New Action)!");
+
+        return new Action(name);
     }
 }

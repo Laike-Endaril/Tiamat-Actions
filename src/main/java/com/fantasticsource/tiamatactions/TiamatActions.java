@@ -1,6 +1,9 @@
 package com.fantasticsource.tiamatactions;
 
+import com.fantasticsource.mctools.ServerTickTimer;
+import com.fantasticsource.tiamatactions.action.Action;
 import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
+import com.fantasticsource.tiamatactions.task.CTaskCommand;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -10,6 +13,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.032b,)")
 public class TiamatActions
@@ -44,5 +49,17 @@ public class TiamatActions
     public static void serverStop(FMLServerStoppedEvent event)
     {
         ActionTaskHandler.serverStop(event);
+    }
+
+    @SubscribeEvent
+    public static void test(TickEvent.PlayerTickEvent event)
+    {
+        if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || ServerTickTimer.currentTick() % 20 != 0) return;
+
+        Action testAction = Action.getInstance("Test");
+        CTaskCommand commandTask = new CTaskCommand(testAction);
+        commandTask.command = "/help";
+        testAction.tasks.add(commandTask);
+        ActionTaskHandler.queueAction(event.player, testAction, null);
     }
 }
