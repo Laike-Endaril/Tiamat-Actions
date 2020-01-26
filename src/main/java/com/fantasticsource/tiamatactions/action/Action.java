@@ -22,12 +22,12 @@ public class Action
         this.tags = tags;
     }
 
-    public boolean enqueue(ICommandSender controller)
+    public boolean enqueue(ICommandSender controller, @Nullable ItemStack activatingItem)
     {
         LinkedHashMap<String, Object> vars = new LinkedHashMap<>();
         for (Task task : onEnqueueTasks)
         {
-            if (task.getStopOnFailure() && !task.run(controller, vars)) return false;
+            if (task.getStopOnFailure() && !task.run(controller, activatingItem, vars)) return false;
         }
 
         //TODO if no action is currently queued, run immediate
@@ -43,7 +43,7 @@ public class Action
 
         for (Task task : onRunTasks)
         {
-            if (task.getStopOnFailure() && !task.run(controller, vars))
+            if (task.getStopOnFailure() && !task.run(controller, activatingItem, vars))
             {
                 result = false;
                 break;
@@ -52,7 +52,7 @@ public class Action
 
         for (Task task : onEndTasks)
         {
-            task.run(controller, vars);
+            task.run(controller, activatingItem, vars);
         }
 
         //TODO Set current action to null

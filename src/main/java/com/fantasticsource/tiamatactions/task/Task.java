@@ -3,7 +3,9 @@ package com.fantasticsource.tiamatactions.task;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBoolean;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
 
 public abstract class Task
@@ -45,7 +47,7 @@ public abstract class Task
     public abstract String getDescription();
 
 
-    public abstract boolean run(ICommandSender controller, LinkedHashMap<String, Object> vars);
+    public abstract boolean run(ICommandSender controller, @Nullable ItemStack activatingItem, LinkedHashMap<String, Object> vars);
 
 
     public abstract TaskGUI getTaskGUI();

@@ -2,7 +2,11 @@ package com.fantasticsource.tiamatactions.task;
 
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+
+import javax.annotation.Nullable;
+import java.util.LinkedHashMap;
 
 public class TaskCommand extends Task
 {
@@ -19,7 +23,7 @@ public class TaskCommand extends Task
     }
 
     @Override
-    public boolean run(ICommandSender controller)
+    public boolean run(ICommandSender controller, @Nullable ItemStack activatingItem, LinkedHashMap<String, Object> vars)
     {
         if (!valid()) return false;
         return FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(controller, taskArgs[0].replaceAll("@p|@P", controller.getName())) > 0;

@@ -8,6 +8,7 @@ import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
 import com.fantasticsource.tiamatactions.action.Action;
+import com.fantasticsource.tiamatactions.action.Actions;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 
@@ -45,7 +46,7 @@ public class ActionBrowserGUI extends GUIScreen
                         Action action = actionEditorGUI.getAction();
                         if (action != null)
                         {
-                            Action.actions.put(actionEditorGUI.saveName, action);
+                            Actions.allActions.put(actionEditorGUI.saveName, action);
                         }
                     });
                 });
