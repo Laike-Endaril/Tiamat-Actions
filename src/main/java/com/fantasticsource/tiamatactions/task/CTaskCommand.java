@@ -1,16 +1,16 @@
 package com.fantasticsource.tiamatactions.task;
 
-import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
 import com.fantasticsource.tiamatactions.action.Action;
+import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-public class TaskCommand extends Task
+public class CTaskCommand extends CTask
 {
     protected String command = "";
 
 
-    public TaskCommand(Action action)
+    public CTaskCommand(Action action)
     {
         super(action);
     }

@@ -4,12 +4,12 @@ import com.fantasticsource.tiamatactions.action.Action;
 import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
 
-public class TaskDelay extends Task
+public class CTaskDelay extends CTask
 {
     protected int delay = 20, elapsed = 0;
 
 
-    public TaskDelay(Action action)
+    public CTaskDelay(Action action)
     {
         super(action);
     }

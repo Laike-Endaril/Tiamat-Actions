@@ -1,13 +1,17 @@
 package com.fantasticsource.tiamatactions.action;
 
-import com.fantasticsource.tiamatactions.task.Task;
+import com.fantasticsource.tiamatactions.task.CTask;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -25,7 +29,7 @@ public class ActionTaskHandler
     public ItemStack currentActivatedItem = null, queuedActivatingItem = null;
 
     //Retained between actions, but contents change per-task
-    public final LinkedList<Task> currentTasks = new LinkedList<>(), queuedTasks = new LinkedList<>();
+    public final LinkedList<CTask> currentTasks = new LinkedList<>(), queuedTasks = new LinkedList<>();
     public final LinkedHashMap<String, Object> vars = new LinkedHashMap<>();
 
 
@@ -43,7 +47,7 @@ public class ActionTaskHandler
         while (currentTasks.size() == 0 && (currentAction != null || queuedAction != null))
         {
             endAction(currentAction);
-            if (queuedAction != null) startAction(queuedAction);
+            if (queuedAction != null) startAction(queuedAction, queuedActivatingItem);
         }
 
         while (currentTasks.size() > 0) currentTasks.pop().tick(this);
@@ -52,7 +56,7 @@ public class ActionTaskHandler
 
     public void queueAction(Action action, ItemStack activatingItem)
     {
-        if (currentAction == null) startAction(action);
+        if (currentAction == null) startAction(action, activatingItem);
         else
         {
             queuedAction = action;
@@ -62,13 +66,25 @@ public class ActionTaskHandler
 
     protected void endAction(Action action)
     {
-        //TODO
+        currentAction = null;
+        currentActivatedItem = null;
+
+        currentTasks.removeIf(task -> task.stopOnActionInterrupt);
+        queuedTasks.removeIf(task -> task.stopOnActionInterrupt);
     }
 
-    protected void startAction(Action action)
+    protected void startAction(Action action, ItemStack activatingItem)
     {
-        //TODO start a CLONE of the first task of the action
-        //TODO make sure when cloning an action, it's stored actions are also clones
+        currentAction = action;
+        currentActivatedItem = activatingItem;
+
+        if (action.tasks.size() > 0) currentTasks.add((CTask) action.tasks.get(0).copy());
+    }
+
+
+    public static void queueAction(ICommandSender controller, Action action, @Nullable ItemStack activatingItem)
+    {
+        CONTROLLER_DATA.get(controller).queueAction(action, activatingItem);
     }
 
 
@@ -92,5 +108,16 @@ public class ActionTaskHandler
 
         //Server-side, player end tick only
         for (ActionTaskHandler handler : CONTROLLER_DATA.values()) handler.tick();
+    }
+
+
+    public static void serverStart(FMLServerStartingEvent event)
+    {
+        CONTROLLER_DATA.put(event.getServer(), new ActionTaskHandler(event.getServer()));
+    }
+
+    public static void serverStop(FMLServerStoppedEvent event)
+    {
+        CONTROLLER_DATA.remove(FMLCommonHandler.instance().getMinecraftServerInstance());
     }
 }
