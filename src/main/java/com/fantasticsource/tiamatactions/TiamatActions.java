@@ -62,7 +62,13 @@ public class TiamatActions
         commandTask.command = "/help";
         testAction.tasks.add(commandTask);
 
+        Action testAction2 = Action.getInstance("Test2");
+        CTaskCommand commandTask2 = new CTaskCommand();
+        commandTask2.actionName = testAction2.NAME;
+        commandTask2.command = "/time set 0";
+        testAction2.tasks.add(commandTask2);
+
         ActionTaskHandler.queueAction(event.player, testAction, null);
-        ActionTaskHandler.queueAction(event.player, testAction, null);
+        ActionTaskHandler.queueAction(event.player, testAction2, null);
     }
 }

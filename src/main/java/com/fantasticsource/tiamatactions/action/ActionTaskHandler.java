@@ -75,6 +75,12 @@ public class ActionTaskHandler
 
     protected void startAction(Action action, ItemStack activatingItem)
     {
+        if (queuedAction == action)
+        {
+            queuedAction = null;
+            queuedActivatingItem = null;
+        }
+
         currentAction = action;
         currentActivatedItem = activatingItem;
 
