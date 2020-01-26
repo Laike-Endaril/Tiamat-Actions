@@ -33,9 +33,17 @@ Task: condition
 
 
 
-COMBO EXAMPLE
+EXAMPLES
 
 Sword Combo
 on enqueue:
-* if current action is Sword Attack 1, queue Sword Attack 2
+* if current action is Sword Attack 2, queue Sword Attack 3
+* else if current action is Sword Attack 1, queue Sword Attack 2
 * else queue Sword Attack 1
+
+
+
+Sword attack
+* keyframe / delay
+* entity selector: cone (saves ordered entity list) -> "Targets" var (need to support Object variable holders in a hashmap, which are retained until action end) (need to have options for applying)
+*

@@ -2,8 +2,11 @@ package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.tiamatactions.task.Task;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Stack;
 
 public class Action
@@ -11,6 +14,7 @@ public class Action
     protected ArrayList<Task> onRunTasks = new ArrayList<>(), onEnqueueTasks = new ArrayList<>();
     protected Stack<Task> onEndTasks = new Stack<>();
     protected String[] tags;
+    protected ItemStack activatingItem = null;
 
     protected Action(String name, String... tags)
     {
@@ -20,9 +24,10 @@ public class Action
 
     public boolean enqueue(ICommandSender controller)
     {
+        LinkedHashMap<String, Object> vars = new LinkedHashMap<>();
         for (Task task : onEnqueueTasks)
         {
-            if (task.getStopOnFailure() && !task.run(controller)) return false;
+            if (task.getStopOnFailure() && !task.run(controller, vars)) return false;
         }
 
         //TODO if no action is currently queued, run immediate
@@ -30,7 +35,7 @@ public class Action
         return true;
     }
 
-    protected boolean run(ICommandSender controller)
+    protected boolean run(ICommandSender controller, @Nullable ItemStack activatingItem, LinkedHashMap<String, Object> vars)
     {
         boolean result = true;
 
@@ -38,7 +43,7 @@ public class Action
 
         for (Task task : onRunTasks)
         {
-            if (task.getStopOnFailure() && !task.run(controller))
+            if (task.getStopOnFailure() && !task.run(controller, vars))
             {
                 result = false;
                 break;
@@ -47,11 +52,16 @@ public class Action
 
         for (Task task : onEndTasks)
         {
-            task.run(controller);
+            task.run(controller, vars);
         }
 
         //TODO Set current action to null
 
         return result;
+    }
+
+    public ItemStack getActivatingItem()
+    {
+        return activatingItem;
     }
 }

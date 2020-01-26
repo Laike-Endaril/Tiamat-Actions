@@ -4,6 +4,8 @@ import com.fantasticsource.mctools.gui.element.text.filter.FilterBoolean;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import net.minecraft.command.ICommandSender;
 
+import java.util.LinkedHashMap;
+
 public abstract class Task
 {
     public static final int GLOBAL_ARGUMENT_COUNT = 1;
@@ -43,7 +45,7 @@ public abstract class Task
     public abstract String getDescription();
 
 
-    public abstract boolean run(ICommandSender controller);
+    public abstract boolean run(ICommandSender controller, LinkedHashMap<String, Object> vars);
 
 
     public abstract TaskGUI getTaskGUI();
