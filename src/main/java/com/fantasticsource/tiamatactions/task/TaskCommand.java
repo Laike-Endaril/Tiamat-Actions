@@ -1,32 +1,34 @@
 package com.fantasticsource.tiamatactions.task;
 
+import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
+import com.fantasticsource.tiamatactions.action.Action;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-
-import javax.annotation.Nullable;
-import java.util.LinkedHashMap;
 
 public class TaskCommand extends Task
 {
-    @Override
-    public boolean valid()
+    protected String command = "";
+
+
+    public TaskCommand(Action action)
     {
-        return taskArgs.length == 1;
+        super(action);
     }
+
 
     @Override
     public String getDescription()
     {
-        return valid() ? "Run Command: " + taskArgs[0] : "Run Command";
+        return "Run Command: " + command;
     }
 
     @Override
-    public boolean run(ICommandSender controller, @Nullable ItemStack activatingItem, LinkedHashMap<String, Object> vars)
+    public void tick(ActionTaskHandler handler)
     {
-        if (!valid()) return false;
-        return FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(controller, taskArgs[0].replaceAll("@p|@P", controller.getName())) > 0;
+        FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(handler.controller, command.replaceAll("@p|@P", handler.controller.getName()));
+
+
+        handler.currentTasks.addAll(nextTasks);
     }
 
     @Override

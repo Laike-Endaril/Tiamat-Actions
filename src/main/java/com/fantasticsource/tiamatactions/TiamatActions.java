@@ -1,5 +1,6 @@
 package com.fantasticsource.tiamatactions;
 
+import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -21,7 +22,7 @@ public class TiamatActions
     {
         MinecraftForge.EVENT_BUS.register(TiamatActions.class);
         MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
-        MinecraftForge.EVENT_BUS.register(PlayerData.class);
+        MinecraftForge.EVENT_BUS.register(ActionTaskHandler.class);
     }
 
     @SubscribeEvent
