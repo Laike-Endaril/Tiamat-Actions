@@ -54,12 +54,15 @@ public class TiamatActions
     @SubscribeEvent
     public static void test(TickEvent.PlayerTickEvent event)
     {
-        if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || ServerTickTimer.currentTick() % 20 != 0) return;
+        if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || ServerTickTimer.currentTick() % 60 != 59) return;
 
         Action testAction = Action.getInstance("Test");
-        CTaskCommand commandTask = new CTaskCommand(testAction);
+        CTaskCommand commandTask = new CTaskCommand();
+        commandTask.actionName = testAction.NAME;
         commandTask.command = "/help";
         testAction.tasks.add(commandTask);
+
+        ActionTaskHandler.queueAction(event.player, testAction, null);
         ActionTaskHandler.queueAction(event.player, testAction, null);
     }
 }
