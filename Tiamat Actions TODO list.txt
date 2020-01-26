@@ -45,5 +45,5 @@ on enqueue:
 
 Sword attack
 * keyframe / delay
-* entity selector: cone (saves ordered entity list) -> "Targets" var (need to support Object variable holders in a hashmap, which are retained until action end) (need to have options for applying)
-*
+* entity selector: cone (saves ordered entity list) -> "Targets" var (need to support Object variable holders in a hashmap, which are retained until action end) (need to have options for applying items' active attribute modifiers)
+* damage entities (referencing string from previous task) (need to have options for applying items' active attribute modifiers)

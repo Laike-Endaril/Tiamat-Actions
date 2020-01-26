@@ -15,14 +15,14 @@ public abstract class Task
     protected String[] taskArgs = new String[0];
 
 
-    public final void setStopOnFailure(boolean stopOnFailure)
-    {
-        this.stopOnFailure = stopOnFailure;
-    }
-
     public final boolean getStopOnFailure()
     {
         return stopOnFailure;
+    }
+
+    public final void setStopOnFailure(boolean stopOnFailure)
+    {
+        this.stopOnFailure = stopOnFailure;
     }
 
 

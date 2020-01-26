@@ -21,6 +21,7 @@ public class TiamatActions
     {
         MinecraftForge.EVENT_BUS.register(TiamatActions.class);
         MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
+        MinecraftForge.EVENT_BUS.register(PlayerData.class);
     }
 
     @SubscribeEvent
