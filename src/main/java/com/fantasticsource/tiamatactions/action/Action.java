@@ -27,4 +27,19 @@ public class Action
 
         return new Action(name);
     }
+
+
+    public CTask getTaskChain(int index)
+    {
+        CTask task = null, nextTask;
+
+        for (int i = tasks.size() - 1; i >= index && i >= 0; i--)
+        {
+            nextTask = task;
+            task = (CTask) tasks.get(i).copy();
+            if (nextTask != null) task.nextTasks.add(nextTask);
+        }
+
+        return task;
+    }
 }

@@ -84,7 +84,7 @@ public class ActionTaskHandler
         currentAction = action;
         currentActivatedItem = activatingItem;
 
-        if (action.tasks.size() > 0) currentTasks.add((CTask) action.tasks.get(0).copy());
+        if (action.tasks.size() > 0) currentTasks.add(action.getTaskChain(0));
     }
 
 

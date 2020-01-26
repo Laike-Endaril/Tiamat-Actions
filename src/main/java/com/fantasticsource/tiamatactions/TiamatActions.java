@@ -4,6 +4,7 @@ import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.tiamatactions.action.Action;
 import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
 import com.fantasticsource.tiamatactions.task.CTaskCommand;
+import com.fantasticsource.tiamatactions.task.CTaskDelay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -54,21 +55,25 @@ public class TiamatActions
     @SubscribeEvent
     public static void test(TickEvent.PlayerTickEvent event)
     {
-        if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || ServerTickTimer.currentTick() % 60 != 59) return;
+        if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || ServerTickTimer.currentTick() % 120 != 119) return;
 
         Action testAction = Action.getInstance("Test");
+
         CTaskCommand commandTask = new CTaskCommand();
         commandTask.actionName = testAction.NAME;
-        commandTask.command = "/help";
+        commandTask.command = "/time set 13000";
         testAction.tasks.add(commandTask);
 
-        Action testAction2 = Action.getInstance("Test2");
-        CTaskCommand commandTask2 = new CTaskCommand();
-        commandTask2.actionName = testAction2.NAME;
-        commandTask2.command = "/time set 0";
-        testAction2.tasks.add(commandTask2);
+        CTaskDelay delayTask = new CTaskDelay();
+        delayTask.actionName = testAction.NAME;
+        delayTask.delay = 20;
+        testAction.tasks.add(delayTask);
+
+        commandTask = new CTaskCommand();
+        commandTask.actionName = testAction.NAME;
+        commandTask.command = "/time set 0";
+        testAction.tasks.add(commandTask);
 
         ActionTaskHandler.queueAction(event.player, testAction, null);
-        ActionTaskHandler.queueAction(event.player, testAction2, null);
     }
 }
