@@ -67,7 +67,8 @@ public class ActionTaskHandler
 
     protected void startAction(Action action)
     {
-        //TODO
+        //TODO start a CLONE of the first task of the action
+        //TODO make sure when cloning an action, it's stored actions are also clones
     }
 
 
