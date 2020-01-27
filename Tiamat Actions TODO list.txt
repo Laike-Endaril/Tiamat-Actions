@@ -1,17 +1,11 @@
+GUI
+
 New layout; line numbers instead of times
-
-
-
-Action tagging system
-
-
-
-Action argument: activating item (for when an action is activated from an item; combos, item abilities)
+Action tagging options
 
 
 
 Task: comment
-Task: delay
 Task: damage (calculation
 Task: goto (action:line, wait, inherit interrupts) (does not change what the current action is)
 Task: set queued action
@@ -21,8 +15,21 @@ Task: enable active item attributes
 Task: disable active item attributes
 
 
-Task: selector ()
-...cone
+
+Task: get attribute (options for active attributes; active item only, both hands (add), both hands (average), etc)
+
+Task: get entities (gets entities within a cube)
+
+Task: filter entities (takes string reference for stored entity list and alters it)
+...type (living, player, undead)
+...nearest
+...furthest
+...cube (range)
+...sphere (range)
+...cone (yaw, pitch, range, width)
+...in party / not in party
+
+
 
 Task: condition
 ...not
@@ -30,6 +37,12 @@ Task: condition
 ...or
 ...current action is (none, action selector) (used in "on enqueue tasks" for chaining from one action to another)
 ...action
+
+
+
+Task: animation
+...ticks to complete
+...target transforms
 
 
 
@@ -43,7 +56,10 @@ on enqueue:
 
 
 
-Sword attack
-* keyframe / delay
-* entity selector: cone (saves ordered entity list) -> "Targets" var (need to support Object variable holders in a hashmap, which are retained until action end) (need to have options for applying items' active attribute modifiers)
-* damage entities (referencing string from previous task) (need to have options for applying items' active attribute modifiers)
+Sword Attack
+* animation
+* get entities within max range
+* filter entities: type (living)
+* filter entities: not in party
+* filter entities: cone
+* ...loop for damaging entities accounting for block, dodge, etc

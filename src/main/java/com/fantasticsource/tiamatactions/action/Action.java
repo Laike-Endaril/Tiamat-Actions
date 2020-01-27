@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.tiamatactions.task.CTask;
+import com.fantasticsource.tools.Tools;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -31,9 +32,14 @@ public class Action
 
     public CTask getTaskChain(int index)
     {
+        return getTaskChain(index, Integer.MAX_VALUE);
+    }
+
+    public CTask getTaskChain(int index, int maxCount)
+    {
         CTask task = null, nextTask;
 
-        for (int i = tasks.size() - 1; i >= index && i >= 0; i--)
+        for (int i = Tools.min(tasks.size() - 1, index + maxCount - 1); i >= index && i >= 0; i--)
         {
             nextTask = task;
             task = (CTask) tasks.get(i).copy();
