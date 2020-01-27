@@ -23,25 +23,34 @@ public class Network
     public static void init()
     {
         WRAPPER.registerMessage(RequestOpenActionEditorPacketHandler.class, RequestOpenActionEditorPacket.class, discriminator++, Side.SERVER);
-        WRAPPER.registerMessage(OpenActionEditorPacketHandler.class, OpenActionEditorPacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(OpenActionSelectorPacketHandler.class, OpenActionSelectorPacket.class, discriminator++, Side.CLIENT);
     }
 
 
     public static class RequestOpenActionEditorPacket implements IMessage
     {
+        boolean editable;
+
         public RequestOpenActionEditorPacket()
         {
             //Required
         }
 
+        public RequestOpenActionEditorPacket(boolean editable)
+        {
+            this.editable = editable;
+        }
+
         @Override
         public void toBytes(ByteBuf buf)
         {
+            buf.writeBoolean(editable);
         }
 
         @Override
         public void fromBytes(ByteBuf buf)
         {
+            editable = buf.readBoolean();
         }
     }
 
@@ -51,24 +60,32 @@ public class Network
         public IMessage onMessage(RequestOpenActionEditorPacket packet, MessageContext ctx)
         {
             EntityPlayerMP player = ctx.getServerHandler().player;
-            if (player.isCreative()) WRAPPER.sendTo(new OpenActionEditorPacket(), player);
+            if (player.isCreative()) WRAPPER.sendTo(new OpenActionSelectorPacket(packet.editable), player);
             return null;
         }
     }
 
 
-    public static class OpenActionEditorPacket implements IMessage
+    public static class OpenActionSelectorPacket implements IMessage
     {
+        boolean editable;
         String[] list;
 
-        public OpenActionEditorPacket()
+        public OpenActionSelectorPacket()
         {
             //Required
+        }
+
+        public OpenActionSelectorPacket(boolean editable)
+        {
+            this.editable = editable;
         }
 
         @Override
         public void toBytes(ByteBuf buf)
         {
+            buf.writeBoolean(editable);
+
             list = Action.allActions.keySet().toArray(new String[0]);
             buf.writeInt(list.length);
             for (String s : list) ByteBufUtils.writeUTF8String(buf, s);
@@ -77,6 +94,8 @@ public class Network
         @Override
         public void fromBytes(ByteBuf buf)
         {
+            editable = buf.readBoolean();
+
             int size = buf.readInt();
             list = new String[size];
 
@@ -84,15 +103,15 @@ public class Network
         }
     }
 
-    public static class OpenActionEditorPacketHandler implements IMessageHandler<OpenActionEditorPacket, IMessage>
+    public static class OpenActionSelectorPacketHandler implements IMessageHandler<OpenActionSelectorPacket, IMessage>
     {
         @Override
         @SideOnly(Side.CLIENT)
-        public IMessage onMessage(OpenActionEditorPacket packet, MessageContext ctx)
+        public IMessage onMessage(OpenActionSelectorPacket packet, MessageContext ctx)
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
             {
-                new ActionSelectorGUI(true, packet.list);
+                new ActionSelectorGUI(packet.editable, packet.list);
             });
             return null;
         }
