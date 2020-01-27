@@ -1,7 +1,7 @@
 package com.fantasticsource.tiamatactions.block;
 
 import com.fantasticsource.tiamatactions.BlocksAndItems;
-import com.fantasticsource.tiamatactions.gui.ActionBrowserGUI;
+import com.fantasticsource.tiamatactions.Network;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -36,7 +36,7 @@ public class BlockActionEditor extends Block
     {
         if (!worldIn.isRemote) return true;
 
-        ActionBrowserGUI.show();
+        if (player.isCreative()) Network.WRAPPER.sendToServer(new Network.RequestOpenActionEditorPacket());
         return true;
     }
 }

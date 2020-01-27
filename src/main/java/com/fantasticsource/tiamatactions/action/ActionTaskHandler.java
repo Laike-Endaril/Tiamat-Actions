@@ -1,6 +1,8 @@
 package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.tiamatactions.task.CTask;
+import com.fantasticsource.tiamatactions.task.CTaskCommand;
+import com.fantasticsource.tiamatactions.task.CTaskDelay;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -119,11 +121,32 @@ public class ActionTaskHandler
 
     public static void serverStart(FMLServerStartingEvent event)
     {
+        //TODO load actions
+
+        Action testAction = Action.getInstance("Test");
+
+        CTaskCommand commandTask = new CTaskCommand();
+        commandTask.actionName = testAction.NAME;
+        commandTask.command = "/time set 13000";
+        testAction.tasks.add(commandTask);
+
+        CTaskDelay delayTask = new CTaskDelay();
+        delayTask.actionName = testAction.NAME;
+        delayTask.delay = 20;
+        testAction.tasks.add(delayTask);
+
+        commandTask = new CTaskCommand();
+        commandTask.actionName = testAction.NAME;
+        commandTask.command = "/time set 0";
+        testAction.tasks.add(commandTask);
+
+
         CONTROLLER_DATA.put(event.getServer(), new ActionTaskHandler(event.getServer()));
     }
 
     public static void serverStop(FMLServerStoppedEvent event)
     {
         CONTROLLER_DATA.remove(FMLCommonHandler.instance().getMinecraftServerInstance());
+        //TODO save actions
     }
 }
