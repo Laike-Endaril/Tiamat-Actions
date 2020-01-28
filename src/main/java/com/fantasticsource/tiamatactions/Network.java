@@ -1,7 +1,7 @@
 package com.fantasticsource.tiamatactions;
 
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.gui.ActionSelectorGUI;
+import com.fantasticsource.tiamatactions.gui.MainActionEditorGUI;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -60,7 +60,7 @@ public class Network
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
             {
-                new ActionSelectorGUI(packet.list);
+                new MainActionEditorGUI(packet.list);
             });
             return null;
         }

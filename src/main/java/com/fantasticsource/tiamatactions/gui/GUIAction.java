@@ -8,7 +8,7 @@ public class GUIAction extends GUIText
 {
     public GUIAction(GUIScreen screen)
     {
-        this(screen, "Do Nothing");
+        this(screen, "None");
     }
 
     public GUIAction(GUIScreen screen, String text)

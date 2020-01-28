@@ -17,8 +17,8 @@ import net.minecraft.client.Minecraft;
 
 public class ActionEditorGUI extends GUIScreen
 {
-    protected static FilterBlacklist nameFilter = new FilterBlacklist("New Action");
-    public String saveName = "New Action";
+    protected static FilterBlacklist nameFilter = new FilterBlacklist("None");
+    public String saveName = "None";
     protected String initialName;
     protected GUILabeledTextInput name;
     protected GUIList tasks;

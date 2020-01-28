@@ -11,12 +11,12 @@ import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 
-public class ActionSelectorGUI extends GUIScreen
+public class MainActionEditorGUI extends GUIScreen
 {
     protected GUIList actionList;
     public String selection = null;
 
-    public ActionSelectorGUI(String... list)
+    public MainActionEditorGUI(String... list)
     {
         if (Minecraft.getMinecraft().currentScreen instanceof GUIScreen) showStacked(this);
         else Minecraft.getMinecraft().displayGuiScreen(this);
@@ -37,7 +37,7 @@ public class ActionSelectorGUI extends GUIScreen
             @Override
             public GUIElement[] newLineDefaultElements()
             {
-                GUIText name = new GUIText(screen, "New Action", getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE);
+                GUIText name = new GUIText(screen, "None", getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE);
                 if (editable)
                 {
                     name.addClickActions(() ->

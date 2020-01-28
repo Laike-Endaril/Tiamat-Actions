@@ -38,7 +38,7 @@ public class CAction extends Component
 
     public static CAction getInstance(String name)
     {
-        if (name == null || name.equals("") || name.equals("New Action")) throw new IllegalArgumentException("Action name must not be null, empty, or default (New Action)!");
+        if (name == null || name.equals("") || name.equals("None")) throw new IllegalArgumentException("Action name must not be null, empty, or default (None)!");
 
         return new CAction(name);
     }
