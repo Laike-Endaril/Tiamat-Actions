@@ -1,7 +1,5 @@
 package com.fantasticsource.tiamatactions;
 
-import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -12,8 +10,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.032b,)")
 public class TiamatActions
@@ -51,11 +47,11 @@ public class TiamatActions
         ActionTaskHandler.serverStop(event);
     }
 
-    @SubscribeEvent
-    public static void test(TickEvent.PlayerTickEvent event)
-    {
-        if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || ServerTickTimer.currentTick() % 120 != 119) return;
-
-        ActionTaskHandler.queueAction(event.player, CAction.allActions.get("Test"), null);
-    }
+//    @SubscribeEvent
+//    public static void test(TickEvent.PlayerTickEvent event)
+//    {
+//        if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || ServerTickTimer.currentTick() % 120 != 119) return;
+//
+//        ActionTaskHandler.queueAction(event.player, CAction.allActions.get("Test"), null);
+//    }
 }

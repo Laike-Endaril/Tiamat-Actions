@@ -1,8 +1,6 @@
 package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.tiamatactions.task.CTask;
-import com.fantasticsource.tiamatactions.task.CTaskCommand;
-import com.fantasticsource.tiamatactions.task.CTaskDelay;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -123,22 +121,25 @@ public class ActionTaskHandler
     {
         //TODO load actions
 
-        CAction testAction = CAction.getInstance("Test");
 
-        CTaskCommand commandTask = new CTaskCommand();
-        commandTask.actionName = testAction.name;
-        commandTask.command = "/time set 13000";
-        testAction.tasks.add(commandTask);
-
-        CTaskDelay delayTask = new CTaskDelay();
-        delayTask.actionName = testAction.name;
-        delayTask.delay = 20;
-        testAction.tasks.add(delayTask);
-
-        commandTask = new CTaskCommand();
-        commandTask.actionName = testAction.name;
-        commandTask.command = "/time set 0";
-        testAction.tasks.add(commandTask);
+        //TODO start test code
+//        CAction testAction = CAction.getInstance("Test");
+//
+//        CTaskCommand commandTask = new CTaskCommand();
+//        commandTask.actionName = testAction.name;
+//        commandTask.command = "/time set 13000";
+//        testAction.tasks.add(commandTask);
+//
+//        CTaskDelay delayTask = new CTaskDelay();
+//        delayTask.actionName = testAction.name;
+//        delayTask.delay = 20;
+//        testAction.tasks.add(delayTask);
+//
+//        commandTask = new CTaskCommand();
+//        commandTask.actionName = testAction.name;
+//        commandTask.command = "/time set 0";
+//        testAction.tasks.add(commandTask);
+        //TODO end test code
 
 
         CONTROLLER_DATA.put(event.getServer(), new ActionTaskHandler(event.getServer()));
