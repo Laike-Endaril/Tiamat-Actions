@@ -4,7 +4,6 @@ import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.gui.ActionSelectorGUI;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -22,46 +21,15 @@ public class Network
 
     public static void init()
     {
-        WRAPPER.registerMessage(RequestOpenActionEditorPacketHandler.class, RequestOpenActionEditorPacket.class, discriminator++, Side.SERVER);
-        WRAPPER.registerMessage(OpenActionSelectorPacketHandler.class, OpenActionSelectorPacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(OpenActionEditorPacketHandler.class, OpenActionEditorPacket.class, discriminator++, Side.CLIENT);
     }
 
 
-    public static class RequestOpenActionEditorPacket implements IMessage
-    {
-        public RequestOpenActionEditorPacket()
-        {
-            //Required
-        }
-
-        @Override
-        public void toBytes(ByteBuf buf)
-        {
-        }
-
-        @Override
-        public void fromBytes(ByteBuf buf)
-        {
-        }
-    }
-
-    public static class RequestOpenActionEditorPacketHandler implements IMessageHandler<RequestOpenActionEditorPacket, IMessage>
-    {
-        @Override
-        public IMessage onMessage(RequestOpenActionEditorPacket packet, MessageContext ctx)
-        {
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            if (player.isCreative()) WRAPPER.sendTo(new OpenActionSelectorPacket(), player);
-            return null;
-        }
-    }
-
-
-    public static class OpenActionSelectorPacket implements IMessage
+    public static class OpenActionEditorPacket implements IMessage
     {
         String[] list;
 
-        public OpenActionSelectorPacket()
+        public OpenActionEditorPacket()
         {
             //Required
         }
@@ -84,11 +52,11 @@ public class Network
         }
     }
 
-    public static class OpenActionSelectorPacketHandler implements IMessageHandler<OpenActionSelectorPacket, IMessage>
+    public static class OpenActionEditorPacketHandler implements IMessageHandler<OpenActionEditorPacket, IMessage>
     {
         @Override
         @SideOnly(Side.CLIENT)
-        public IMessage onMessage(OpenActionSelectorPacket packet, MessageContext ctx)
+        public IMessage onMessage(OpenActionEditorPacket packet, MessageContext ctx)
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
             {
