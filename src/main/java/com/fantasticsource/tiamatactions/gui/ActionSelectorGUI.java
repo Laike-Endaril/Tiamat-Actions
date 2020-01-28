@@ -16,7 +16,7 @@ public class ActionSelectorGUI extends GUIScreen
     protected GUIList actionList;
     public String selection = null;
 
-    public ActionSelectorGUI(boolean editable, String... list)
+    public ActionSelectorGUI(String... list)
     {
         if (Minecraft.getMinecraft().currentScreen instanceof GUIScreen) showStacked(this);
         else Minecraft.getMinecraft().displayGuiScreen(this);
@@ -32,7 +32,7 @@ public class ActionSelectorGUI extends GUIScreen
 
 
         //List of existing actions
-        actionList = new GUIList(this, editable, 0.98, 1 - (navbar.y + navbar.height))
+        actionList = new GUIList(this, true, 0.98, 1 - (navbar.y + navbar.height))
         {
             @Override
             public GUIElement[] newLineDefaultElements()

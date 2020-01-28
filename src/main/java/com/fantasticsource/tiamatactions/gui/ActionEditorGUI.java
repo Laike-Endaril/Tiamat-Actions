@@ -77,7 +77,7 @@ public class ActionEditorGUI extends GUIScreen
             }
 
             @Override
-            public GUIList addLine(int index, GUIElement... lineElements)
+            public Line addLine(int index, GUIElement... lineElements)
             {
                 super.addLine(index, lineElements);
                 Line line = getLine(index);
@@ -88,7 +88,7 @@ public class ActionEditorGUI extends GUIScreen
                 ((GUILabeledTextInput) line.getLineElement(1)).input.setActive(true);
                 focus(line);
 
-                return this;
+                return line;
             }
         };
         GUIVerticalScrollbar scrollbar = new GUIVerticalScrollbar(this, 0.02, 1 - (name.y + name.height), Color.GRAY, Color.BLANK, Color.WHITE, Color.BLANK, tasks);

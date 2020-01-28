@@ -29,28 +29,19 @@ public class Network
 
     public static class RequestOpenActionEditorPacket implements IMessage
     {
-        boolean editable;
-
         public RequestOpenActionEditorPacket()
         {
             //Required
         }
 
-        public RequestOpenActionEditorPacket(boolean editable)
-        {
-            this.editable = editable;
-        }
-
         @Override
         public void toBytes(ByteBuf buf)
         {
-            buf.writeBoolean(editable);
         }
 
         @Override
         public void fromBytes(ByteBuf buf)
         {
-            editable = buf.readBoolean();
         }
     }
 
@@ -60,7 +51,7 @@ public class Network
         public IMessage onMessage(RequestOpenActionEditorPacket packet, MessageContext ctx)
         {
             EntityPlayerMP player = ctx.getServerHandler().player;
-            if (player.isCreative()) WRAPPER.sendTo(new OpenActionSelectorPacket(packet.editable), player);
+            if (player.isCreative()) WRAPPER.sendTo(new OpenActionSelectorPacket(), player);
             return null;
         }
     }
@@ -68,7 +59,6 @@ public class Network
 
     public static class OpenActionSelectorPacket implements IMessage
     {
-        boolean editable;
         String[] list;
 
         public OpenActionSelectorPacket()
@@ -76,16 +66,9 @@ public class Network
             //Required
         }
 
-        public OpenActionSelectorPacket(boolean editable)
-        {
-            this.editable = editable;
-        }
-
         @Override
         public void toBytes(ByteBuf buf)
         {
-            buf.writeBoolean(editable);
-
             list = CAction.allActions.keySet().toArray(new String[0]);
             buf.writeInt(list.length);
             for (String s : list) ByteBufUtils.writeUTF8String(buf, s);
@@ -94,8 +77,6 @@ public class Network
         @Override
         public void fromBytes(ByteBuf buf)
         {
-            editable = buf.readBoolean();
-
             int size = buf.readInt();
             list = new String[size];
 
@@ -111,7 +92,7 @@ public class Network
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
             {
-                new ActionSelectorGUI(packet.editable, packet.list);
+                new ActionSelectorGUI(packet.list);
             });
             return null;
         }
