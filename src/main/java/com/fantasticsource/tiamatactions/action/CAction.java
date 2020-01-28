@@ -17,6 +17,11 @@ public class CAction extends Component
 {
     public static LinkedHashMap<String, CAction> allActions = new LinkedHashMap<>();
 
+    static
+    {
+        allActions.put("None", null);
+    }
+
     public String name;
     protected String[] tags;
     public final ArrayList<CTask> tasks = new ArrayList<>();

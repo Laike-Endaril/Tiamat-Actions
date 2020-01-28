@@ -1,9 +1,12 @@
 package com.fantasticsource.tiamatactions;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.gui.ActionSelectionGUI;
 import com.fantasticsource.tiamatactions.gui.MainActionEditorGUI;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -21,7 +24,82 @@ public class Network
 
     public static void init()
     {
+        WRAPPER.registerMessage(RequestOpenActionSelectorPacketHandler.class, RequestOpenActionSelectorPacket.class, discriminator++, Side.SERVER);
+        WRAPPER.registerMessage(OpenActionSelectorPacketHandler.class, OpenActionSelectorPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(OpenActionEditorPacketHandler.class, OpenActionEditorPacket.class, discriminator++, Side.CLIENT);
+    }
+
+
+    public static class RequestOpenActionSelectorPacket implements IMessage
+    {
+        public RequestOpenActionSelectorPacket()
+        {
+            //Required
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+        }
+    }
+
+    public static class RequestOpenActionSelectorPacketHandler implements IMessageHandler<RequestOpenActionSelectorPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(RequestOpenActionSelectorPacket packet, MessageContext ctx)
+        {
+            EntityPlayerMP player = ctx.getServerHandler().player;
+            if (player.isCreative())
+            {
+                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> WRAPPER.sendTo(new OpenActionSelectorPacket(), player));
+            }
+            return null;
+        }
+    }
+
+
+    public static class OpenActionSelectorPacket implements IMessage
+    {
+        String[] list;
+
+        public OpenActionSelectorPacket()
+        {
+            //Required
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            list = CAction.allActions.keySet().toArray(new String[0]);
+            buf.writeInt(list.length);
+            for (String s : list) ByteBufUtils.writeUTF8String(buf, s);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            int size = buf.readInt();
+            list = new String[size];
+
+            for (int i = 0; i < size; i++) list[i] = ByteBufUtils.readUTF8String(buf);
+        }
+    }
+
+    public static class OpenActionSelectorPacketHandler implements IMessageHandler<OpenActionSelectorPacket, IMessage>
+    {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IMessage onMessage(OpenActionSelectorPacket packet, MessageContext ctx)
+        {
+            Minecraft mc = Minecraft.getMinecraft();
+            mc.addScheduledTask(() -> new ActionSelectionGUI(packet.list));
+            return null;
+        }
     }
 
 
