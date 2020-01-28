@@ -7,7 +7,7 @@ import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
-import com.fantasticsource.tiamatactions.action.Action;
+import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 
@@ -45,10 +45,10 @@ public class ActionSelectorGUI extends GUIScreen
                         ActionEditorGUI actionEditorGUI = new ActionEditorGUI(name.getText());
                         actionEditorGUI.addOnClosedActions(() ->
                         {
-                            Action action = actionEditorGUI.getAction();
+                            CAction action = actionEditorGUI.getAction();
                             if (action != null)
                             {
-                                Action.allActions.put(actionEditorGUI.saveName, action);
+                                CAction.allActions.put(actionEditorGUI.saveName, action);
                             }
                         });
                     });

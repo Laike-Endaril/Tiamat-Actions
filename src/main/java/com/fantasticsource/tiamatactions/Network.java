@@ -1,6 +1,6 @@
 package com.fantasticsource.tiamatactions;
 
-import com.fantasticsource.tiamatactions.action.Action;
+import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.gui.ActionSelectorGUI;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -86,7 +86,7 @@ public class Network
         {
             buf.writeBoolean(editable);
 
-            list = Action.allActions.keySet().toArray(new String[0]);
+            list = CAction.allActions.keySet().toArray(new String[0]);
             buf.writeInt(list.length);
             for (String s : list) ByteBufUtils.writeUTF8String(buf, s);
         }

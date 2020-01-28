@@ -1,7 +1,7 @@
 package com.fantasticsource.tiamatactions;
 
 import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.tiamatactions.action.Action;
+import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -56,6 +56,6 @@ public class TiamatActions
     {
         if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || ServerTickTimer.currentTick() % 120 != 119) return;
 
-        ActionTaskHandler.queueAction(event.player, Action.allActions.get("Test"), null);
+        ActionTaskHandler.queueAction(event.player, CAction.allActions.get("Test"), null);
     }
 }

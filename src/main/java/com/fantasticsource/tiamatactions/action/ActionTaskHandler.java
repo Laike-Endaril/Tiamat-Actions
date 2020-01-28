@@ -27,7 +27,7 @@ public class ActionTaskHandler
 
 
     //Change per-action
-    public Action currentAction = null, queuedAction = null;
+    public CAction currentAction = null, queuedAction = null;
     public ItemStack currentActivatedItem = null, queuedActivatingItem = null;
 
     //Retained between actions, but contents change per-task
@@ -56,7 +56,7 @@ public class ActionTaskHandler
     }
 
 
-    public void queueAction(Action action, ItemStack activatingItem)
+    public void queueAction(CAction action, ItemStack activatingItem)
     {
         if (currentAction == null) startAction(action, activatingItem);
         else
@@ -66,7 +66,7 @@ public class ActionTaskHandler
         }
     }
 
-    protected void endAction(Action action)
+    protected void endAction(CAction action)
     {
         currentAction = null;
         currentActivatedItem = null;
@@ -75,7 +75,7 @@ public class ActionTaskHandler
         queuedTasks.removeIf(task -> task.stopOnActionInterrupt);
     }
 
-    protected void startAction(Action action, ItemStack activatingItem)
+    protected void startAction(CAction action, ItemStack activatingItem)
     {
         if (queuedAction == action)
         {
@@ -90,7 +90,7 @@ public class ActionTaskHandler
     }
 
 
-    public static void queueAction(ICommandSender controller, Action action, @Nullable ItemStack activatingItem)
+    public static void queueAction(ICommandSender controller, CAction action, @Nullable ItemStack activatingItem)
     {
         CONTROLLER_DATA.get(controller).queueAction(action, activatingItem);
     }
@@ -123,20 +123,20 @@ public class ActionTaskHandler
     {
         //TODO load actions
 
-        Action testAction = Action.getInstance("Test");
+        CAction testAction = CAction.getInstance("Test");
 
         CTaskCommand commandTask = new CTaskCommand();
-        commandTask.actionName = testAction.NAME;
+        commandTask.actionName = testAction.name;
         commandTask.command = "/time set 13000";
         testAction.tasks.add(commandTask);
 
         CTaskDelay delayTask = new CTaskDelay();
-        delayTask.actionName = testAction.NAME;
+        delayTask.actionName = testAction.name;
         delayTask.delay = 20;
         testAction.tasks.add(delayTask);
 
         commandTask = new CTaskCommand();
-        commandTask.actionName = testAction.NAME;
+        commandTask.actionName = testAction.name;
         commandTask.command = "/time set 0";
         testAction.tasks.add(commandTask);
 
