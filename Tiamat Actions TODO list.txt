@@ -6,8 +6,9 @@ Action tagging options
 
 
 Task: comment
+Task: cooldown
 Task: damage (calculation
-Task: goto (action:line, wait, inherit interrupts) (does not change what the current action is)
+Task: goto (action:line, wait, inherit interrupts) (does not change what the current action is) (remember to change "ranFromAction" in every task after calling CAction.getTaskChain)
 Task: set queued action
 Task: end this action
 
@@ -17,7 +18,6 @@ Task: disable active item attributes
 
 
 Task: get attribute (options for active attributes; active item only, both hands (add), both hands (average), etc)
-
 Task: get entities (gets entities within a cube)
 
 Task: filter entities (takes string reference for stored entity list and alters it)
@@ -35,8 +35,8 @@ Task: condition
 ...not
 ...and
 ...or
-...current action is (none, action selector) (used in "on enqueue tasks" for chaining from one action to another)
-...action
+...current action is (action selector) (used in "on enqueue tasks" for chaining from one action to another; checks the field in ActionTaskHandler referring to the *current, active action*)
+...action is running (action selector) (checks the "action" fields of current and queued tasks)
 
 
 
@@ -63,3 +63,10 @@ Sword Attack
 * filter entities: not in party
 * filter entities: cone
 * ...loop for damaging entities accounting for block, dodge, etc
+
+
+
+Fireball (skill with cooldown)
+* if action is running (Fireball), end
+* ...skill stuff...
+* cooldown

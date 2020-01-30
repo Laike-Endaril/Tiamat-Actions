@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.task;
 
 import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
+import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import com.fantasticsource.tools.component.CBoolean;
 import com.fantasticsource.tools.component.CInt;
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 
 public abstract class CTask extends Component
 {
-    public String actionName = "";
+    public String owningAction = "", ranFromAction = "";
     public boolean stopOnActionInterrupt = true;
-    public ArrayList<CTask> nextTasks = new ArrayList<>();
+    private ArrayList<CTask> nextTasks = new ArrayList<>();
 
 
     public abstract String getDescription();
@@ -29,10 +30,30 @@ public abstract class CTask extends Component
     public abstract TaskGUI getTaskGUI();
 
 
+    public final CTask setRanFromAction(CAction ranFromAction)
+    {
+        return setRanFromAction(ranFromAction.name);
+    }
+
+    protected final CTask setRanFromAction(String ranFromActionName)
+    {
+        ranFromAction = ranFromActionName;
+        return this;
+    }
+
+
+    public final CTask queueTask(CTask task)
+    {
+        nextTasks.add(task.setRanFromAction(this.ranFromAction));
+        return this;
+    }
+
+
     @Override
     public CTask write(ByteBuf buf)
     {
-        ByteBufUtils.writeUTF8String(buf, actionName);
+        ByteBufUtils.writeUTF8String(buf, owningAction);
+        ByteBufUtils.writeUTF8String(buf, ranFromAction);
         buf.writeBoolean(stopOnActionInterrupt);
 
         buf.writeInt(nextTasks.size());
@@ -44,7 +65,8 @@ public abstract class CTask extends Component
     @Override
     public CTask read(ByteBuf buf)
     {
-        actionName = ByteBufUtils.readUTF8String(buf);
+        owningAction = ByteBufUtils.readUTF8String(buf);
+        ranFromAction = ByteBufUtils.readUTF8String(buf);
         stopOnActionInterrupt = buf.readBoolean();
 
         nextTasks.clear();
@@ -56,7 +78,9 @@ public abstract class CTask extends Component
     @Override
     public CTask save(OutputStream stream)
     {
-        new CStringUTF8().set(actionName).save(stream);
+        CStringUTF8 cs = new CStringUTF8();
+        cs.set(owningAction).save(stream);
+        cs.set(ranFromAction).save(stream);
         new CBoolean().set(stopOnActionInterrupt).save(stream);
 
         new CInt().set(nextTasks.size()).save(stream);
@@ -68,7 +92,9 @@ public abstract class CTask extends Component
     @Override
     public CTask load(InputStream stream)
     {
-        actionName = new CStringUTF8().load(stream).value;
+        CStringUTF8 cs = new CStringUTF8();
+        owningAction = cs.load(stream).value;
+        ranFromAction = cs.load(stream).value;
         stopOnActionInterrupt = new CBoolean().load(stream).value;
 
         nextTasks.clear();

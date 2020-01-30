@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-public class ActionTaskHandler
+public class ActionTaskHandler //TODO extend component
 {
     public static final LinkedHashMap<ICommandSender, ActionTaskHandler> CONTROLLER_DATA = new LinkedHashMap<>();
 
@@ -32,7 +32,7 @@ public class ActionTaskHandler
 
     //Retained between actions, but contents change per-task
     public final LinkedList<CTask> currentTasks = new LinkedList<>(), queuedTasks = new LinkedList<>();
-    public final LinkedHashMap<String, Object> vars = new LinkedHashMap<>();
+    public final LinkedHashMap<String, Object> entityVars = new LinkedHashMap<>();
 
 
     public ActionTaskHandler(ICommandSender controller)
@@ -100,11 +100,13 @@ public class ActionTaskHandler
     public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event)
     {
         CONTROLLER_DATA.put(event.player, new ActionTaskHandler(event.player));
+        //TODO load ActionTaskHandler for player
     }
 
     @SubscribeEvent
     public static void playerLogout(PlayerEvent.PlayerLoggedOutEvent event)
     {
+        //TODO save ActionTaskHandler for player
         CONTROLLER_DATA.remove(event.player);
     }
 
@@ -128,28 +130,29 @@ public class ActionTaskHandler
         CAction testAction = CAction.getInstance("Test");
 
         CTaskCommand commandTask = new CTaskCommand();
-        commandTask.actionName = testAction.name;
+        commandTask.owningAction = testAction.name;
         commandTask.command = "/time set 13000";
         testAction.tasks.add(commandTask);
 
         CTaskDelay delayTask = new CTaskDelay();
-        delayTask.actionName = testAction.name;
+        delayTask.owningAction = testAction.name;
         delayTask.delay = 20;
         testAction.tasks.add(delayTask);
 
         commandTask = new CTaskCommand();
-        commandTask.actionName = testAction.name;
+        commandTask.owningAction = testAction.name;
         commandTask.command = "/time set 0";
         testAction.tasks.add(commandTask);
         //TODO end test code
 
 
         CONTROLLER_DATA.put(event.getServer(), new ActionTaskHandler(event.getServer()));
+        //TODO load ActionTaskHandler for server
     }
 
     public static void serverStop(FMLServerStoppedEvent event)
     {
         CONTROLLER_DATA.remove(FMLCommonHandler.instance().getMinecraftServerInstance());
-        //TODO save actions
+        //TODO load ActionTaskHandler for server
     }
 }

@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CAction extends Component
 {
@@ -25,6 +26,7 @@ public class CAction extends Component
     public String name;
     protected String[] tags;
     public final ArrayList<CTask> tasks = new ArrayList<>();
+    public final LinkedHashMap<String, Component> actionVars = new LinkedHashMap<>();
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
@@ -62,7 +64,8 @@ public class CAction extends Component
         {
             nextTask = task;
             task = (CTask) tasks.get(i).copy();
-            if (nextTask != null) task.nextTasks.add(nextTask);
+            if (nextTask != null) task.queueTask(nextTask);
+            else task.setRanFromAction(this);
         }
 
         return task;
@@ -80,6 +83,13 @@ public class CAction extends Component
         buf.writeInt(tasks.size());
         for (CTask task : tasks) writeMarked(buf, task);
 
+        buf.writeInt(actionVars.size());
+        for (Map.Entry<String, Component> entry : actionVars.entrySet())
+        {
+            ByteBufUtils.writeUTF8String(buf, entry.getKey());
+            writeMarked(buf, entry.getValue());
+        }
+
         return this;
     }
 
@@ -94,6 +104,9 @@ public class CAction extends Component
         tasks.clear();
         for (int i = buf.readInt(); i > 0; i--) tasks.add((CTask) readMarked(buf));
 
+        actionVars.clear();
+        for (int i = buf.readInt(); i > 0; i--) actionVars.put(ByteBufUtils.readUTF8String(buf), readMarked(buf));
+
         return this;
     }
 
@@ -107,6 +120,13 @@ public class CAction extends Component
 
         ci.set(tasks.size()).save(stream);
         for (CTask task : tasks) saveMarked(stream, task);
+
+        ci.set(actionVars.size()).save(stream);
+        for (Map.Entry<String, Component> entry : actionVars.entrySet())
+        {
+            cs.set(entry.getKey()).save(stream);
+            saveMarked(stream, entry.getValue());
+        }
 
         return this;
     }
@@ -123,6 +143,9 @@ public class CAction extends Component
 
         tasks.clear();
         for (int i = ci.load(stream).value; i > 0; i--) tasks.add((CTask) loadMarked(stream));
+
+        actionVars.clear();
+        for (int i = ci.load(stream).value; i > 0; i--) actionVars.put(cs.load(stream).value, loadMarked(stream));
 
         return this;
     }
