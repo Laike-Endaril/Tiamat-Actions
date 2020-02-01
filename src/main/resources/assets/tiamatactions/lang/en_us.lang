@@ -3,3 +3,11 @@ itemGroup.tiamatactions=Tiamat Actions
 tile.tiamatactions:actioneditor.name=Action Editor
 
 item.tiamatactions:tiamatactionsicon.name=Tiamat Actions Icon
+
+
+
+tiamatactions.config.serverSettings=Server Settings
+tiamatactions.config.clientSettings=Client Settings
+
+tiamatactions.config.customAttributes=Custom Attributes
+tiamatactions.config.displayAttributes.tooltip=FILLSCREEN FIXNEWLINES A list of custom attributes to add to living entities\n \n
