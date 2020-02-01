@@ -28,6 +28,7 @@ public class TiamatActions
         MinecraftForge.EVENT_BUS.register(Attributes.class);
         Network.init();
         Attributes.init();
+        DamageTypes.init();
     }
 
     @SubscribeEvent

@@ -8,18 +8,20 @@ import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.LinkedHashMap;
+
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class Attributes
 {
-    public static RangedAttribute[] CUSTOM_ATTRIBUTES = null;
+    public static LinkedHashMap<String, RangedAttribute> CUSTOM_ATTRIBUTES = null;
 
     public static void init()
     {
-        CUSTOM_ATTRIBUTES = new RangedAttribute[TiamatActionsConfig.serverSettings.customAttributes.length];
-        for (int i = 0; i < CUSTOM_ATTRIBUTES.length; i++)
+        CUSTOM_ATTRIBUTES = new LinkedHashMap<>();
+        for (String attributeString : TiamatActionsConfig.serverSettings.customAttributes)
         {
-            CUSTOM_ATTRIBUTES[i] = new RangedAttribute(null, MODID + "." + TiamatActionsConfig.serverSettings.customAttributes[i], 0, -Double.MAX_VALUE, Double.MAX_VALUE);
+            CUSTOM_ATTRIBUTES.put(attributeString, new RangedAttribute(null, MODID + "." + attributeString, 0, -Double.MAX_VALUE, Double.MAX_VALUE));
         }
     }
 
@@ -33,7 +35,7 @@ public class Attributes
 
             //Add new attributes to entity
             AttributeMap attributeMap = (AttributeMap) livingBase.getAttributeMap();
-            for (RangedAttribute attribute : CUSTOM_ATTRIBUTES)
+            for (RangedAttribute attribute : CUSTOM_ATTRIBUTES.values())
             {
                 attributeMap.registerAttribute(attribute);
             }
