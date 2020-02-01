@@ -42,7 +42,7 @@ public abstract class CTask extends Component
     }
 
 
-    public final CTask queueTask(CTask task)
+    public CTask queueTask(CTask task)
     {
         nextTasks.add(task.setRanFromAction(this.ranFromAction));
         return this;

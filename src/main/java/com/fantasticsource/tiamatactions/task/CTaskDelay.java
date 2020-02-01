@@ -7,10 +7,12 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class CTaskDelay extends CTask
 {
     public int delay = 20, elapsed = 0;
+    private ArrayList<CTask> delayedTasks = new ArrayList<>();
 
 
     @Override
@@ -19,12 +21,24 @@ public class CTaskDelay extends CTask
         return "Delay for " + delay + " ticks";
     }
 
+
     @Override
     public void tick(ActionTaskHandler handler)
     {
-        if (elapsed++ == delay) handler.currentTasks.addAll(nextTasks);
+        if (elapsed++ == delay)
+        {
+            for (CTask task : delayedTasks) super.queueTask(task);
+        }
         else handler.queuedTasks.add(this);
     }
+
+    @Override
+    public CTaskDelay queueTask(CTask task)
+    {
+        delayedTasks.add(task);
+        return this;
+    }
+
 
     @Override
     public TaskGUI getTaskGUI()

@@ -25,7 +25,6 @@ public class CTaskCommand extends CTask
     public void tick(ActionTaskHandler handler)
     {
         FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(handler.controller, command.replaceAll("@p|@P", handler.controller.getName()));
-        handler.currentTasks.addAll(nextTasks);
     }
 
     @Override
