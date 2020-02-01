@@ -1,3 +1,9 @@
+BUGS
+
+Fix test action; recent system changes broke it
+
+
+
 GUI
 
 New layout; line numbers instead of times
