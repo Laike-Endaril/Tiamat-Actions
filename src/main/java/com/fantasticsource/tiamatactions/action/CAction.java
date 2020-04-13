@@ -24,7 +24,6 @@ public class CAction extends Component
     }
 
     public String name;
-    protected String[] tags;
     public final ArrayList<CTask> tasks = new ArrayList<>();
     public final LinkedHashMap<String, Component> actionVars = new LinkedHashMap<>();
 
@@ -35,11 +34,10 @@ public class CAction extends Component
     {
     }
 
-    protected CAction(String name, String... tags)
+    protected CAction(String name)
     {
         this.name = name;
         allActions.put(name, this);
-        this.tags = tags;
     }
 
 
@@ -77,9 +75,6 @@ public class CAction extends Component
     {
         ByteBufUtils.writeUTF8String(buf, name);
 
-        buf.writeInt(tags.length);
-        for (String tag : tags) ByteBufUtils.writeUTF8String(buf, tag);
-
         buf.writeInt(tasks.size());
         for (CTask task : tasks) writeMarked(buf, task);
 
@@ -98,9 +93,6 @@ public class CAction extends Component
     {
         name = ByteBufUtils.readUTF8String(buf);
 
-        tags = new String[buf.readInt()];
-        for (int i = 0; i < tags.length; i++) tags[i] = ByteBufUtils.readUTF8String(buf);
-
         tasks.clear();
         for (int i = buf.readInt(); i > 0; i--) tasks.add((CTask) readMarked(buf));
 
@@ -115,10 +107,7 @@ public class CAction extends Component
     {
         CStringUTF8 cs = new CStringUTF8().set(name).save(stream);
 
-        CInt ci = new CInt().set(tags.length).save(stream);
-        for (String tag : tags) cs.set(tag).save(stream);
-
-        ci.set(tasks.size()).save(stream);
+        CInt ci = new CInt().set(tasks.size()).save(stream);
         for (CTask task : tasks) saveMarked(stream, task);
 
         ci.set(actionVars.size()).save(stream);
@@ -138,9 +127,6 @@ public class CAction extends Component
         name = cs.value;
 
         CInt ci = new CInt().load(stream);
-        tags = new String[ci.value];
-        for (int i = 0; i < tags.length; i++) tags[i] = cs.load(stream).value;
-
         tasks.clear();
         for (int i = ci.load(stream).value; i > 0; i--) tasks.add((CTask) loadMarked(stream));
 
