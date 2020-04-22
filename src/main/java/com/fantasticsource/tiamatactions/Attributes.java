@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeMap;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -18,6 +19,8 @@ public class Attributes
 
     public static void init()
     {
+        MinecraftForge.EVENT_BUS.register(Attributes.class);
+
         CUSTOM_ATTRIBUTES = new LinkedHashMap<>();
         for (String attributeString : TiamatActionsConfig.serverSettings.customAttributes)
         {
