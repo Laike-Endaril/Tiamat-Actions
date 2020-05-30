@@ -16,28 +16,39 @@ import java.util.Map;
 
 public class CAction extends Component
 {
-    public static LinkedHashMap<String, CAction> allActions = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, CAction> ALL_ACTIONS = new LinkedHashMap<>();
 
     static
     {
-        allActions.put("None", null);
+        ALL_ACTIONS.put("None", null);
     }
 
     public String name;
-    public final ArrayList<CTask> tasks = new ArrayList<>();
+    public final LinkedHashMap<String, ArrayList<CTask>> EVENT_TASK_LISTS = new LinkedHashMap<>();
+    public final ArrayList<CTask>
+            initTasks = new ArrayList<>(),
+            startTasks = new ArrayList<>(),
+            tickTasks = new ArrayList<>(),
+            endTasks = new ArrayList<>();
     public final LinkedHashMap<String, Component> actionVars = new LinkedHashMap<>();
+
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
     public CAction()
     {
+        EVENT_TASK_LISTS.put("init", initTasks);
+        EVENT_TASK_LISTS.put("start", startTasks);
+        EVENT_TASK_LISTS.put("tick", tickTasks);
+        EVENT_TASK_LISTS.put("end", endTasks);
     }
 
     protected CAction(String name)
     {
+        this();
         this.name = name;
-        allActions.put(name, this);
+        ALL_ACTIONS.put(name, this);
     }
 
 
@@ -49,13 +60,22 @@ public class CAction extends Component
     }
 
 
-    public CTask getTaskChain(int index)
+    public CTask getTaskChain(String event)
     {
-        return getTaskChain(index, Integer.MAX_VALUE);
+        return getTaskChain(event, 0);
     }
 
-    public CTask getTaskChain(int index, int maxCount)
+    public CTask getTaskChain(String event, int index)
     {
+        return getTaskChain(event, index, Integer.MAX_VALUE);
+    }
+
+    public CTask getTaskChain(String event, int index, int maxCount)
+    {
+        ArrayList<CTask> tasks = EVENT_TASK_LISTS.get(event);
+        if (tasks == null) return null;
+
+
         CTask task = null, nextTask;
 
         for (int i = Tools.min(tasks.size() - 1, index + maxCount - 1); i >= index && i >= 0; i--)
@@ -75,8 +95,17 @@ public class CAction extends Component
     {
         ByteBufUtils.writeUTF8String(buf, name);
 
-        buf.writeInt(tasks.size());
-        for (CTask task : tasks) writeMarked(buf, task);
+        buf.writeInt(initTasks.size());
+        for (CTask task : initTasks) writeMarked(buf, task);
+
+        buf.writeInt(startTasks.size());
+        for (CTask task : startTasks) writeMarked(buf, task);
+
+        buf.writeInt(tickTasks.size());
+        for (CTask task : tickTasks) writeMarked(buf, task);
+
+        buf.writeInt(endTasks.size());
+        for (CTask task : endTasks) writeMarked(buf, task);
 
         buf.writeInt(actionVars.size());
         for (Map.Entry<String, Component> entry : actionVars.entrySet())
@@ -93,8 +122,17 @@ public class CAction extends Component
     {
         name = ByteBufUtils.readUTF8String(buf);
 
-        tasks.clear();
-        for (int i = buf.readInt(); i > 0; i--) tasks.add((CTask) readMarked(buf));
+        initTasks.clear();
+        for (int i = buf.readInt(); i > 0; i--) initTasks.add((CTask) readMarked(buf));
+
+        startTasks.clear();
+        for (int i = buf.readInt(); i > 0; i--) startTasks.add((CTask) readMarked(buf));
+
+        tickTasks.clear();
+        for (int i = buf.readInt(); i > 0; i--) tickTasks.add((CTask) readMarked(buf));
+
+        endTasks.clear();
+        for (int i = buf.readInt(); i > 0; i--) endTasks.add((CTask) readMarked(buf));
 
         actionVars.clear();
         for (int i = buf.readInt(); i > 0; i--) actionVars.put(ByteBufUtils.readUTF8String(buf), readMarked(buf));
@@ -107,8 +145,17 @@ public class CAction extends Component
     {
         CStringUTF8 cs = new CStringUTF8().set(name).save(stream);
 
-        CInt ci = new CInt().set(tasks.size()).save(stream);
-        for (CTask task : tasks) saveMarked(stream, task);
+        CInt ci = new CInt().set(initTasks.size()).save(stream);
+        for (CTask task : initTasks) saveMarked(stream, task);
+
+        ci.set(startTasks.size()).save(stream);
+        for (CTask task : startTasks) saveMarked(stream, task);
+
+        ci.set(tickTasks.size()).save(stream);
+        for (CTask task : tickTasks) saveMarked(stream, task);
+
+        ci.set(endTasks.size()).save(stream);
+        for (CTask task : endTasks) saveMarked(stream, task);
 
         ci.set(actionVars.size()).save(stream);
         for (Map.Entry<String, Component> entry : actionVars.entrySet())
@@ -126,9 +173,18 @@ public class CAction extends Component
         CStringUTF8 cs = new CStringUTF8().load(stream);
         name = cs.value;
 
-        CInt ci = new CInt().load(stream);
-        tasks.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) tasks.add((CTask) loadMarked(stream));
+        CInt ci = new CInt();
+        initTasks.clear();
+        for (int i = ci.load(stream).value; i > 0; i--) initTasks.add((CTask) loadMarked(stream));
+
+        startTasks.clear();
+        for (int i = ci.load(stream).value; i > 0; i--) startTasks.add((CTask) loadMarked(stream));
+
+        tickTasks.clear();
+        for (int i = ci.load(stream).value; i > 0; i--) tickTasks.add((CTask) loadMarked(stream));
+
+        endTasks.clear();
+        for (int i = ci.load(stream).value; i > 0; i--) endTasks.add((CTask) loadMarked(stream));
 
         actionVars.clear();
         for (int i = ci.load(stream).value; i > 0; i--) actionVars.put(cs.load(stream).value, loadMarked(stream));

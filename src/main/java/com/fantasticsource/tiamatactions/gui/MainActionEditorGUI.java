@@ -48,7 +48,7 @@ public class MainActionEditorGUI extends GUIScreen
                             CAction action = actionEditorGUI.getAction();
                             if (action != null)
                             {
-                                CAction.allActions.put(actionEditorGUI.saveName, action);
+                                CAction.ALL_ACTIONS.put(actionEditorGUI.saveName, action);
                             }
                         });
                     });
