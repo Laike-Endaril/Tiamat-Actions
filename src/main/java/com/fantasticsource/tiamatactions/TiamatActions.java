@@ -52,7 +52,9 @@ public class TiamatActions
             List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
             if (players.size() > 0)
             {
-                CAction.ALL_ACTIONS.get("Test").queue(players.get(0), "Main");
+                CAction.ALL_ACTIONS.get("Test1").queue(players.get(0), "Main");
+                CAction.ALL_ACTIONS.get("Test2").queue(players.get(0), "Main");
+                CAction.ALL_ACTIONS.get("Test3").queue(players.get(0), "Main");
             }
         }
     }

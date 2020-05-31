@@ -3,6 +3,7 @@ package com.fantasticsource.tiamatactions.action;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.task.CTask;
 import com.fantasticsource.tiamatactions.task.CTaskCommand;
+import com.fantasticsource.tiamatactions.task.CTaskEndAction;
 import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
@@ -26,16 +27,28 @@ public class CAction extends Component
         //TODO remove test code below
         if (MCTools.devEnv())
         {
-            CAction action = new CAction("Test");
+            CAction action = new CAction("Test1");
             CTaskCommand command = new CTaskCommand();
             action.startTasks.add(command);
             command.command = "/time set 1000";
+
+            action = new CAction("Test2");
+            command = new CTaskCommand();
+            action.tickTasks.add(command);
+            command.command = "/time set 1010";
+            action.tickTasks.add(new CTaskEndAction());
+
+            action = new CAction("Test3");
+            command = new CTaskCommand();
+            action.tickTasks.add(command);
+            command.command = "/time set 1100";
+            action.tickTasks.add(new CTaskEndAction());
         }
     }
 
     public String name;
     public Entity source;
-    public String queueName;
+    public ActionQueue queue;
     public boolean valid = true, started = false;
     public final LinkedHashMap<String, ArrayList<CTask>> EVENT_TASK_LISTS = new LinkedHashMap<>();
     public final ArrayList<CTask>
@@ -67,11 +80,36 @@ public class CAction extends Component
 
     public void queue(Entity source, String queueName)
     {
+        ActionQueue queue = ActionQueue.ENTITY_ACTION_QUEUES.get(source).get(queueName);
+
         CAction action = (CAction) copy();
         action.source = source;
-        action.queueName = queueName;
+        action.queue = queue;
 
-        ActionQueue queue = ActionQueue.ENTITY_ACTION_QUEUES.get(source).get(queueName);
+        //"Execute immediate" style
+        if ((queue == null || queue.queue.size() == 0) && action.tickTasks.size() == 0)
+        {
+            for (CTask task : action.initTasks)
+            {
+                task.execute(action);
+                if (!action.valid) return;
+            }
+
+            for (CTask task : action.startTasks)
+            {
+                task.execute(action);
+                if (!action.valid) return;
+            }
+
+            for (CTask task : action.endTasks)
+            {
+                task.execute(action);
+                if (!action.valid) return;
+            }
+
+            return;
+        }
+
         if (queue.size <= 0) return;
         if (queue.queue.size() >= queue.size && !queue.replaceLastIfFull) return;
 
