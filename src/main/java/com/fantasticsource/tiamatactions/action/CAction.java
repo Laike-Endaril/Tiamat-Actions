@@ -1,18 +1,19 @@
 package com.fantasticsource.tiamatactions.action;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.task.CTask;
-import com.fantasticsource.tools.Tools;
+import com.fantasticsource.tiamatactions.task.CTaskCommand;
 import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class CAction extends Component
 {
@@ -21,9 +22,21 @@ public class CAction extends Component
     static
     {
         ALL_ACTIONS.put("None", null);
+
+        //TODO remove test code below
+        if (MCTools.devEnv())
+        {
+            CAction action = new CAction("Test");
+            CTaskCommand command = new CTaskCommand();
+            action.startTasks.add(command);
+            command.command = "/time set 1000";
+        }
     }
 
     public String name;
+    public Entity source;
+    public String queueName;
+    public boolean valid = true, started = false;
     public final LinkedHashMap<String, ArrayList<CTask>> EVENT_TASK_LISTS = new LinkedHashMap<>();
     public final ArrayList<CTask>
             initTasks = new ArrayList<>(),
@@ -44,7 +57,7 @@ public class CAction extends Component
         EVENT_TASK_LISTS.put("end", endTasks);
     }
 
-    protected CAction(String name)
+    public CAction(String name)
     {
         this();
         this.name = name;
@@ -52,41 +65,30 @@ public class CAction extends Component
     }
 
 
-    public static CAction getInstance(String name)
+    public void queue(Entity source, String queueName)
     {
-        if (name == null || name.equals("") || name.equals("None")) throw new IllegalArgumentException("Action name must not be null, empty, or default (None)!");
+        CAction action = (CAction) copy();
+        action.source = source;
+        action.queueName = queueName;
 
-        return new CAction(name);
-    }
-
-
-    public CTask getTaskChain(String event)
-    {
-        return getTaskChain(event, 0);
-    }
-
-    public CTask getTaskChain(String event, int index)
-    {
-        return getTaskChain(event, index, Integer.MAX_VALUE);
-    }
-
-    public CTask getTaskChain(String event, int index, int maxCount)
-    {
-        ArrayList<CTask> tasks = EVENT_TASK_LISTS.get(event);
-        if (tasks == null) return null;
+        ActionQueue queue = ActionQueue.ENTITY_ACTION_QUEUES.get(source).get(queueName);
+        if (queue.size <= 0) return;
+        if (queue.queue.size() >= queue.size && !queue.replaceLastIfFull) return;
 
 
-        CTask task = null, nextTask;
-
-        for (int i = Tools.min(tasks.size() - 1, index + maxCount - 1); i >= index && i >= 0; i--)
+        for (CTask task : action.initTasks)
         {
-            nextTask = task;
-            task = (CTask) tasks.get(i).copy();
-            if (nextTask != null) task.queueTask(nextTask);
-            else task.setRanFromAction(this);
+            task.execute(action);
+            if (!action.valid) return;
         }
 
-        return task;
+
+        if (queue.queue.size() < queue.size) queue.queue.add(action);
+        else //queue.replaceLastIfFull == true, based on previous check
+        {
+            queue.queue.remove(queue.queue.size() - 1);
+            queue.queue.add(action);
+        }
     }
 
 
@@ -106,13 +108,6 @@ public class CAction extends Component
 
         buf.writeInt(endTasks.size());
         for (CTask task : endTasks) writeMarked(buf, task);
-
-        buf.writeInt(actionVars.size());
-        for (Map.Entry<String, Component> entry : actionVars.entrySet())
-        {
-            ByteBufUtils.writeUTF8String(buf, entry.getKey());
-            writeMarked(buf, entry.getValue());
-        }
 
         return this;
     }
@@ -134,9 +129,6 @@ public class CAction extends Component
         endTasks.clear();
         for (int i = buf.readInt(); i > 0; i--) endTasks.add((CTask) readMarked(buf));
 
-        actionVars.clear();
-        for (int i = buf.readInt(); i > 0; i--) actionVars.put(ByteBufUtils.readUTF8String(buf), readMarked(buf));
-
         return this;
     }
 
@@ -156,13 +148,6 @@ public class CAction extends Component
 
         ci.set(endTasks.size()).save(stream);
         for (CTask task : endTasks) saveMarked(stream, task);
-
-        ci.set(actionVars.size()).save(stream);
-        for (Map.Entry<String, Component> entry : actionVars.entrySet())
-        {
-            cs.set(entry.getKey()).save(stream);
-            saveMarked(stream, entry.getValue());
-        }
 
         return this;
     }
@@ -185,9 +170,6 @@ public class CAction extends Component
 
         endTasks.clear();
         for (int i = ci.load(stream).value; i > 0; i--) endTasks.add((CTask) loadMarked(stream));
-
-        actionVars.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) actionVars.put(cs.load(stream).value, loadMarked(stream));
 
         return this;
     }

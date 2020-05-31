@@ -17,4 +17,19 @@ public class ServerConfig
     @Config.Comment("A list of custom damage types to add to the game")
     @Config.RequiresMcRestart
     public String[] customDamageTypes = new String[0];
+
+    @Config.Name("Action Queues")
+    @Config.LangKey(MODID + ".config.actionQueues")
+    @Config.Comment(
+            {
+                    "A list of action queues to add to entities.  Syntax is...",
+                    "Name, size, replaceLastIfFull",
+                    "Eg...",
+                    "Main, 2, true"
+            })
+    @Config.RequiresMcRestart
+    public String[] actionQueues = new String[]
+            {
+                    "Main, 2, true"
+            };
 }

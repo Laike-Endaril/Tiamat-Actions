@@ -1,6 +1,6 @@
 package com.fantasticsource.tiamatactions.task;
 
-import com.fantasticsource.tiamatactions.action.ActionTaskHandler;
+import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import com.fantasticsource.tools.component.CStringUTF8;
 import io.netty.buffer.ByteBuf;
@@ -22,9 +22,9 @@ public class CTaskCommand extends CTask
     }
 
     @Override
-    public void tick(ActionTaskHandler handler)
+    public void execute(CAction action)
     {
-        FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(handler.controller, command.replaceAll("@p|@P", handler.controller.getName()));
+        FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(action.source, command.replaceAll("@p|@P", action.source.getName()));
     }
 
     @Override
@@ -40,8 +40,6 @@ public class CTaskCommand extends CTask
     {
         ByteBufUtils.writeUTF8String(buf, command);
 
-        super.write(buf);
-
         return this;
     }
 
@@ -49,8 +47,6 @@ public class CTaskCommand extends CTask
     public CTaskCommand read(ByteBuf buf)
     {
         command = ByteBufUtils.readUTF8String(buf);
-
-        super.read(buf);
 
         return this;
     }
@@ -60,8 +56,6 @@ public class CTaskCommand extends CTask
     {
         new CStringUTF8().set(command).save(stream);
 
-        super.save(stream);
-
         return this;
     }
 
@@ -69,8 +63,6 @@ public class CTaskCommand extends CTask
     public CTaskCommand load(InputStream stream)
     {
         command = new CStringUTF8().load(stream).value;
-
-        super.load(stream);
 
         return this;
     }
