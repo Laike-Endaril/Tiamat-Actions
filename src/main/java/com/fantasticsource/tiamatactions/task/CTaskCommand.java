@@ -22,9 +22,9 @@ public class CTaskCommand extends CTask
     }
 
     @Override
-    public void execute(CAction action)
+    public void execute(CAction parentAction)
     {
-        FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(action.source, command.replaceAll("@p|@P", action.source.getName()));
+        FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(parentAction.source, command.replaceAll("@p|@P", parentAction.source.getName()));
     }
 
     @Override

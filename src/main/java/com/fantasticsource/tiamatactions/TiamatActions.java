@@ -3,7 +3,6 @@ package com.fantasticsource.tiamatactions;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.tiamatactions.action.ActionQueue;
-import com.fantasticsource.tiamatactions.action.CAction;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -41,10 +40,10 @@ public class TiamatActions
         if (event.getModID().equals(MODID)) ConfigManager.sync(MODID, Config.Type.INSTANCE);
     }
 
+    //TODO remove test code below
     @SubscribeEvent
     public static void tick(TickEvent.ServerTickEvent event)
     {
-        //TODO remove test code below
         if (event.phase != TickEvent.Phase.END) return;
 
         if (MCTools.devEnv() && ServerTickTimer.currentTick() % 20 == 0)
@@ -52,9 +51,7 @@ public class TiamatActions
             List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
             if (players.size() > 0)
             {
-                CAction.ALL_ACTIONS.get("Test1").queue(players.get(0), "Main");
-                CAction.ALL_ACTIONS.get("Test2").queue(players.get(0), "Main");
-                CAction.ALL_ACTIONS.get("Test3").queue(players.get(0), "Main");
+//                CAction.ALL_ACTIONS.get("Test1").queue(players.get(0), "Main");
             }
         }
     }

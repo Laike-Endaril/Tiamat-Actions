@@ -2,8 +2,6 @@ package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.task.CTask;
-import com.fantasticsource.tiamatactions.task.CTaskCommand;
-import com.fantasticsource.tiamatactions.task.CTaskEndAction;
 import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
@@ -27,28 +25,17 @@ public class CAction extends Component
         //TODO remove test code below
         if (MCTools.devEnv())
         {
-            CAction action = new CAction("Test1");
-            CTaskCommand command = new CTaskCommand();
-            action.startTasks.add(command);
-            command.command = "/time set 1000";
-
-            action = new CAction("Test2");
-            command = new CTaskCommand();
-            action.tickTasks.add(command);
-            command.command = "/time set 1010";
-            action.tickTasks.add(new CTaskEndAction());
-
-            action = new CAction("Test3");
-            command = new CTaskCommand();
-            action.tickTasks.add(command);
-            command.command = "/time set 1100";
-            action.tickTasks.add(new CTaskEndAction());
+//            CAction action = new CAction("Test1");
+//            CTaskCommand command = new CTaskCommand();
+//            action.startTasks.add(command);
+//            command.command = "/time set 1000";
         }
     }
 
     public String name;
     public Entity source;
     public ActionQueue queue;
+    public CAction mainAction;
     public boolean valid = true, started = false;
     public final LinkedHashMap<String, ArrayList<CTask>> EVENT_TASK_LISTS = new LinkedHashMap<>();
     public final ArrayList<CTask>
@@ -56,7 +43,7 @@ public class CAction extends Component
             startTasks = new ArrayList<>(),
             tickTasks = new ArrayList<>(),
             endTasks = new ArrayList<>();
-    public final LinkedHashMap<String, Component> actionVars = new LinkedHashMap<>();
+    public final LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
 
 
     /**
@@ -78,13 +65,14 @@ public class CAction extends Component
     }
 
 
-    public void queue(Entity source, String queueName)
+    public void queue(Entity source, String queueName, CAction mainAction)
     {
         ActionQueue queue = ActionQueue.ENTITY_ACTION_QUEUES.get(source).get(queueName);
 
         CAction action = (CAction) copy();
         action.source = source;
         action.queue = queue;
+        action.mainAction = mainAction == null ? action : mainAction;
 
         //"Execute immediate" style
         if ((queue == null || queue.queue.size() == 0) && action.tickTasks.size() == 0)

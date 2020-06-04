@@ -30,7 +30,7 @@ public abstract class CTask extends Component
     public abstract String getDescription();
 
 
-    public abstract void execute(CAction action);
+    public abstract void execute(CAction parentAction);
 
 
     public abstract TaskGUI getTaskGUI();

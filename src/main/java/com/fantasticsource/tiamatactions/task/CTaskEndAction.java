@@ -12,9 +12,9 @@ public class CTaskEndAction extends CTask
     }
 
     @Override
-    public void execute(CAction action)
+    public void execute(CAction parentAction)
     {
-        action.valid = false;
+        parentAction.valid = false;
     }
 
     @Override

@@ -17,12 +17,14 @@ public class ActionQueue
 {
     public static final LinkedHashMap<Entity, LinkedHashMap<String, ActionQueue>> ENTITY_ACTION_QUEUES = new LinkedHashMap<>();
 
+    public String name;
     int size;
     boolean replaceLastIfFull;
     public ArrayList<CAction> queue = new ArrayList<>();
 
-    public ActionQueue(int size, boolean replaceLastIfFull)
+    public ActionQueue(String name, int size, boolean replaceLastIfFull)
     {
+        this.name = name;
         this.size = size;
         this.replaceLastIfFull = replaceLastIfFull;
     }
@@ -95,7 +97,8 @@ public class ActionQueue
             }
 
             String r = tokens[2].trim();
-            map.put(tokens[0].trim(), new ActionQueue(size, r.toLowerCase().equals("t") || r.toLowerCase().equals("true")));
+            String name = tokens[0].trim();
+            map.put(name, new ActionQueue(name, size, r.toLowerCase().equals("t") || r.toLowerCase().equals("true")));
         }
     }
 
