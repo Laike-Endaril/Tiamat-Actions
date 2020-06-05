@@ -43,7 +43,7 @@ public class CAction extends Component
             startTasks = new ArrayList<>(),
             tickTasks = new ArrayList<>(),
             endTasks = new ArrayList<>();
-    private final LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
+    public final LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
 
 
     /**

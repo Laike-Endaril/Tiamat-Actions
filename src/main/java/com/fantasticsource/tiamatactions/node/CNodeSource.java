@@ -1,13 +1,16 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import net.minecraft.entity.Entity;
 
-public class CNodeEndAction extends CNode
+public class CNodeSource extends CNode
 {
+    public boolean toSubaction = false;
+
     @Override
     public String getDescription()
     {
-        return "End this action (and run action end tasks if the action has finished all initialization and start tasks)";
+        return "Output the entity which is taking this action";
     }
 
     @Override
@@ -25,14 +28,12 @@ public class CNodeEndAction extends CNode
     @Override
     public Class[] outputTypes()
     {
-        return new Class[]{};
+        return new Class[]{Entity.class};
     }
 
     @Override
     public Object[] execute(CAction parentAction, Object... inputs)
     {
-        parentAction.valid = false;
-
-        return new Object[0];
+        return new Object[]{action.source};
     }
 }

@@ -36,7 +36,7 @@ public class GUINode extends GUIText
     @Override
     public void click()
     {
-        task.getTaskGUI().show();
+//        task.getTaskGUI().show();
 
         super.click();
     }

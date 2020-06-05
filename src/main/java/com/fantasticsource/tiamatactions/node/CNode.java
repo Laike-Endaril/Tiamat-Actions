@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public abstract class CNode extends Component
 {
     public CAction action;
-    private ArrayList<CNode> nextTasks = new ArrayList<>();
+    public ArrayList<CNode>[] inputNodes, outputNodes;
 
 
     /**
@@ -29,14 +29,13 @@ public abstract class CNode extends Component
     public abstract String getDescription();
 
 
-    public abstract void execute(CAction parentAction);
+    public abstract Class[] requiredInputTypes();
 
+    public abstract Class arrayInputType();
 
-    public CNode queueTask(CNode task)
-    {
-        nextTasks.add(task);
-        return this;
-    }
+    public abstract Class[] outputTypes();
+
+    public abstract Object[] execute(CAction parentAction, Object... inputs);
 
 
     @Override

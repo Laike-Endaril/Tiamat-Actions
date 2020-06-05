@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.util.List;
 
 @Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.034j,)")
@@ -23,6 +25,9 @@ public class TiamatActions
     public static final String NAME = "Tiamat Actions";
     public static final String VERSION = "1.12.2.000a";
 
+
+    private static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();
+    public static final ScriptEngine JAVASCRIPT_ENGINE = SCRIPT_ENGINE_MANAGER.getEngineByName("JavaScript");
 
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event)

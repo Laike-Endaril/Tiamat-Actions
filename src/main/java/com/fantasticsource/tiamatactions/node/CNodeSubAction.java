@@ -19,12 +19,32 @@ public class CNodeSubAction extends CNode
     }
 
     @Override
-    public void execute(CAction parentAction)
+    public Class[] requiredInputTypes()
+    {
+        return new Class[0];
+    }
+
+    @Override
+    public Class arrayInputType()
+    {
+        return null;
+    }
+
+    @Override
+    public Class[] outputTypes()
+    {
+        return new Class[]{};
+    }
+
+    @Override
+    public Object[] execute(CAction parentAction, Object... inputs)
     {
         CAction subAction = CAction.ALL_ACTIONS.get(subActionName);
         if (subAction == null || subAction.tickTasks.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
 
         subAction.queue(parentAction.source, parentAction.queue.name, parentAction.mainAction);
+
+        return new Object[0];
     }
 
 

@@ -1,13 +1,14 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import net.minecraft.util.text.TextComponentString;
 
-public class CNodeEndAction extends CNode
+public class CNodeDebug extends CNode
 {
     @Override
     public String getDescription()
     {
-        return "End this action (and run action end tasks if the action has finished all initialization and start tasks)";
+        return "Display one or more values";
     }
 
     @Override
@@ -19,7 +20,7 @@ public class CNodeEndAction extends CNode
     @Override
     public Class arrayInputType()
     {
-        return null;
+        return Object.class;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class CNodeEndAction extends CNode
     @Override
     public Object[] execute(CAction parentAction, Object... inputs)
     {
-        parentAction.valid = false;
+        for (Object input : inputs) parentAction.source.sendMessage(new TextComponentString(input.toString()));
 
         return new Object[0];
     }
