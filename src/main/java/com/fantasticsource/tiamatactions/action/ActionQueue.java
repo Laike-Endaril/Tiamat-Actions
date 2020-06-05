@@ -1,7 +1,7 @@
 package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
-import com.fantasticsource.tiamatactions.task.CTask;
+import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -37,7 +37,7 @@ public class ActionQueue
             CAction action = queue.get(0);
             if (!action.started)
             {
-                for (CTask task : action.startTasks)
+                for (CNode task : action.startTasks)
                 {
                     task.execute(action);
                     if (!action.valid) break;
@@ -53,7 +53,7 @@ public class ActionQueue
 
 
                 ticked = true;
-                for (CTask task : action.tickTasks)
+                for (CNode task : action.tickTasks)
                 {
                     task.execute(action);
                     if (!action.valid) break;
@@ -64,7 +64,7 @@ public class ActionQueue
             {
                 if (action.started)
                 {
-                    for (CTask task : action.endTasks) task.execute(action);
+                    for (CNode task : action.endTasks) task.execute(action);
                 }
 
                 queue.remove(0);

@@ -1,7 +1,6 @@
-package com.fantasticsource.tiamatactions.task;
+package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import com.fantasticsource.tools.component.CStringUTF8;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -10,7 +9,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class CTaskCommand extends CTask
+public class CNodeCommand extends CNode
 {
     public String command = "";
 
@@ -27,16 +26,9 @@ public class CTaskCommand extends CTask
         FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(parentAction.source, command.replaceAll("@p|@P", parentAction.source.getName()));
     }
 
-    @Override
-    public TaskGUI getTaskGUI()
-    {
-        //TODO
-        return null;
-    }
-
 
     @Override
-    public CTaskCommand write(ByteBuf buf)
+    public CNodeCommand write(ByteBuf buf)
     {
         ByteBufUtils.writeUTF8String(buf, command);
 
@@ -44,7 +36,7 @@ public class CTaskCommand extends CTask
     }
 
     @Override
-    public CTaskCommand read(ByteBuf buf)
+    public CNodeCommand read(ByteBuf buf)
     {
         command = ByteBufUtils.readUTF8String(buf);
 
@@ -52,7 +44,7 @@ public class CTaskCommand extends CTask
     }
 
     @Override
-    public CTaskCommand save(OutputStream stream)
+    public CNodeCommand save(OutputStream stream)
     {
         new CStringUTF8().set(command).save(stream);
 
@@ -60,7 +52,7 @@ public class CTaskCommand extends CTask
     }
 
     @Override
-    public CTaskCommand load(InputStream stream)
+    public CNodeCommand load(InputStream stream)
     {
         command = new CStringUTF8().load(stream).value;
 

@@ -1,7 +1,6 @@
-package com.fantasticsource.tiamatactions.task;
+package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.gui.TaskGUI;
 import com.fantasticsource.tools.component.Component;
 import io.netty.buffer.ByteBuf;
 
@@ -9,20 +8,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-public abstract class CTask extends Component
+public abstract class CNode extends Component
 {
     public CAction action;
-    private ArrayList<CTask> nextTasks = new ArrayList<>();
+    private ArrayList<CNode> nextTasks = new ArrayList<>();
 
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CTask()
+    public CNode()
     {
     }
 
-    public CTask(CAction action)
+    public CNode(CAction action)
     {
         this.action = action;
     }
@@ -33,10 +32,7 @@ public abstract class CTask extends Component
     public abstract void execute(CAction parentAction);
 
 
-    public abstract TaskGUI getTaskGUI();
-
-
-    public CTask queueTask(CTask task)
+    public CNode queueTask(CNode task)
     {
         nextTasks.add(task);
         return this;
@@ -44,25 +40,25 @@ public abstract class CTask extends Component
 
 
     @Override
-    public CTask write(ByteBuf buf)
+    public CNode write(ByteBuf buf)
     {
         return this;
     }
 
     @Override
-    public CTask read(ByteBuf buf)
+    public CNode read(ByteBuf buf)
     {
         return this;
     }
 
     @Override
-    public CTask save(OutputStream stream)
+    public CNode save(OutputStream stream)
     {
         return this;
     }
 
     @Override
-    public CTask load(InputStream stream)
+    public CNode load(InputStream stream)
     {
         return this;
     }

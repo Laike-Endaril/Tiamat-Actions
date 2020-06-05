@@ -1,7 +1,7 @@
 package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.mctools.MCTools;
-import com.fantasticsource.tiamatactions.task.CTask;
+import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Stack;
 
 public class CAction extends Component
 {
@@ -27,7 +26,7 @@ public class CAction extends Component
         if (MCTools.devEnv())
         {
 //            CAction action = new CAction("Test1");
-//            CTaskCommand command = new CTaskCommand();
+//            CNodeCommand command = new CNodeCommand();
 //            action.startTasks.add(command);
 //            command.command = "/time set 1000";
         }
@@ -38,13 +37,13 @@ public class CAction extends Component
     public ActionQueue queue;
     public CAction mainAction;
     public boolean valid = true, started = false;
-    public final LinkedHashMap<String, ArrayList<CTask>> EVENT_TASK_LISTS = new LinkedHashMap<>();
-    public final ArrayList<CTask>
+    public final LinkedHashMap<String, ArrayList<CNode>> EVENT_TASK_LISTS = new LinkedHashMap<>();
+    public final ArrayList<CNode>
             initTasks = new ArrayList<>(),
             startTasks = new ArrayList<>(),
             tickTasks = new ArrayList<>(),
             endTasks = new ArrayList<>();
-    public Stack<Object> stack = new Stack<>();
+    private final LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
 
 
     /**
@@ -78,19 +77,19 @@ public class CAction extends Component
         //"Execute immediate" style
         if ((queue == null || queue.queue.size() == 0) && action.tickTasks.size() == 0)
         {
-            for (CTask task : action.initTasks)
+            for (CNode task : action.initTasks)
             {
                 task.execute(action);
                 if (!action.valid) return;
             }
 
-            for (CTask task : action.startTasks)
+            for (CNode task : action.startTasks)
             {
                 task.execute(action);
                 if (!action.valid) return;
             }
 
-            for (CTask task : action.endTasks)
+            for (CNode task : action.endTasks)
             {
                 task.execute(action);
                 if (!action.valid) return;
@@ -103,7 +102,7 @@ public class CAction extends Component
         if (queue.queue.size() >= queue.size && !queue.replaceLastIfFull) return;
 
 
-        for (CTask task : action.initTasks)
+        for (CNode task : action.initTasks)
         {
             task.execute(action);
             if (!action.valid) return;
@@ -125,16 +124,16 @@ public class CAction extends Component
         ByteBufUtils.writeUTF8String(buf, name);
 
         buf.writeInt(initTasks.size());
-        for (CTask task : initTasks) writeMarked(buf, task);
+        for (CNode task : initTasks) writeMarked(buf, task);
 
         buf.writeInt(startTasks.size());
-        for (CTask task : startTasks) writeMarked(buf, task);
+        for (CNode task : startTasks) writeMarked(buf, task);
 
         buf.writeInt(tickTasks.size());
-        for (CTask task : tickTasks) writeMarked(buf, task);
+        for (CNode task : tickTasks) writeMarked(buf, task);
 
         buf.writeInt(endTasks.size());
-        for (CTask task : endTasks) writeMarked(buf, task);
+        for (CNode task : endTasks) writeMarked(buf, task);
 
         return this;
     }
@@ -145,16 +144,16 @@ public class CAction extends Component
         name = ByteBufUtils.readUTF8String(buf);
 
         initTasks.clear();
-        for (int i = buf.readInt(); i > 0; i--) initTasks.add((CTask) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--) initTasks.add((CNode) readMarked(buf));
 
         startTasks.clear();
-        for (int i = buf.readInt(); i > 0; i--) startTasks.add((CTask) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--) startTasks.add((CNode) readMarked(buf));
 
         tickTasks.clear();
-        for (int i = buf.readInt(); i > 0; i--) tickTasks.add((CTask) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--) tickTasks.add((CNode) readMarked(buf));
 
         endTasks.clear();
-        for (int i = buf.readInt(); i > 0; i--) endTasks.add((CTask) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--) endTasks.add((CNode) readMarked(buf));
 
         return this;
     }
@@ -165,16 +164,16 @@ public class CAction extends Component
         CStringUTF8 cs = new CStringUTF8().set(name).save(stream);
 
         CInt ci = new CInt().set(initTasks.size()).save(stream);
-        for (CTask task : initTasks) saveMarked(stream, task);
+        for (CNode task : initTasks) saveMarked(stream, task);
 
         ci.set(startTasks.size()).save(stream);
-        for (CTask task : startTasks) saveMarked(stream, task);
+        for (CNode task : startTasks) saveMarked(stream, task);
 
         ci.set(tickTasks.size()).save(stream);
-        for (CTask task : tickTasks) saveMarked(stream, task);
+        for (CNode task : tickTasks) saveMarked(stream, task);
 
         ci.set(endTasks.size()).save(stream);
-        for (CTask task : endTasks) saveMarked(stream, task);
+        for (CNode task : endTasks) saveMarked(stream, task);
 
         return this;
     }
@@ -187,16 +186,16 @@ public class CAction extends Component
 
         CInt ci = new CInt();
         initTasks.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) initTasks.add((CTask) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--) initTasks.add((CNode) loadMarked(stream));
 
         startTasks.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) startTasks.add((CTask) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--) startTasks.add((CNode) loadMarked(stream));
 
         tickTasks.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) tickTasks.add((CTask) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--) tickTasks.add((CNode) loadMarked(stream));
 
         endTasks.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) endTasks.add((CTask) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--) endTasks.add((CNode) loadMarked(stream));
 
         return this;
     }

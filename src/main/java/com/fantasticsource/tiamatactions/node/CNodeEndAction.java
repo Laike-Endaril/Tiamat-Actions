@@ -1,9 +1,8 @@
-package com.fantasticsource.tiamatactions.task;
+package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.gui.TaskGUI;
 
-public class CTaskEndAction extends CTask
+public class CNodeEndAction extends CNode
 {
     @Override
     public String getDescription()
@@ -15,12 +14,5 @@ public class CTaskEndAction extends CTask
     public void execute(CAction parentAction)
     {
         parentAction.valid = false;
-    }
-
-    @Override
-    public TaskGUI getTaskGUI()
-    {
-        //TODO
-        return null;
     }
 }

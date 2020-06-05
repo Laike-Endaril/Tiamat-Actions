@@ -1,15 +1,15 @@
-package com.fantasticsource.tiamatactions.task.selector.entity;
+package com.fantasticsource.tiamatactions.node.selector.entity;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.gui.TaskGUI;
-import com.fantasticsource.tiamatactions.task.CTask;
+import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CBoolean;
 import io.netty.buffer.ByteBuf;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class CTaskPushSource extends CTask
+public class CNodePushSource extends CNode
 {
     public boolean toSubaction = false;
 
@@ -35,7 +35,7 @@ public class CTaskPushSource extends CTask
 
 
     @Override
-    public CTask write(ByteBuf buf)
+    public CNode write(ByteBuf buf)
     {
         buf.writeBoolean(toSubaction);
 
@@ -43,7 +43,7 @@ public class CTaskPushSource extends CTask
     }
 
     @Override
-    public CTask read(ByteBuf buf)
+    public CNode read(ByteBuf buf)
     {
         toSubaction = buf.readBoolean();
 
@@ -51,7 +51,7 @@ public class CTaskPushSource extends CTask
     }
 
     @Override
-    public CTask save(OutputStream stream)
+    public CNode save(OutputStream stream)
     {
         new CBoolean().set(toSubaction).save(stream);
 
@@ -59,7 +59,7 @@ public class CTaskPushSource extends CTask
     }
 
     @Override
-    public CTask load(InputStream stream)
+    public CNode load(InputStream stream)
     {
         toSubaction = new CBoolean().load(stream).value;
 
