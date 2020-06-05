@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Stack;
 
 public class CAction extends Component
 {
@@ -43,7 +44,7 @@ public class CAction extends Component
             startTasks = new ArrayList<>(),
             tickTasks = new ArrayList<>(),
             endTasks = new ArrayList<>();
-    public final LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
+    public Stack<Object> stack = new Stack<>();
 
 
     /**

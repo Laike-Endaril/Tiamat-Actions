@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class CTaskArray extends CTask
 {
-    private ArrayList<CTask> tasks = new ArrayList<>();
+    public ArrayList<CTask> tasks = new ArrayList<>();
 
     @Override
     public String getDescription()

@@ -11,7 +11,7 @@ import java.io.OutputStream;
 
 public class CTaskSubAction extends CTask
 {
-    private String subActionName;
+    public String subActionName;
 
     @Override
     public String getDescription()
