@@ -2,19 +2,19 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 
-public class CNodeEndAction extends CNode
+public class CNodeGetActionVar extends CNode
 {
     @Override
     public String getDescription()
     {
-        return "End this action (and run action end tasks if the action has finished all initialization and start tasks)";
+        return "Output the given action variable";
     }
 
 
     @Override
     public Class[] requiredInputTypes()
     {
-        return new Class[0];
+        return new Class[]{String.class};
     }
 
     @Override
@@ -26,15 +26,13 @@ public class CNodeEndAction extends CNode
     @Override
     public Class outputType()
     {
-        return null;
+        return Object.class;
     }
 
 
     @Override
     public Object execute(CAction parentAction, Object... inputs)
     {
-        parentAction.valid = false;
-
-        return null;
+        return action.actionVars.get(inputs[0]);
     }
 }

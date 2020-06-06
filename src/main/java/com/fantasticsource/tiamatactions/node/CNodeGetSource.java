@@ -3,15 +3,14 @@ package com.fantasticsource.tiamatactions.node;
 import com.fantasticsource.tiamatactions.action.CAction;
 import net.minecraft.entity.Entity;
 
-public class CNodeSource extends CNode
+public class CNodeGetSource extends CNode
 {
-    public boolean toSubaction = false;
-
     @Override
     public String getDescription()
     {
         return "Output the entity which is taking this action";
     }
+
 
     @Override
     public Class[] requiredInputTypes()
@@ -26,14 +25,15 @@ public class CNodeSource extends CNode
     }
 
     @Override
-    public Class[] outputTypes()
+    public Class outputType()
     {
-        return new Class[]{Entity.class};
+        return Entity.class;
     }
 
+
     @Override
-    public Object[] execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction parentAction, Object... inputs)
     {
-        return new Object[]{action.source};
+        return action.source;
     }
 }

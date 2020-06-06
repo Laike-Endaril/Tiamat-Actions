@@ -12,6 +12,7 @@ public class CNodeDebug extends CNode
         return "Display one or more values";
     }
 
+
     @Override
     public Class[] requiredInputTypes()
     {
@@ -25,17 +26,18 @@ public class CNodeDebug extends CNode
     }
 
     @Override
-    public Class[] outputTypes()
+    public Class outputType()
     {
-        return new Class[]{};
+        return null;
     }
 
+
     @Override
-    public Object[] execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction parentAction, Object... inputs)
     {
-        if (inputs.length > 1) parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "<Input count: " + inputs.length + ">"));
+        parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "<Input count: " + inputs.length + ">"));
         for (Object input : inputs) parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + input.toString()));
 
-        return new Object[0];
+        return null;
     }
 }

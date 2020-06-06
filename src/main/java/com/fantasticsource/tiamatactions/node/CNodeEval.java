@@ -15,6 +15,7 @@ public class CNodeEval extends CNode
         return "Evaluate an expression and output the result";
     }
 
+
     @Override
     public Class[] requiredInputTypes()
     {
@@ -24,24 +25,25 @@ public class CNodeEval extends CNode
     @Override
     public Class arrayInputType()
     {
-        return Number.class;
+        return String.class;
     }
 
     @Override
-    public Class[] outputTypes()
+    public Class outputType()
     {
-        return new Class[]{Object.class};
+        return Object.class;
     }
 
+
     @Override
-    public Object[] execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction parentAction, Object... inputs)
     {
         String expression = this.expression;
         for (int i = 0; i < inputs.length; i++) expression = expression.replaceAll("@" + i, inputs[i].toString());
 
         try
         {
-            return new Object[]{TiamatActions.JAVASCRIPT_ENGINE.eval(expression)};
+            return TiamatActions.JAVASCRIPT_ENGINE.eval(expression);
         }
         catch (ScriptException e)
         {

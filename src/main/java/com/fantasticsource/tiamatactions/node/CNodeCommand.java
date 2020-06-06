@@ -21,6 +21,7 @@ public class CNodeCommand extends CNode
         return "Run Command: " + command;
     }
 
+
     @Override
     public Class[] requiredInputTypes()
     {
@@ -34,13 +35,14 @@ public class CNodeCommand extends CNode
     }
 
     @Override
-    public Class[] outputTypes()
+    public Class outputType()
     {
-        return new Class[]{};
+        return null;
     }
 
+
     @Override
-    public Object[] execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction parentAction, Object... inputs)
     {
         String command = this.command.replaceAll("@p|@P", parentAction.source.getName());
 
@@ -56,13 +58,15 @@ public class CNodeCommand extends CNode
 
         FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(parentAction.source, command);
 
-        return new Object[0];
+        return null;
     }
 
 
     @Override
     public CNodeCommand write(ByteBuf buf)
     {
+        super.write(buf);
+
         ByteBufUtils.writeUTF8String(buf, command);
 
         return this;
@@ -71,6 +75,8 @@ public class CNodeCommand extends CNode
     @Override
     public CNodeCommand read(ByteBuf buf)
     {
+        super.read(buf);
+
         command = ByteBufUtils.readUTF8String(buf);
 
         return this;
@@ -79,6 +85,8 @@ public class CNodeCommand extends CNode
     @Override
     public CNodeCommand save(OutputStream stream)
     {
+        super.save(stream);
+
         new CStringUTF8().set(command).save(stream);
 
         return this;
@@ -87,6 +95,8 @@ public class CNodeCommand extends CNode
     @Override
     public CNodeCommand load(InputStream stream)
     {
+        super.load(stream);
+
         command = new CStringUTF8().load(stream).value;
 
         return this;

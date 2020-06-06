@@ -10,6 +10,7 @@ public class CNodeSetActionVar extends CNode
         return "Set an action variable to a value";
     }
 
+
     @Override
     public Class[] requiredInputTypes()
     {
@@ -23,16 +24,17 @@ public class CNodeSetActionVar extends CNode
     }
 
     @Override
-    public Class[] outputTypes()
+    public Class outputType()
     {
-        return new Class[]{};
+        return null;
     }
 
+
     @Override
-    public Object[] execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction parentAction, Object... inputs)
     {
         parentAction.actionVars.put((String) inputs[0], inputs[1]);
 
-        return new Object[0];
+        return null;
     }
 }

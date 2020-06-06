@@ -18,6 +18,7 @@ public class CNodeSubAction extends CNode
         return "Run another action as part of this action";
     }
 
+
     @Override
     public Class[] requiredInputTypes()
     {
@@ -31,26 +32,29 @@ public class CNodeSubAction extends CNode
     }
 
     @Override
-    public Class[] outputTypes()
+    public Class outputType()
     {
-        return new Class[]{};
+        return null;
     }
 
+
     @Override
-    public Object[] execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction parentAction, Object... inputs)
     {
         CAction subAction = CAction.ALL_ACTIONS.get(subActionName);
-        if (subAction == null || subAction.tickTasks.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
+        if (subAction == null || subAction.tickEndpointNodes.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
 
         subAction.queue(parentAction.source, parentAction.queue.name, parentAction.mainAction);
 
-        return new Object[0];
+        return null;
     }
 
 
     @Override
     public CNodeSubAction write(ByteBuf buf)
     {
+        super.write(buf);
+
         ByteBufUtils.writeUTF8String(buf, subActionName);
 
         return this;
@@ -59,6 +63,8 @@ public class CNodeSubAction extends CNode
     @Override
     public CNodeSubAction read(ByteBuf buf)
     {
+        super.read(buf);
+
         subActionName = ByteBufUtils.readUTF8String(buf);
 
         return this;
@@ -67,6 +73,8 @@ public class CNodeSubAction extends CNode
     @Override
     public CNodeSubAction save(OutputStream stream)
     {
+        super.save(stream);
+
         new CStringUTF8().set(subActionName).save(stream);
 
         return this;
@@ -75,6 +83,8 @@ public class CNodeSubAction extends CNode
     @Override
     public CNodeSubAction load(InputStream stream)
     {
+        super.load(stream);
+
         subActionName = new CStringUTF8().load(stream).value;
 
         return this;
