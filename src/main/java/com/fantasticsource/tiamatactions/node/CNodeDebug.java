@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 public class CNodeDebug extends CNode
 {
@@ -32,7 +33,8 @@ public class CNodeDebug extends CNode
     @Override
     public Object[] execute(CAction parentAction, Object... inputs)
     {
-        for (Object input : inputs) parentAction.source.sendMessage(new TextComponentString(input.toString()));
+        if (inputs.length > 1) parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "<Input count: " + inputs.length + ">"));
+        for (Object input : inputs) parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + input.toString()));
 
         return new Object[0];
     }
