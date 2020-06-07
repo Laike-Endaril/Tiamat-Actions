@@ -1,9 +1,10 @@
-package com.fantasticsource.tiamatactions.node;
+package com.fantasticsource.tiamatactions.node.staticoutput;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.node.CNode;
 import net.minecraft.entity.Entity;
 
-public class CNodeGetSource extends CNode
+public class CNodeSourceEntity extends CNode
 {
     @Override
     public String getDescription()
