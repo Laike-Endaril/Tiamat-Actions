@@ -7,36 +7,20 @@ import com.fantasticsource.tools.datastructures.Color;
 
 public class GUINode extends GUIText
 {
-    protected CNode task;
+    protected CNode node;
 
-    public GUINode(GUIScreen screen, CNode task)
+    public GUINode(GUIScreen screen, double x, double y, CNode node)
     {
-        this(screen, task, Color.WHITE);
-    }
-
-    public GUINode(GUIScreen screen, CNode task, Color color)
-    {
-        super(screen, task.getDescription(), GUIScreen.getIdleColor(color), GUIScreen.getHoverColor(color), color);
-        this.task = task;
-    }
-
-
-    public GUINode(GUIScreen screen, double x, double y, CNode task)
-    {
-        this(screen, x, y, task, Color.WHITE);
-    }
-
-    public GUINode(GUIScreen screen, double x, double y, CNode task, Color color)
-    {
-        super(screen, x, y, task.getDescription(), GUIScreen.getIdleColor(color), GUIScreen.getHoverColor(color), color);
-        this.task = task;
+        super(screen, x, y, node.getDescription(), GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE);
+        this.node = node;
     }
 
 
     @Override
     public void click()
     {
-//        task.getTaskGUI().show();
+        GUIScreen gui = node.getNodeEditGUI();
+        if (gui != null) gui.show();
 
         super.click();
     }

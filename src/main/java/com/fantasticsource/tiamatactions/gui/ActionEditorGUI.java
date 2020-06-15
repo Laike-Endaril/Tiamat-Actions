@@ -31,8 +31,7 @@ public class ActionEditorGUI extends GUIScreen
 
     protected void show(String actionName)
     {
-        if (Minecraft.getMinecraft().currentScreen instanceof GUIScreen) GUIScreen.showStacked(this);
-        else Minecraft.getMinecraft().displayGuiScreen(this);
+        show();
 
 
         initialName = actionName;

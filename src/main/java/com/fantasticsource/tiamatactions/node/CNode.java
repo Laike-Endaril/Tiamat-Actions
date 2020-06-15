@@ -1,5 +1,6 @@
 package com.fantasticsource.tiamatactions.node;
 
+import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.Component;
@@ -57,6 +58,12 @@ public abstract class CNode extends Component
     }
 
     protected abstract Object execute(CAction parentAction, Object... inputs);
+
+
+    public GUIScreen getNodeEditGUI()
+    {
+        return null;
+    }
 
 
     @Override

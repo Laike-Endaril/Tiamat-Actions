@@ -1,5 +1,11 @@
 package com.fantasticsource.tiamatactions.node.staticoutput;
 
+import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
+import com.fantasticsource.mctools.gui.element.text.GUILabeledTextInput;
+import com.fantasticsource.mctools.gui.element.text.GUINavbar;
+import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
+import com.fantasticsource.mctools.gui.element.text.filter.FilterNone;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CStringUTF8;
@@ -11,13 +17,13 @@ import java.io.OutputStream;
 
 public class CNodeString extends CNode
 {
-    public String string;
+    public String string = "";
 
 
     @Override
     public String getDescription()
     {
-        return "Output a static string";
+        return "Output string: " + string;
     }
 
 
@@ -44,6 +50,13 @@ public class CNodeString extends CNode
     public Object execute(CAction parentAction, Object... inputs)
     {
         return action.source;
+    }
+
+
+    @Override
+    public GUIScreen getNodeEditGUI()
+    {
+        return new StringNodeGUI(this);
     }
 
 
@@ -85,5 +98,44 @@ public class CNodeString extends CNode
         string = new CStringUTF8().load(stream).value;
 
         return this;
+    }
+
+
+    public static class StringNodeGUI extends GUIScreen
+    {
+        protected StringNodeGUI(CNodeString node)
+        {
+            show(node);
+        }
+
+        @Override
+        public String title()
+        {
+            return "String Node";
+        }
+
+        protected void show(CNodeString node)
+        {
+            show();
+
+
+            //Background
+            root.add(new GUIDarkenedBackground(this));
+
+
+            //Header
+            GUINavbar navbar = new GUINavbar(this);
+            root.add(navbar);
+
+
+            //Data
+            GUILabeledTextInput string = new GUILabeledTextInput(this, "String: ", node.string, FilterNone.INSTANCE);
+            string.addEditActions(() -> node.string = string.getText());
+            root.addAll(
+                    new GUITextSpacer(this),
+                    new GUITextSpacer(this, true),
+                    string
+            );
+        }
     }
 }

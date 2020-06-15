@@ -1,5 +1,11 @@
 package com.fantasticsource.tiamatactions.node.staticoutput;
 
+import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
+import com.fantasticsource.mctools.gui.element.text.GUILabeledTextInput;
+import com.fantasticsource.mctools.gui.element.text.GUINavbar;
+import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
+import com.fantasticsource.mctools.gui.element.text.filter.FilterFloat;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CDouble;
@@ -16,7 +22,7 @@ public class CNodeNumber extends CNode
     @Override
     public String getDescription()
     {
-        return "Output a static number";
+        return "Output number: " + number;
     }
 
 
@@ -43,6 +49,13 @@ public class CNodeNumber extends CNode
     public Object execute(CAction parentAction, Object... inputs)
     {
         return action.source;
+    }
+
+
+    @Override
+    public GUIScreen getNodeEditGUI()
+    {
+        return new NumberNodeGUI(this);
     }
 
 
@@ -84,5 +97,47 @@ public class CNodeNumber extends CNode
         number = new CDouble().load(stream).value;
 
         return this;
+    }
+
+
+    public static class NumberNodeGUI extends GUIScreen
+    {
+        protected NumberNodeGUI(CNodeNumber node)
+        {
+            show(node);
+        }
+
+        @Override
+        public String title()
+        {
+            return "Number Node";
+        }
+
+        protected void show(CNodeNumber node)
+        {
+            show();
+
+
+            //Background
+            root.add(new GUIDarkenedBackground(this));
+
+
+            //Header
+            GUINavbar navbar = new GUINavbar(this);
+            root.add(navbar);
+
+
+            //Data
+            GUILabeledTextInput number = new GUILabeledTextInput(this, "Number: ", "" + node.number, FilterFloat.INSTANCE);
+            number.addEditActions(() ->
+            {
+                if (number.valid()) node.number = FilterFloat.INSTANCE.parse(number.getText());
+            });
+            root.addAll(
+                    new GUITextSpacer(this),
+                    new GUITextSpacer(this, true),
+                    number
+            );
+        }
     }
 }
