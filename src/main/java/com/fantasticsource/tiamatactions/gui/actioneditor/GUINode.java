@@ -1,4 +1,4 @@
-package com.fantasticsource.tiamatactions.gui;
+package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.text.GUIText;

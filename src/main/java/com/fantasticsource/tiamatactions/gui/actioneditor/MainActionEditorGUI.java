@@ -1,4 +1,4 @@
-package com.fantasticsource.tiamatactions.gui;
+package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.Namespace;
@@ -8,14 +8,12 @@ import com.fantasticsource.mctools.gui.element.other.GUIGradient;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
-import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
 import com.fantasticsource.tiamatactions.Network;
 import com.fantasticsource.tools.datastructures.Color;
 
 public class MainActionEditorGUI extends GUIScreen
 {
-    protected static final FilterBlacklist ACTION_NAME_FILTER = new FilterBlacklist("None");
     protected GUIList actionList;
 
     public MainActionEditorGUI(String... list)

@@ -1,9 +1,9 @@
 package com.fantasticsource.tiamatactions;
 
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.gui.ActionEditorGUI;
 import com.fantasticsource.tiamatactions.gui.ActionSelectionGUI;
-import com.fantasticsource.tiamatactions.gui.MainActionEditorGUI;
+import com.fantasticsource.tiamatactions.gui.actioneditor.ActionEditorGUI;
+import com.fantasticsource.tiamatactions.gui.actioneditor.MainActionEditorGUI;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -299,8 +299,6 @@ public class Network
             {
                 CAction.ALL_ACTIONS.remove(packet.oldName);
                 CAction.ALL_ACTIONS.put(packet.action.name, packet.action);
-
-                WRAPPER.sendTo(new OpenMainActionEditorPacket(), ctx.getServerHandler().player);
             }
             return null;
         }

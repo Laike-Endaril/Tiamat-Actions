@@ -1,12 +1,13 @@
-package com.fantasticsource.tiamatactions.gui;
+package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
-import com.fantasticsource.mctools.gui.element.text.GUILabeledTextInput;
-import com.fantasticsource.mctools.gui.element.text.GUINavbar;
+import com.fantasticsource.mctools.gui.element.text.*;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.tiamatactions.Network;
 import com.fantasticsource.tiamatactions.action.CAction;
+import net.minecraft.util.text.TextFormatting;
 
 public class ActionEditorGUI extends GUIScreen
 {
@@ -21,7 +22,7 @@ public class ActionEditorGUI extends GUIScreen
 
     protected void show(CAction action, String... otherActionNames)
     {
-        showUnstacked();
+        show();
 
 
         initialName = action.name;
@@ -47,13 +48,26 @@ public class ActionEditorGUI extends GUIScreen
                 navbar.recalc(0);
             }
         });
-        root.add(name);
+        root.addAll(
+                name,
+                new GUITextSpacer(this),
+                new GUIText(this, TextFormatting.GOLD + "Events...")
+        );
+
+        //Events
+        for (String event : action.EVENT_NODES.keySet())
+        {
+            root.addAll(
+                    new GUIElement(this, 1, 0),
+                    new GUITextButton(this, event).addClickActions(() -> new EventEditorGUI(action, event))
+            );
+        }
     }
 
     @Override
     public String title()
     {
-        return action.name + " (Action)";
+        return action.name;
     }
 
     @Override
