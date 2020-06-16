@@ -1,20 +1,23 @@
 package com.fantasticsource.tiamatactions.gui;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.Namespace;
 import com.fantasticsource.mctools.gui.element.GUIElement;
+import com.fantasticsource.mctools.gui.element.other.GUIButton;
 import com.fantasticsource.mctools.gui.element.other.GUIGradient;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
+import com.fantasticsource.mctools.gui.element.text.GUITextInput;
+import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
-import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 
 public class MainActionEditorGUI extends GUIScreen
 {
+    protected static final FilterBlacklist ACTION_NAME_FILTER = new FilterBlacklist("None");
     protected GUIList actionList;
-    public String selection = null;
 
     public MainActionEditorGUI(String... list)
     {
@@ -37,31 +40,17 @@ public class MainActionEditorGUI extends GUIScreen
             @Override
             public GUIElement[] newLineDefaultElements()
             {
-                GUIText name = new GUIText(screen, "None", getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE);
-                if (editable)
-                {
-                    name.addClickActions(() ->
-                    {
-                        ActionEditorGUI actionEditorGUI = new ActionEditorGUI(name.getText());
-                        actionEditorGUI.addOnClosedActions(() ->
+                Namespace namespace = namespaces.computeIfAbsent("Actions", o -> new Namespace());
+                String nameString = namespace.getFirstAvailableNumberedName("Action");
+
+                return new GUIElement[]{
+                        GUIButton.newEditButton(screen).addClickActions(() ->
                         {
-                            CAction action = actionEditorGUI.getAction();
-                            if (action != null)
-                            {
-                                CAction.ALL_ACTIONS.put(actionEditorGUI.saveName, action);
-                            }
-                        });
-                    });
-                }
-                else
-                {
-                    name.addClickActions(() ->
-                    {
-                        selection = name.getText();
-                        close();
-                    });
-                }
-                return new GUIElement[]{name};
+                            //TODO open editor with editable name and buttons for events
+                            //TODO make sure the name field doesn't allow names already in use
+                        }),
+                        new GUITextInput(screen, nameString, ACTION_NAME_FILTER).setNamespace("Actions")
+                };
             }
         };
         GUIVerticalScrollbar scrollbar = new GUIVerticalScrollbar(this, 0.02, 1 - (navbar.y + navbar.height), Color.GRAY, Color.BLANK, Color.WHITE, Color.BLANK, actionList);
