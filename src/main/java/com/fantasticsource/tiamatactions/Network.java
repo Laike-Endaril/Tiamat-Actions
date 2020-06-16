@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.gui.ActionEditorGUI;
 import com.fantasticsource.tiamatactions.gui.ActionSelectionGUI;
 import com.fantasticsource.tiamatactions.gui.MainActionEditorGUI;
 import io.netty.buffer.ByteBuf;
@@ -26,7 +27,13 @@ public class Network
     {
         WRAPPER.registerMessage(RequestOpenActionSelectorPacketHandler.class, RequestOpenActionSelectorPacket.class, discriminator++, Side.SERVER);
         WRAPPER.registerMessage(OpenActionSelectorPacketHandler.class, OpenActionSelectorPacket.class, discriminator++, Side.CLIENT);
+
+        WRAPPER.registerMessage(OpenMainActionEditorPacketHandler.class, OpenMainActionEditorPacket.class, discriminator++, Side.CLIENT);
+
+        WRAPPER.registerMessage(RequestOpenActionEditorPacketHandler.class, RequestOpenActionEditorPacket.class, discriminator++, Side.SERVER);
         WRAPPER.registerMessage(OpenActionEditorPacketHandler.class, OpenActionEditorPacket.class, discriminator++, Side.CLIENT);
+
+        WRAPPER.registerMessage(SaveActionPacketHandler.class, SaveActionPacket.class, discriminator++, Side.SERVER);
     }
 
 
@@ -103,11 +110,11 @@ public class Network
     }
 
 
-    public static class OpenActionEditorPacket implements IMessage
+    public static class OpenMainActionEditorPacket implements IMessage
     {
         String[] list;
 
-        public OpenActionEditorPacket()
+        public OpenMainActionEditorPacket()
         {
             //Required
         }
@@ -122,7 +129,6 @@ public class Network
                 if (name.equals("None")) continue;
 
                 list[i++] = name;
-                System.out.println(name);
             }
             buf.writeInt(list.length);
             for (String s : list) ByteBufUtils.writeUTF8String(buf, s);
@@ -138,16 +144,164 @@ public class Network
         }
     }
 
+    public static class OpenMainActionEditorPacketHandler implements IMessageHandler<OpenMainActionEditorPacket, IMessage>
+    {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IMessage onMessage(OpenMainActionEditorPacket packet, MessageContext ctx)
+        {
+            Minecraft.getMinecraft().addScheduledTask(() ->
+            {
+                new MainActionEditorGUI(packet.list);
+            });
+            return null;
+        }
+    }
+
+
+    public static class RequestOpenActionEditorPacket implements IMessage
+    {
+        String actionName;
+
+        public RequestOpenActionEditorPacket()
+        {
+            //Required
+        }
+
+        public RequestOpenActionEditorPacket(String actionName)
+        {
+            this.actionName = actionName;
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            ByteBufUtils.writeUTF8String(buf, actionName);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            actionName = ByteBufUtils.readUTF8String(buf);
+        }
+    }
+
+    public static class RequestOpenActionEditorPacketHandler implements IMessageHandler<RequestOpenActionEditorPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(RequestOpenActionEditorPacket packet, MessageContext ctx)
+        {
+            EntityPlayerMP player = ctx.getServerHandler().player;
+            if (player.isCreative())
+            {
+                if (!CAction.ALL_ACTIONS.containsKey(packet.actionName)) new CAction(packet.actionName);
+                CAction action = CAction.ALL_ACTIONS.get(packet.actionName);
+                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> WRAPPER.sendTo(new OpenActionEditorPacket(action), player));
+            }
+            return null;
+        }
+    }
+
+
+    public static class OpenActionEditorPacket implements IMessage
+    {
+        CAction action = new CAction();
+        String[] otherActionNames;
+
+        public OpenActionEditorPacket()
+        {
+            //Required
+        }
+
+        public OpenActionEditorPacket(CAction action)
+        {
+            this.action = action;
+            otherActionNames = new String[CAction.ALL_ACTIONS.size() - 1];
+            int i = 0;
+            for (String name : CAction.ALL_ACTIONS.keySet())
+            {
+                if (name.equals(action.name)) continue;
+
+                otherActionNames[i++] = name;
+            }
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            action.write(buf);
+
+            buf.writeInt(otherActionNames.length);
+            for (String name : otherActionNames) ByteBufUtils.writeUTF8String(buf, name);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            action.read(buf);
+
+            otherActionNames = new String[buf.readInt()];
+            for (int i = 0; i < otherActionNames.length; i++) otherActionNames[i] = ByteBufUtils.readUTF8String(buf);
+        }
+    }
+
     public static class OpenActionEditorPacketHandler implements IMessageHandler<OpenActionEditorPacket, IMessage>
     {
         @Override
         @SideOnly(Side.CLIENT)
         public IMessage onMessage(OpenActionEditorPacket packet, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() ->
+            Minecraft mc = Minecraft.getMinecraft();
+            mc.addScheduledTask(() -> new ActionEditorGUI(packet.action, packet.otherActionNames));
+            return null;
+        }
+    }
+
+
+    public static class SaveActionPacket implements IMessage
+    {
+        String oldName;
+        CAction action = new CAction();
+
+        public SaveActionPacket()
+        {
+            //Required
+        }
+
+        public SaveActionPacket(String oldName, CAction action)
+        {
+            this.oldName = oldName;
+            this.action = action;
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            ByteBufUtils.writeUTF8String(buf, oldName);
+            action.write(buf);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            oldName = ByteBufUtils.readUTF8String(buf);
+            action.read(buf);
+        }
+    }
+
+    public static class SaveActionPacketHandler implements IMessageHandler<SaveActionPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(SaveActionPacket packet, MessageContext ctx)
+        {
+            EntityPlayerMP player = ctx.getServerHandler().player;
+            if (player.isCreative())
             {
-                new MainActionEditorGUI(packet.list);
-            });
+                CAction.ALL_ACTIONS.remove(packet.oldName);
+                CAction.ALL_ACTIONS.put(packet.action.name, packet.action);
+
+                WRAPPER.sendTo(new OpenMainActionEditorPacket(), ctx.getServerHandler().player);
+            }
             return null;
         }
     }

@@ -36,7 +36,7 @@ public class BlockActionEditor extends Block
     {
         if (worldIn.isRemote) return true;
 
-        if (player.isCreative()) Network.WRAPPER.sendTo(new Network.OpenActionEditorPacket(), (EntityPlayerMP) player);
+        if (player.isCreative()) Network.WRAPPER.sendTo(new Network.OpenMainActionEditorPacket(), (EntityPlayerMP) player);
         return true;
     }
 }

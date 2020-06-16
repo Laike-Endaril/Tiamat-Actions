@@ -8,11 +8,10 @@ import com.fantasticsource.mctools.gui.element.other.GUIGradient;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
-import com.fantasticsource.mctools.gui.element.text.GUITextInput;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
+import com.fantasticsource.tiamatactions.Network;
 import com.fantasticsource.tools.datastructures.Color;
-import net.minecraft.client.Minecraft;
 
 public class MainActionEditorGUI extends GUIScreen
 {
@@ -21,8 +20,7 @@ public class MainActionEditorGUI extends GUIScreen
 
     public MainActionEditorGUI(String... list)
     {
-        if (Minecraft.getMinecraft().currentScreen instanceof GUIScreen) showStacked(this);
-        else Minecraft.getMinecraft().displayGuiScreen(this);
+        show();
 
 
         //Background
@@ -43,13 +41,12 @@ public class MainActionEditorGUI extends GUIScreen
                 Namespace namespace = namespaces.computeIfAbsent("Actions", o -> new Namespace());
                 String nameString = namespace.getFirstAvailableNumberedName("Action");
 
+                GUIText name = new GUIText(screen, nameString);
+
+
                 return new GUIElement[]{
-                        GUIButton.newEditButton(screen).addClickActions(() ->
-                        {
-                            //TODO open editor with editable name and buttons for events
-                            //TODO make sure the name field doesn't allow names already in use
-                        }),
-                        new GUITextInput(screen, nameString, ACTION_NAME_FILTER).setNamespace("Actions")
+                        GUIButton.newEditButton(screen).addClickActions(() -> Network.WRAPPER.sendToServer(new Network.RequestOpenActionEditorPacket(name.getText()))),
+                        name
                 };
             }
         };
@@ -60,7 +57,7 @@ public class MainActionEditorGUI extends GUIScreen
         for (String actionName : list)
         {
             GUIList.Line line = actionList.addLine();
-            ((GUIText) line.getLineElement(0)).setText(actionName);
+            ((GUIText) line.getLineElement(1)).setText(actionName);
         }
 
         //Add GUI actions
