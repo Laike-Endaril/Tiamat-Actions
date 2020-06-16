@@ -8,7 +8,7 @@ public class ItemTiamatActionsIcon extends Item
 {
     public ItemTiamatActionsIcon()
     {
-        setUnlocalizedName(MODID + ":tiamatactionsicon");
-        setRegistryName("tiamatactionsicon");
+        setUnlocalizedName(MODID + ":icon");
+        setRegistryName("icon");
     }
 }

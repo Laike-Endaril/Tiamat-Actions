@@ -1,6 +1,5 @@
 package com.fantasticsource.tiamatactions.block;
 
-import com.fantasticsource.tiamatactions.BlocksAndItems;
 import com.fantasticsource.tiamatactions.Network;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

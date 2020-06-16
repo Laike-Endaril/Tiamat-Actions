@@ -1,6 +1,5 @@
 package com.fantasticsource.tiamatactions.block;
 
-import com.fantasticsource.tiamatactions.BlocksAndItems;
 import net.minecraft.item.ItemBlock;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;

@@ -3,6 +3,7 @@ package com.fantasticsource.tiamatactions;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.tiamatactions.action.ActionQueue;
+import com.fantasticsource.tiamatactions.block.BlocksAndItems;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -37,6 +38,7 @@ public class TiamatActions
         Attributes.init();
         DamageTypes.init();
         MinecraftForge.EVENT_BUS.register(ActionQueue.class);
+        MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
     }
 
     @SubscribeEvent
