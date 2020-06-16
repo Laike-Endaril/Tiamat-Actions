@@ -18,7 +18,7 @@ public class MainActionEditorGUI extends GUIScreen
 
     public MainActionEditorGUI(String... list)
     {
-        show();
+        showUnstacked();
 
 
         //Background

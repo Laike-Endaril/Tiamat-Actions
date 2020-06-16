@@ -6,6 +6,7 @@ import com.fantasticsource.tiamatactions.gui.actioneditor.ActionEditorGUI;
 import com.fantasticsource.tiamatactions.gui.actioneditor.MainActionEditorGUI;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -152,7 +153,8 @@ public class Network
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
             {
-                new MainActionEditorGUI(packet.list);
+                GuiScreen gui = Minecraft.getMinecraft().currentScreen;
+                if (gui == null || gui instanceof MainActionEditorGUI) new MainActionEditorGUI(packet.list);
             });
             return null;
         }
@@ -299,6 +301,8 @@ public class Network
             {
                 CAction.ALL_ACTIONS.remove(packet.oldName);
                 CAction.ALL_ACTIONS.put(packet.action.name, packet.action);
+
+                WRAPPER.sendTo(new OpenMainActionEditorPacket(), ctx.getServerHandler().player);
             }
             return null;
         }
