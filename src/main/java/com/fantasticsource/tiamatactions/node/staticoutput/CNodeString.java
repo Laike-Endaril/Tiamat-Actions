@@ -11,12 +11,28 @@ import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CStringUTF8;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class CNodeString extends CNode
 {
+    /**
+     * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
+     */
+    public CNodeString()
+    {
+        super();
+    }
+
+    public CNodeString(String actionName, String event, int x, int y)
+    {
+        super(actionName, event, x, y);
+    }
+
+
     public String string = "";
 
 
@@ -49,10 +65,11 @@ public class CNodeString extends CNode
     @Override
     public Object execute(CAction parentAction, Object... inputs)
     {
-        return action.source;
+        return CAction.ALL_ACTIONS.get(actionName).source;
     }
 
 
+    @SideOnly(Side.CLIENT)
     @Override
     public GUIScreen getNodeEditGUI()
     {

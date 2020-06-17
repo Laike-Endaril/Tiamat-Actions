@@ -6,6 +6,20 @@ import net.minecraft.entity.Entity;
 
 public class CNodeSourceEntity extends CNode
 {
+    /**
+     * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
+     */
+    public CNodeSourceEntity()
+    {
+        super();
+    }
+
+    public CNodeSourceEntity(String actionName, String event, int x, int y)
+    {
+        super(actionName, event, x, y);
+    }
+
+
     @Override
     public String getDescription()
     {
@@ -35,6 +49,6 @@ public class CNodeSourceEntity extends CNode
     @Override
     public Object execute(CAction parentAction, Object... inputs)
     {
-        return action.source;
+        return CAction.ALL_ACTIONS.get(actionName).source;
     }
 }

@@ -7,6 +7,20 @@ import javax.script.ScriptException;
 
 public class CNodeEval extends CNode
 {
+    /**
+     * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
+     */
+    public CNodeEval()
+    {
+        super();
+    }
+
+    public CNodeEval(String actionName, String event, int x, int y)
+    {
+        super(actionName, event, x, y);
+    }
+
+
     public String expression = "";
 
     @Override

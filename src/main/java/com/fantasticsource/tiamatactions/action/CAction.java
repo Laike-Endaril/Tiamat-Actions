@@ -2,7 +2,11 @@ package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tiamatactions.node.CNodeCommand;
+import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
+import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.component.CInt;
+import com.fantasticsource.tools.component.CLong;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
 import com.fantasticsource.tools.datastructures.Pair;
@@ -28,10 +32,18 @@ public class CAction extends Component
         //TODO remove test code below
         if (MCTools.devEnv())
         {
-//            CAction action = new CAction("Test1");
-//            CNodeCommand command = new CNodeCommand();
-//            action.startEndpointNodes.add(command);
-//            command.command = "/time set 1000";
+            CAction action = new CAction("Test1");
+            String event = "start";
+
+            CNodeString stringNode = new CNodeString(action.name, event, 0, 0);
+            action.EVENT_NODES.get(event).put(Tools.getLong(stringNode.x, stringNode.y), stringNode);
+            stringNode.string = "/time set 1000";
+
+            CNodeCommand commandNode = new CNodeCommand(action.name, event, 100, 0);
+            action.EVENT_NODES.get(event).put(Tools.getLong(commandNode.x, commandNode.y), commandNode);
+            commandNode.inputNodePositions.add(Tools.getLong(stringNode.x, stringNode.y));
+
+            action.startEndpointNodes.add(commandNode);
         }
     }
 
@@ -39,15 +51,15 @@ public class CAction extends Component
     public Entity source;
     public ActionQueue queue;
     public CAction mainAction;
-    public boolean valid = true, started = false;
+    public boolean active = true, started = false;
     public final LinkedHashMap<String, ArrayList<CNode>> EVENT_ENDPOINT_NODES = new LinkedHashMap<>();
-    public final LinkedHashMap<String, LinkedHashMap<Pair<Integer, Integer>, CNode>> EVENT_NODES = new LinkedHashMap<>();
+    public final LinkedHashMap<String, LinkedHashMap<Long, CNode>> EVENT_NODES = new LinkedHashMap<>();
     public final ArrayList<CNode>
             initEndpointNodes = new ArrayList<>(),
             startEndpointNodes = new ArrayList<>(),
             tickEndpointNodes = new ArrayList<>(),
             endEndpointNodes = new ArrayList<>();
-    public final LinkedHashMap<Pair<Integer, Integer>, CNode>
+    public final LinkedHashMap<Long, CNode>
             initNodes = new LinkedHashMap<>(),
             startNodes = new LinkedHashMap<>(),
             tickNodes = new LinkedHashMap<>(),
@@ -102,7 +114,7 @@ public class CAction extends Component
 
 
         action.execute("init");
-        if (!action.valid) return;
+        if (!action.active) return;
 
 
         if (queue.queue.size() < queue.size) queue.queue.add(action);
@@ -115,7 +127,7 @@ public class CAction extends Component
 
     protected void execute(String event)
     {
-        HashMap<CNode, Object> results = new HashMap<>();
+        HashMap<Long, Object> results = new HashMap<>();
         switch (event)
         {
             case "init":
@@ -144,34 +156,30 @@ public class CAction extends Component
 
 
         buf.writeInt(initNodes.size());
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : initNodes.entrySet())
+        for (Map.Entry<Long, CNode> entry : initNodes.entrySet())
         {
-            buf.writeInt(entry.getKey().getKey());
-            buf.writeInt(entry.getKey().getValue());
+            buf.writeLong(entry.getKey());
             writeMarked(buf, entry.getValue());
         }
 
         buf.writeInt(startNodes.size());
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : startNodes.entrySet())
+        for (Map.Entry<Long, CNode> entry : startNodes.entrySet())
         {
-            buf.writeInt(entry.getKey().getKey());
-            buf.writeInt(entry.getKey().getValue());
+            buf.writeLong(entry.getKey());
             writeMarked(buf, entry.getValue());
         }
 
         buf.writeInt(tickNodes.size());
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : tickNodes.entrySet())
+        for (Map.Entry<Long, CNode> entry : tickNodes.entrySet())
         {
-            buf.writeInt(entry.getKey().getKey());
-            buf.writeInt(entry.getKey().getValue());
+            buf.writeLong(entry.getKey());
             writeMarked(buf, entry.getValue());
         }
 
         buf.writeInt(endNodes.size());
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : endNodes.entrySet())
+        for (Map.Entry<Long, CNode> entry : endNodes.entrySet())
         {
-            buf.writeInt(entry.getKey().getKey());
-            buf.writeInt(entry.getKey().getValue());
+            buf.writeLong(entry.getKey());
             writeMarked(buf, entry.getValue());
         }
 
@@ -199,16 +207,16 @@ public class CAction extends Component
 
 
         initNodes.clear();
-        for (int i = buf.readInt(); i > 0; i--) initNodes.put(new Pair<>(buf.readInt(), buf.readInt()), (CNode) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--) initNodes.put(Tools.getLong(buf.readInt(), buf.readInt()), (CNode) readMarked(buf));
 
         startNodes.clear();
-        for (int i = buf.readInt(); i > 0; i--) startNodes.put(new Pair<>(buf.readInt(), buf.readInt()), (CNode) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--) startNodes.put(Tools.getLong(buf.readInt(), buf.readInt()), (CNode) readMarked(buf));
 
         tickNodes.clear();
-        for (int i = buf.readInt(); i > 0; i--) tickNodes.put(new Pair<>(buf.readInt(), buf.readInt()), (CNode) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--) tickNodes.put(Tools.getLong(buf.readInt(), buf.readInt()), (CNode) readMarked(buf));
 
         endNodes.clear();
-        for (int i = buf.readInt(); i > 0; i--) endNodes.put(new Pair<>(buf.readInt(), buf.readInt()), (CNode) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--) endNodes.put(Tools.getLong(buf.readInt(), buf.readInt()), (CNode) readMarked(buf));
 
 
         initEndpointNodes.clear();
@@ -224,10 +232,10 @@ public class CAction extends Component
         for (int i = buf.readInt(); i > 0; i--) endEndpointNodes.add((CNode) readMarked(buf));
 
 
-        for (CNode node : initEndpointNodes) initNodes.put(new Pair<>(node.x, node.y), node);
-        for (CNode node : startEndpointNodes) startNodes.put(new Pair<>(node.x, node.y), node);
-        for (CNode node : tickEndpointNodes) tickNodes.put(new Pair<>(node.x, node.y), node);
-        for (CNode node : endEndpointNodes) endNodes.put(new Pair<>(node.x, node.y), node);
+        for (CNode node : initEndpointNodes) initNodes.put(Tools.getLong(node.x, node.y), node);
+        for (CNode node : startEndpointNodes) startNodes.put(Tools.getLong(node.x, node.y), node);
+        for (CNode node : tickEndpointNodes) tickNodes.put(Tools.getLong(node.x, node.y), node);
+        for (CNode node : endEndpointNodes) endNodes.put(Tools.getLong(node.x, node.y), node);
 
 
         return this;
@@ -240,30 +248,31 @@ public class CAction extends Component
 
 
         CInt ci = new CInt().set(initNodes.size()).save(stream);
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : initNodes.entrySet())
+        CLong cl = new CLong();
+        for (Map.Entry<Long, CNode> entry : initNodes.entrySet())
         {
-            ci.set(entry.getKey().getKey()).save(stream).set(entry.getKey().getValue()).save(stream);
+            cl.set(entry.getKey()).save(stream);
             saveMarked(stream, entry.getValue());
         }
 
         ci.set(startNodes.size()).save(stream);
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : startNodes.entrySet())
+        for (Map.Entry<Long, CNode> entry : startNodes.entrySet())
         {
-            ci.set(entry.getKey().getKey()).save(stream).set(entry.getKey().getValue()).save(stream);
+            cl.set(entry.getKey()).save(stream);
             saveMarked(stream, entry.getValue());
         }
 
         ci.set(tickNodes.size()).save(stream);
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : tickNodes.entrySet())
+        for (Map.Entry<Long, CNode> entry : tickNodes.entrySet())
         {
-            ci.set(entry.getKey().getKey()).save(stream).set(entry.getKey().getValue()).save(stream);
+            cl.set(entry.getKey()).save(stream);
             saveMarked(stream, entry.getValue());
         }
 
         ci.set(endNodes.size()).save(stream);
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : endNodes.entrySet())
+        for (Map.Entry<Long, CNode> entry : endNodes.entrySet())
         {
-            ci.set(entry.getKey().getKey()).save(stream).set(entry.getKey().getValue()).save(stream);
+            cl.set(entry.getKey()).save(stream);
             saveMarked(stream, entry.getValue());
         }
 
@@ -292,17 +301,18 @@ public class CAction extends Component
 
 
         CInt ci = new CInt();
+        CLong cl = new CLong();
         initNodes.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) initNodes.put(new Pair<>(ci.load(stream).value, ci.load(stream).value), (CNode) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--) initNodes.put(cl.load(stream).value, (CNode) loadMarked(stream));
 
         startNodes.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) startNodes.put(new Pair<>(ci.load(stream).value, ci.load(stream).value), (CNode) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--) startNodes.put(cl.load(stream).value, (CNode) loadMarked(stream));
 
         tickNodes.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) tickNodes.put(new Pair<>(ci.load(stream).value, ci.load(stream).value), (CNode) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--) tickNodes.put(cl.load(stream).value, (CNode) loadMarked(stream));
 
         endNodes.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) endNodes.put(new Pair<>(ci.load(stream).value, ci.load(stream).value), (CNode) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--) endNodes.put(cl.load(stream).value, (CNode) loadMarked(stream));
 
 
         initEndpointNodes.clear();
@@ -318,10 +328,10 @@ public class CAction extends Component
         for (int i = ci.load(stream).value; i > 0; i--) endEndpointNodes.add((CNode) loadMarked(stream));
 
 
-        for (CNode node : initEndpointNodes) initNodes.put(new Pair<>(node.x, node.y), node);
-        for (CNode node : startEndpointNodes) startNodes.put(new Pair<>(node.x, node.y), node);
-        for (CNode node : tickEndpointNodes) tickNodes.put(new Pair<>(node.x, node.y), node);
-        for (CNode node : endEndpointNodes) endNodes.put(new Pair<>(node.x, node.y), node);
+        for (CNode node : initEndpointNodes) initNodes.put(Tools.getLong(node.x, node.y), node);
+        for (CNode node : startEndpointNodes) startNodes.put(Tools.getLong(node.x, node.y), node);
+        for (CNode node : tickEndpointNodes) tickNodes.put(Tools.getLong(node.x, node.y), node);
+        for (CNode node : endEndpointNodes) endNodes.put(Tools.getLong(node.x, node.y), node);
 
 
         return this;

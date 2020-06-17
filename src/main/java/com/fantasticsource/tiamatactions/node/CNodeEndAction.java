@@ -4,6 +4,20 @@ import com.fantasticsource.tiamatactions.action.CAction;
 
 public class CNodeEndAction extends CNode
 {
+    /**
+     * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
+     */
+    public CNodeEndAction()
+    {
+        super();
+    }
+
+    public CNodeEndAction(String actionName, String event, int x, int y)
+    {
+        super(actionName, event, x, y);
+    }
+
+
     @Override
     public String getDescription()
     {
@@ -33,7 +47,7 @@ public class CNodeEndAction extends CNode
     @Override
     public Object execute(CAction parentAction, Object... inputs)
     {
-        parentAction.valid = false;
+        parentAction.active = false;
 
         return null;
     }

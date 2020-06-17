@@ -5,6 +5,20 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class CNodeCommand extends CNode
 {
+    /**
+     * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
+     */
+    public CNodeCommand()
+    {
+        super();
+    }
+
+    public CNodeCommand(String actionName, String event, int x, int y)
+    {
+        super(actionName, event, x, y);
+    }
+
+
     @Override
     public String getDescription()
     {

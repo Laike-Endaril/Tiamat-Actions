@@ -6,6 +6,20 @@ import net.minecraft.util.text.TextFormatting;
 
 public class CNodeDebug extends CNode
 {
+    /**
+     * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
+     */
+    public CNodeDebug()
+    {
+        super();
+    }
+
+    public CNodeDebug(String actionName, String event, int x, int y)
+    {
+        super(actionName, event, x, y);
+    }
+
+
     @Override
     public String getDescription()
     {

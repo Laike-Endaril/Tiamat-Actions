@@ -3,21 +3,25 @@ package com.fantasticsource.tiamatactions.node;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.component.CInt;
+import com.fantasticsource.tools.component.CLong;
+import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
-import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class CNode extends Component
 {
-    public CAction action;
-    public String event;
+    public String actionName, eventName;
     public int x, y;
 
-    public CNode[] inputNodes;
+    public ArrayList<Long> inputNodePositions = new ArrayList<>();
 
 
     /**
@@ -27,10 +31,14 @@ public abstract class CNode extends Component
     {
     }
 
-    public CNode(CAction action)
+    public CNode(String actionName, String eventName, int x, int y)
     {
-        this.action = action;
+        this.actionName = actionName;
+        this.eventName = eventName;
+        this.x = x;
+        this.y = y;
     }
+
 
     public abstract String getDescription();
 
@@ -42,16 +50,18 @@ public abstract class CNode extends Component
     public abstract Class outputType();
 
 
-    public final Object executeTree(CAction parentAction, HashMap<CNode, Object> results)
+    public final Object executeTree(CAction parentAction, HashMap<Long, Object> results)
     {
-        Object[] inputResults = new Object[inputNodes.length];
+        Object[] inputResults = new Object[inputNodePositions.size()];
+
+        CAction action = CAction.ALL_ACTIONS.get(actionName);
 
         int i = 0;
-        for (CNode inputNode : inputNodes)
+        for (long position : inputNodePositions)
         {
-            if (!action.valid) return null;
+            if (!action.active) return null;
 
-            inputResults[i++] = results.computeIfAbsent(inputNode, o -> inputNode.executeTree(parentAction, results));
+            inputResults[i++] = results.computeIfAbsent(position, o -> action.EVENT_NODES.get(eventName).get(position).executeTree(parentAction, results));
         }
 
         return execute(parentAction, inputResults);
@@ -60,6 +70,7 @@ public abstract class CNode extends Component
     protected abstract Object execute(CAction parentAction, Object... inputs);
 
 
+    @SideOnly(Side.CLIENT)
     public GUIScreen getNodeEditGUI()
     {
         return null;
@@ -69,11 +80,16 @@ public abstract class CNode extends Component
     @Override
     public CNode write(ByteBuf buf)
     {
-        buf.writeInt(inputNodes.length);
-        for (CNode inputNode : inputNodes)
+        ByteBufUtils.writeUTF8String(buf, actionName);
+        ByteBufUtils.writeUTF8String(buf, eventName);
+
+        buf.writeInt(x);
+        buf.writeInt(y);
+
+        buf.writeInt(inputNodePositions.size());
+        for (Long position : inputNodePositions)
         {
-            buf.writeInt(inputNode.x);
-            buf.writeInt(inputNode.y);
+            buf.writeLong(position);
         }
 
         return this;
@@ -82,11 +98,14 @@ public abstract class CNode extends Component
     @Override
     public CNode read(ByteBuf buf)
     {
-        inputNodes = new CNode[buf.readInt()];
-        for (int i = 0; i < inputNodes.length; i++)
-        {
-            inputNodes[i] = action.EVENT_NODES.get(event).get(new Pair<>(buf.readInt(), buf.readInt()));
-        }
+        actionName = ByteBufUtils.readUTF8String(buf);
+        eventName = ByteBufUtils.readUTF8String(buf);
+
+        x = buf.readInt();
+        y = buf.readInt();
+
+        inputNodePositions.clear();
+        for (int i = buf.readInt(); i > 0; i--) inputNodePositions.add(buf.readLong());
 
         return this;
     }
@@ -94,8 +113,11 @@ public abstract class CNode extends Component
     @Override
     public CNode save(OutputStream stream)
     {
-        CInt ci = new CInt().set(inputNodes.length).save(stream);
-        for (CNode inputNode : inputNodes) ci.set(inputNode.x).save(stream).set(inputNode.y).save(stream);
+        new CStringUTF8().set(actionName).save(stream).set(eventName).save(stream);
+
+        new CInt().set(x).save(stream).set(y).save(stream).set(inputNodePositions.size()).save(stream);
+        CLong cl = new CLong();
+        for (Long position : inputNodePositions) cl.set(position).save(stream);
 
         return this;
     }
@@ -103,13 +125,18 @@ public abstract class CNode extends Component
     @Override
     public CNode load(InputStream stream)
     {
+        CStringUTF8 cs = new CStringUTF8();
         CInt ci = new CInt();
+        CLong cl = new CLong();
 
-        inputNodes = new CNode[ci.load(stream).value];
-        for (int i = 0; i < inputNodes.length; i++)
-        {
-            inputNodes[i] = action.EVENT_NODES.get(event).get(new Pair<>(ci.load(stream).value, ci.load(stream).value));
-        }
+        actionName = cs.load(stream).value;
+        eventName = cs.load(stream).value;
+
+        x = ci.load(stream).value;
+        y = ci.load(stream).value;
+
+        inputNodePositions.clear();
+        for (int i = ci.load(stream).value; i > 0; i--) inputNodePositions.add(cl.load(stream).value);
 
         return this;
     }

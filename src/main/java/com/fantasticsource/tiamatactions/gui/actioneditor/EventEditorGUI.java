@@ -7,9 +7,6 @@ import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.datastructures.Color;
-import com.fantasticsource.tools.datastructures.Pair;
-
-import java.util.Map;
 
 public class EventEditorGUI extends GUIScreen
 {
@@ -41,10 +38,7 @@ public class EventEditorGUI extends GUIScreen
 
         //Node view
         GUIPanZoomView view = new GUIPanZoomView(this, 1, 1 - navbar.height);
-        for (Map.Entry<Pair<Integer, Integer>, CNode> entry : action.EVENT_NODES.get(event).entrySet())
-        {
-            view.add(new GUINode(this, entry.getKey().getKey(), entry.getKey().getValue(), entry.getValue()));
-        }
+        for (CNode node : action.EVENT_NODES.get(event).values()) view.add(new GUINode(this, (double) node.x / view.absoluteWidth(), node.y / view.absoluteHeight(), node));
 
 
         //GUI Actions

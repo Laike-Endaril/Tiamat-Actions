@@ -3,6 +3,7 @@ package com.fantasticsource.tiamatactions;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.tiamatactions.action.ActionQueue;
+import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.block.BlocksAndItems;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,7 +20,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.util.List;
 
-@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.034v,)")
+@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.034w,)")
 public class TiamatActions
 {
     public static final String MODID = "tiamatactions";
@@ -58,7 +59,7 @@ public class TiamatActions
             List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
             if (players.size() > 0)
             {
-//                CAction.ALL_ACTIONS.get("Test1").queue(players.get(0), "Main");
+                CAction.ALL_ACTIONS.get("Test1").queue(players.get(0), "Main", null);
             }
         }
     }

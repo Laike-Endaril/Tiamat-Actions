@@ -37,11 +37,11 @@ public class ActionQueue
             if (!action.started)
             {
                 action.execute("start");
-                if (action.valid) action.started = true;
+                if (action.active) action.started = true;
             }
 
-            if (action.tickEndpointNodes.size() == 0) action.valid = false;
-            if (action.valid)
+            if (action.tickEndpointNodes.size() == 0) action.active = false;
+            if (action.active)
             {
                 if (queueTicked) return;
 
@@ -49,7 +49,7 @@ public class ActionQueue
                 action.execute("tick");
             }
 
-            if (!action.valid)
+            if (!action.active)
             {
                 if (action.started) action.execute("end");
                 queue.remove(0);

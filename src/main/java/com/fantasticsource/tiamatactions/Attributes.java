@@ -47,9 +47,9 @@ public class Attributes
 
     //Example in case I need to edit attributes' base values for entities at some point
 //    @SubscribeEvent(priority = EventPriority.HIGH)
-//    public static void entityJoin(EntityJoinWorldEvent event)
+//    public static void entityJoin(EntityJoinWorldEvent eventName)
 //    {
-//        Entity entity = event.getEntity();
+//        Entity entity = eventName.getEntity();
 //        if (entity instanceof EntityLivingBase)
 //        {
 //            EntityLivingBase livingBase = (EntityLivingBase) entity;
