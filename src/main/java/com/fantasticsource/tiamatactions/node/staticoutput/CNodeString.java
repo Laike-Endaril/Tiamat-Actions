@@ -65,7 +65,7 @@ public class CNodeString extends CNode
     @Override
     public Object execute(CAction parentAction, Object... inputs)
     {
-        return CAction.ALL_ACTIONS.get(actionName).source;
+        return string;
     }
 
 
