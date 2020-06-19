@@ -71,7 +71,7 @@ public abstract class CNode extends Component
 
 
     @SideOnly(Side.CLIENT)
-    public GUIScreen getNodeEditGUI()
+    public GUIScreen showNodeEditGUI()
     {
         return null;
     }

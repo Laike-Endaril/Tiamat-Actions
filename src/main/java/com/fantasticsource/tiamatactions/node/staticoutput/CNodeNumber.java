@@ -70,7 +70,7 @@ public class CNodeNumber extends CNode
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GUIScreen getNodeEditGUI()
+    public GUIScreen showNodeEditGUI()
     {
         return new NumberNodeGUI(this);
     }

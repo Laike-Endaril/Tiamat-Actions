@@ -11,7 +11,7 @@ public class GUINode extends GUIText
 
     public GUINode(GUIScreen screen, double x, double y, CNode node)
     {
-        super(screen, x, y, node.getDescription(), GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE);
+        super(screen, x, y, node.getDescription(), GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE, 0.5);
         this.node = node;
     }
 
@@ -19,8 +19,7 @@ public class GUINode extends GUIText
     @Override
     public void click()
     {
-        GUIScreen gui = node.getNodeEditGUI();
-        if (gui != null) gui.show();
+        node.showNodeEditGUI().addOnClosedActions(() -> setText(node.getDescription()));
 
         super.click();
     }
