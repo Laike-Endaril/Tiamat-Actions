@@ -38,11 +38,17 @@ public class EventEditorGUI extends GUIScreen
 
         //Node view
         GUIPanZoomView view = new GUIPanZoomView(this, 1, 1 - navbar.height);
-        for (CNode node : action.EVENT_NODES.get(event).values()) view.add(new GUINode(this, (double) node.x / view.absoluteWidth(), node.y / view.absoluteHeight(), node));
+        root.add(view);
+        for (CNode node : action.EVENT_NODES.get(event).values())
+        {
+            GUINode guiNode = new GUINode(this, (double) node.x / view.absolutePxWidth(), (double) node.y / view.absolutePxHeight(), node);
+            view.add(guiNode);
+        }
 
 
         //GUI Actions
         navbar.addRecalcActions(() -> view.height = 1 - navbar.height);
+        recalc();
     }
 
     @Override
