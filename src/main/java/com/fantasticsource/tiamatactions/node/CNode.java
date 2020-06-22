@@ -7,6 +7,7 @@ import com.fantasticsource.tools.component.CLong;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -39,6 +40,8 @@ public abstract class CNode extends Component
         this.y = y;
     }
 
+
+    public abstract ResourceLocation getTexture();
 
     public abstract String getDescription();
 

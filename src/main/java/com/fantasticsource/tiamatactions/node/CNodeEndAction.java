@@ -1,9 +1,14 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import net.minecraft.util.ResourceLocation;
+
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeEndAction extends CNode
 {
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/endAction.png");
+
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
@@ -17,6 +22,12 @@ public class CNodeEndAction extends CNode
         super(actionName, event, x, y);
     }
 
+
+    @Override
+    public ResourceLocation getTexture()
+    {
+        return TEXTURE;
+    }
 
     @Override
     public String getDescription()

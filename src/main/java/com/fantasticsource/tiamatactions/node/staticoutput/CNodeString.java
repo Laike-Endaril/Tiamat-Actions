@@ -10,6 +10,7 @@ import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CStringUTF8;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,8 +18,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+
 public class CNodeString extends CNode
 {
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/string.png");
+
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
@@ -35,6 +40,12 @@ public class CNodeString extends CNode
 
     public String string = "";
 
+
+    @Override
+    public ResourceLocation getTexture()
+    {
+        return TEXTURE;
+    }
 
     @Override
     public String getDescription()

@@ -2,11 +2,16 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.TiamatActions;
 import com.fantasticsource.tiamatactions.action.CAction;
+import net.minecraft.util.ResourceLocation;
 
 import javax.script.ScriptException;
 
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+
 public class CNodeEval extends CNode
 {
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/eval.png");
+
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
@@ -22,6 +27,13 @@ public class CNodeEval extends CNode
 
 
     public String expression = "";
+
+
+    @Override
+    public ResourceLocation getTexture()
+    {
+        return TEXTURE;
+    }
 
     @Override
     public String getDescription()

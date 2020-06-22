@@ -1,11 +1,16 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+
 public class CNodeDebug extends CNode
 {
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/debug.png");
+
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
@@ -19,6 +24,12 @@ public class CNodeDebug extends CNode
         super(actionName, event, x, y);
     }
 
+
+    @Override
+    public ResourceLocation getTexture()
+    {
+        return TEXTURE;
+    }
 
     @Override
     public String getDescription()

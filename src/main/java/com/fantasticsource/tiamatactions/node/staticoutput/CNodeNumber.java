@@ -10,14 +10,19 @@ import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CDouble;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+
 public class CNodeNumber extends CNode
 {
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/number.png");
+
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
@@ -34,6 +39,12 @@ public class CNodeNumber extends CNode
 
     public double number;
 
+
+    @Override
+    public ResourceLocation getTexture()
+    {
+        return TEXTURE;
+    }
 
     @Override
     public String getDescription()
