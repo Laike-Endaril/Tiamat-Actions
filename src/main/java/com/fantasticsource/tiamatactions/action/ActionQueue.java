@@ -90,7 +90,7 @@ public class ActionQueue
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void tick(TickEvent.ServerTickEvent event)
     {
-        if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END || ENTITY_ACTION_QUEUES == null) return;
 
         //entrySet.removeIf() caused very strange behavior.  I'm not sure if this approach actually fixes anything or if it merely hides the issue
         for (Object o : ENTITY_ACTION_QUEUES.entrySet().toArray())

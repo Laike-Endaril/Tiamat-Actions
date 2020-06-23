@@ -6,11 +6,13 @@ import com.fantasticsource.tiamatactions.node.CNode;
 
 public class GUINode extends GUIImage
 {
+    public static final int SIZE = 32;
+
     protected CNode node;
 
     public GUINode(GUIScreen screen, double x, double y, CNode node)
     {
-        super(screen, x, y, 32, 32, node.getTexture());
+        super(screen, x, y, SIZE, SIZE, node.getTexture());
         setTooltip(node.getDescription());
         this.node = node;
     }
