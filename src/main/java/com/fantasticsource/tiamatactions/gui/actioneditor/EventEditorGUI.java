@@ -11,6 +11,11 @@ import com.fantasticsource.tools.datastructures.Color;
 
 public class EventEditorGUI extends GUIScreen
 {
+    protected static final Color[]
+            GREEN = new Color[]{getIdleColor(Color.GREEN), getHoverColor(Color.GREEN), Color.GREEN},
+            WHITE = new Color[]{getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE},
+            RED = new Color[]{getIdleColor(Color.RED), getHoverColor(Color.RED), Color.RED};
+
     protected CAction action;
     protected String event;
 
@@ -47,8 +52,13 @@ public class EventEditorGUI extends GUIScreen
             for (long position : node.inputNodePositions)
             {
                 CNode inputNode = action.EVENT_NODES.get(event).get(position);
-                GUILine guiLine = new GUILine(this, (node.x + GUINode.SIZE) * wConversion, (node.y + GUINode.SIZE) * hConversion, (inputNode.x + GUINode.SIZE) * wConversion, (inputNode.y + GUINode.SIZE) * hConversion, Color.WHITE);
+                double nodeX = (node.x + GUINode.SIZE) * wConversion, nodeY = (node.y + GUINode.SIZE) * hConversion, inputNodeX = (inputNode.x + GUINode.SIZE) * wConversion, inputNodeY = (inputNode.y + GUINode.SIZE) * hConversion;
+
+                GUILine guiLine = new GUILine(this, inputNodeX, inputNodeY, nodeX, nodeY, GREEN[0], GREEN[1], GREEN[2]);
+                GUILine guiLine2 = new GUILine(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, GREEN[0], GREEN[1], GREEN[2], 3);
+
                 view.add(0, guiLine);
+                view.add(0, guiLine2);
             }
             view.add(guiNode);
         }
