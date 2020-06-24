@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public abstract class CNode extends Component
 {
@@ -51,6 +52,31 @@ public abstract class CNode extends Component
     public abstract Class arrayInputType();
 
     public abstract Class outputType();
+
+
+    public final String error()
+    {
+        CAction action = CAction.ALL_ACTIONS.get(actionName);
+        if (action == null) return "No action found with name: " + '"' + actionName + '"';
+
+        LinkedHashMap<Long, CNode> eventNodes = action.EVENT_NODES.get(eventName);
+        if (eventNodes == null) return "No action event found with name: " + '"' + eventName + '"';
+
+        if (inputNodePositions.size() < requiredInputTypes().length) return "Required input count not met; need more inputs";
+
+        Class c1, c2;
+        for (int i = 0; i < requiredInputTypes().length; i++)
+        {
+            CNode inputNode = eventNodes.get(inputNodePositions.get(i));
+            if (inputNode == null) return "Node for input connection " + (i + 1) + " does not exist!";
+
+            c1 = requiredInputTypes()[i];
+            c2 = inputNode.outputType();
+            if (!c1.isAssignableFrom(c2) && !c2.isAssignableFrom(c1)) return "Input " + (i + 1) + " requires a " + c1.getSimpleName() + " but is being passed a " + c2.getSimpleName();
+        }
+
+        return null;
+    }
 
 
     public final Object executeTree(CAction parentAction, HashMap<Long, Object> results)
