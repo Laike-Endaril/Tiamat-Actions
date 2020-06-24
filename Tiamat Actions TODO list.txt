@@ -1,1 +1,7 @@
-Graphics for whether a node is errored (red aura)
+Controls for moving a node (drag)
+Controls for removing a node (delete key while selected)
+Controls for adding a node
+
+Panel for editing a node's inputs / outputs (includes delete button as well)
+
+Improve panning
