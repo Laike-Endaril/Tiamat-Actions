@@ -48,11 +48,11 @@ public class EventEditorGUI extends GUIScreen
         double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
-            GUINode guiNode = new GUINode(this, node.x * wConversion, node.y * hConversion, node);
+            GUINode guiNode = new GUINode(this, (node.x - GUINode.SIZE) * wConversion, (node.y - GUINode.SIZE) * hConversion, node);
             for (long position : node.inputNodePositions)
             {
                 CNode inputNode = action.EVENT_NODES.get(event).get(position);
-                double nodeX = (node.x + GUINode.SIZE) * wConversion, nodeY = (node.y + GUINode.SIZE) * hConversion, inputNodeX = (inputNode.x + GUINode.SIZE) * wConversion, inputNodeY = (inputNode.y + GUINode.SIZE) * hConversion;
+                double nodeX = node.x * wConversion, nodeY = node.y * hConversion, inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
 
                 GUILine guiLine = new GUILine(this, inputNodeX, inputNodeY, nodeX, nodeY, GREEN[0], GREEN[1], GREEN[2]);
                 GUILine guiLine2 = new GUILine(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, GREEN[0], GREEN[1], GREEN[2], 3);
