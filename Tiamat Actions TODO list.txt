@@ -1,4 +1,3 @@
-Fix hit detection for GUINode
 Fix scissor for GUILine
 
 

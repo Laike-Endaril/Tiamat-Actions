@@ -162,7 +162,7 @@ public class GUINode extends GUIImage
     @Override
     public boolean isWithin(double x, double y)
     {
-        return Collision.pointCircle(x * screen.pxWidth, y * screen.pxHeight, absolutePxX() + absolutePxWidth() * 0.5, absolutePxY() + absolutePxHeight() * 0.5, absolutePxWidth() * 0.5);
+        return Collision.pointCircle(x * screen.pxWidth, y * screen.pxHeight, absolutePxX() + absolutePxWidth() * 0.5, absolutePxY() + absolutePxHeight() * 0.5, absolutePxWidth() * 0.5 * ICON_SIZE / FULL_SIZE);
     }
 
     @Override
