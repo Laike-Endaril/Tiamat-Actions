@@ -22,8 +22,8 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 public class GUINode extends GUIImage
 {
     protected static final TrigLookupTable SIDE_STEPPER = TrigLookupTable.getInstance(64);
-    public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1);
-    public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE, ICON_PERCENT = (double) ICON_SIZE / FULL_SIZE;
+    public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1), MIN_DISTANCE_SQUARED = (FULL_SIZE << 2) * (FULL_SIZE << 2);
+    public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE;
     protected static double mouseAnchorX, mouseAnchorY;
     protected static GUINode tempNode = null;
 
@@ -107,7 +107,7 @@ public class GUINode extends GUIImage
                 x = tempNode.x;
                 y = tempNode.y;
 
-                int xx = (int) (x * parent.absolutePxWidth() + absolutePxWidth() * 0.5), yy = (int) (y * parent.absolutePxHeight() + absoluteHeight() * 0.5);
+                int xx = (int) (x * parent.absolutePxWidth() + GUINode.FULL_SIZE), yy = (int) (y * parent.absolutePxHeight() + GUINode.FULL_SIZE);
                 node.setPosition(((EventEditorGUI) screen).action, xx, yy, this);
             }
 
@@ -119,13 +119,14 @@ public class GUINode extends GUIImage
 
     protected boolean wellSpaced()
     {
-        double xx = tempNode.absolutePxX(), yy = tempNode.absolutePxY(), minDistSquared = tempNode.absolutePxWidth() * 2 * tempNode.absolutePxWidth() * 2;
+        int ww = tempNode.parent.absolutePxWidth(), hh = tempNode.parent.absolutePxHeight();
+        double xx = tempNode.x * ww, yy = tempNode.y * hh;
         for (GUIElement element : parent.children)
         {
             if (!(element instanceof GUINode)) continue;
             if (element == this || element == tempNode) continue;
 
-            if (Tools.distanceSquared(element.absolutePxX(), element.absolutePxY(), xx, yy) < minDistSquared)
+            if (Tools.distanceSquared(element.x * ww, element.y * hh, xx, yy) < MIN_DISTANCE_SQUARED)
             {
                 return false;
             }
@@ -161,7 +162,7 @@ public class GUINode extends GUIImage
     @Override
     public boolean isWithin(double x, double y)
     {
-        return Collision.pointCircle(x * screen.pxWidth, y * screen.pxHeight, absolutePxX() + absolutePxWidth() * 0.5, absolutePxY() + absolutePxHeight() * 0.5, absolutePxWidth() * 0.5 * ICON_PERCENT);
+        return Collision.pointCircle(x * screen.pxWidth, y * screen.pxHeight, absolutePxX() + absolutePxWidth() * 0.5, absolutePxY() + absolutePxHeight() * 0.5, absolutePxWidth() * 0.5);
     }
 
     @Override
