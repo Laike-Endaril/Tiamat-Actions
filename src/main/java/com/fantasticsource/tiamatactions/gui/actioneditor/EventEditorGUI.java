@@ -9,6 +9,8 @@ import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.datastructures.Color;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 
 public class EventEditorGUI extends GUIScreen
 {
@@ -48,9 +50,10 @@ public class EventEditorGUI extends GUIScreen
         view = new GUIPanZoomView(this, 1, 1 - navbar.height);
         root.add(view);
         double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
+        int scale = new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor();
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
-            view.add(new GUINode(this, (node.x - GUINode.FULL_SIZE) * wConversion, (node.y - GUINode.FULL_SIZE) * hConversion, node));
+            view.add(new GUINode(this, (node.x - GUINode.FULL_SIZE * 0.5 * scale) * wConversion, (node.y - GUINode.FULL_SIZE * 0.5 * scale) * hConversion, node));
         }
         refreshNodeConnections();
 
@@ -71,10 +74,11 @@ public class EventEditorGUI extends GUIScreen
         double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
+            double nodeX = node.x * wConversion, nodeY = node.y * hConversion;
             for (long position : node.inputNodePositions)
             {
                 CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
-                double nodeX = node.x * wConversion, nodeY = node.y * hConversion, inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
+                double inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
 
                 GUILine guiLine = new GUILine(this, inputNodeX, inputNodeY, nodeX, nodeY, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2]);
                 GUILine guiLine2 = new GUILine(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2], 3);
