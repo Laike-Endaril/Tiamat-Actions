@@ -19,6 +19,8 @@ public class GUINode extends GUIImage
     protected static final TrigLookupTable SIDE_STEPPER = TrigLookupTable.getInstance(64);
     public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1);
     public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE;
+    protected static double mouseAnchorX, mouseAnchorY;
+    protected static GUINode tempNode = null;
 
     protected CNode node;
 
@@ -39,8 +41,12 @@ public class GUINode extends GUIImage
 
     protected void updateTooltip()
     {
-        String error = node.error();
-        setTooltip(error == null ? node.getDescription() : node.getDescription() + " (" + error + ")");
+        if (this == tempNode) setTooltip(null);
+        else
+        {
+            String error = node.error();
+            setTooltip(error == null ? node.getDescription() : node.getDescription() + " (" + error + ")");
+        }
     }
 
 
@@ -53,13 +59,53 @@ public class GUINode extends GUIImage
     }
 
     @Override
+    public boolean mousePressed(int button)
+    {
+        if (button == 0 && isMouseWithin())
+        {
+            mouseAnchorX = (mouseX() - absoluteX()) / absoluteWidth();
+            mouseAnchorY = (mouseY() - absoluteY()) / absoluteHeight();
+            tempNode = new GUINode(screen, x, y, node);
+            parent.add(tempNode);
+        }
+
+        return super.mousePressed(button);
+    }
+
+    @Override
+    public void mouseDrag(int button)
+    {
+        if (button == 0 && active)
+        {
+            tempNode.setAbsoluteX(mouseX() - mouseAnchorX * absoluteWidth());
+            tempNode.setAbsoluteY(mouseY() - mouseAnchorY * absoluteHeight());
+        }
+
+        super.mouseDrag(button);
+    }
+
+    @Override
+    public boolean mouseReleased(int button)
+    {
+        if (button == 0 && active)
+        {
+            tempNode.parent.remove(tempNode);
+            tempNode = null;
+        }
+
+        return super.mouseReleased(button);
+    }
+
+    @Override
     public void draw()
     {
         if (node.error() != null)
         {
             GlStateManager.disableTexture2D();
             GlStateManager.glBegin(GL_TRIANGLE_FAN);
-            GlStateManager.color(1, 0, 0, 1);
+            if (this == tempNode) GlStateManager.color(1, 0, 0, 0.5f);
+            else if (tempNode != null && node == tempNode.node) GlStateManager.color(1, 0, 0, 0.3f);
+            else GlStateManager.color(1, 0, 0, 1);
             double cos, sin;
             double[] array = SIDE_STEPPER.getArray();
             for (int i = 0; i < array.length; i++)
@@ -73,7 +119,9 @@ public class GUINode extends GUIImage
 
 
         GlStateManager.enableTexture2D();
-        GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af());
+        if (this == tempNode) GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af() * 0.5f);
+        else if (tempNode != null && node == tempNode.node) GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af() * 0.3f);
+        else GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af());
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 
