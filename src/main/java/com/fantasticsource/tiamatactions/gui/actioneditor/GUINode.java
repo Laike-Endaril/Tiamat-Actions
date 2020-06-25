@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.input.Keyboard;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
@@ -47,7 +48,7 @@ public class GUINode extends GUIImage
         if (this == tempNode) setTooltip(null);
         else
         {
-            String error = node.error();
+            String error = node.error(((EventEditorGUI) screen).action);
             setTooltip(error == null ? node.getDescription() : node.getDescription() + " (" + error + ")");
         }
     }
@@ -97,7 +98,10 @@ public class GUINode extends GUIImage
     {
         if (button == 0 && active)
         {
-            if (wellSpaced())
+            boolean wellSpaced = wellSpaced();
+            tempNode.parent.remove(tempNode);
+
+            if (wellSpaced)
             {
                 x = tempNode.x;
                 y = tempNode.y;
@@ -106,7 +110,6 @@ public class GUINode extends GUIImage
                 node.setPosition(((EventEditorGUI) screen).action, xx, yy, this);
             }
 
-            tempNode.parent.remove(tempNode);
             tempNode = null;
         }
 
@@ -133,9 +136,32 @@ public class GUINode extends GUIImage
 
 
     @Override
+    public void keyTyped(char typedChar, int keyCode)
+    {
+        if (keyCode == Keyboard.KEY_DELETE && isMouseWithin())
+        {
+            EventEditorGUI gui = (EventEditorGUI) screen;
+
+            for (GUIElement element : parent.children.toArray(new GUIElement[0]))
+            {
+                if (element instanceof GUILine) parent.remove(element);
+            }
+
+
+            parent.remove(this);
+            node.delete(((EventEditorGUI) screen).action);
+
+
+            gui.refreshNodeConnections();
+        }
+
+        super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
     public void draw()
     {
-        if (node.error() != null)
+        if (node.error(((EventEditorGUI) screen).action) != null)
         {
             GlStateManager.disableTexture2D();
             GlStateManager.glBegin(GL_TRIANGLE_FAN);

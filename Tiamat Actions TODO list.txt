@@ -1,7 +1,6 @@
-Controls for removing a node (delete key while over node)
 Controls for adding a node (left click on empty space)
 
-Panel for editing a node's inputs / outputs (includes delete button as well)
+Panel for editing / reordering a node's inputs / outputs
 
 
 

@@ -1,7 +1,6 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
-import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.gui.actioneditor.EventEditorGUI;
 import com.fantasticsource.tiamatactions.gui.actioneditor.GUINode;
@@ -12,7 +11,6 @@ import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -72,6 +70,29 @@ public abstract class CNode extends Component
         inputNode.outputNodePositions.remove(Tools.getLong(x, y));
     }
 
+
+    //Passing an action here because it needs to be usable from client, which doesn't have the action database
+    public final void delete(CAction action)
+    {
+        long pos = Tools.getLong(this.x, this.y);
+
+        for (Long position : inputNodePositions)
+        {
+            CNode other = action.EVENT_NODES.get(eventName).get(position);
+            other.outputNodePositions.remove(pos);
+        }
+
+        for (Long position : outputNodePositions)
+        {
+            CNode other = action.EVENT_NODES.get(eventName).get(position);
+            other.inputNodePositions.remove(pos);
+        }
+
+        action.EVENT_NODES.get(eventName).remove(pos);
+        action.EVENT_ENDPOINT_NODES.get(eventName).remove(this);
+    }
+
+
     //Passing an action here because it needs to be usable from client, which doesn't have the action database
     public final void setPosition(CAction action, int x, int y, GUINode nodeElement)
     {
@@ -79,9 +100,6 @@ public abstract class CNode extends Component
 
         this.x = x;
         this.y = y;
-
-
-        nodeElement.parent.children.removeIf(o -> o instanceof GUILine);
 
 
         for (Long position : inputNodePositions)
@@ -101,29 +119,17 @@ public abstract class CNode extends Component
         }
 
 
-        double wConversion = 1d / nodeElement.parent.absolutePxWidth(), hConversion = 1d / nodeElement.parent.absolutePxHeight();
-        for (CNode node : action.EVENT_NODES.get(eventName).values())
-        {
-            for (long position : node.inputNodePositions)
-            {
-                CNode inputNode = action.EVENT_NODES.get(eventName).get(position);
-                double nodeX = node.x * wConversion, nodeY = node.y * hConversion, inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
+        action.EVENT_NODES.get(eventName).remove(oldPos);
+        action.EVENT_NODES.get(eventName).put(newPos, this);
 
-                GUILine guiLine = new GUILine(nodeElement.screen, inputNodeX, inputNodeY, nodeX, nodeY, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2]);
-                GUILine guiLine2 = new GUILine(nodeElement.screen, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2], 3);
 
-                nodeElement.parent.add(0, guiLine);
-                nodeElement.parent.add(0, guiLine2);
-            }
-        }
+        ((EventEditorGUI) nodeElement.screen).refreshNodeConnections();
     }
 
 
-    public final String error()
+    //Passing an action here because it needs to be usable from client, which doesn't have the action database
+    public final String error(CAction action)
     {
-        CAction action = CAction.ALL_ACTIONS.get(actionName);
-        if (action == null) return "No action found with name: " + '"' + actionName + '"';
-
         LinkedHashMap<Long, CNode> eventNodes = action.EVENT_NODES.get(eventName);
         if (eventNodes == null) return "No action event found with name: " + '"' + eventName + '"';
 

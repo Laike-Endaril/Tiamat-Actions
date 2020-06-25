@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIGradient;
 import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
@@ -18,6 +19,7 @@ public class EventEditorGUI extends GUIScreen
 
     protected CAction action;
     protected String event;
+    protected GUIPanZoomView view;
 
     public EventEditorGUI(CAction action, String event)
     {
@@ -43,31 +45,46 @@ public class EventEditorGUI extends GUIScreen
 
 
         //Node view
-        GUIPanZoomView view = new GUIPanZoomView(this, 1, 1 - navbar.height);
+        view = new GUIPanZoomView(this, 1, 1 - navbar.height);
         root.add(view);
         double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
-            GUINode guiNode = new GUINode(this, (node.x - GUINode.FULL_SIZE) * wConversion, (node.y - GUINode.FULL_SIZE) * hConversion, node);
-            for (long position : node.inputNodePositions)
-            {
-                CNode inputNode = action.EVENT_NODES.get(event).get(position);
-                double nodeX = node.x * wConversion, nodeY = node.y * hConversion, inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
-
-                GUILine guiLine = new GUILine(this, inputNodeX, inputNodeY, nodeX, nodeY, GREEN[0], GREEN[1], GREEN[2]);
-                GUILine guiLine2 = new GUILine(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, GREEN[0], GREEN[1], GREEN[2], 3);
-
-                view.add(0, guiLine);
-                view.add(0, guiLine2);
-            }
-            view.add(guiNode);
+            view.add(new GUINode(this, (node.x - GUINode.FULL_SIZE) * wConversion, (node.y - GUINode.FULL_SIZE) * hConversion, node));
         }
+        refreshNodeConnections();
 
 
         //GUI Actions
         navbar.addRecalcActions(() -> view.height = 1 - navbar.height);
         recalc();
     }
+
+
+    public void refreshNodeConnections()
+    {
+        for (GUIElement element : view.children.toArray(new GUIElement[0]))
+        {
+            if (element instanceof GUILine) view.remove(element);
+        }
+
+        double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
+        for (CNode node : action.EVENT_NODES.get(event).values())
+        {
+            for (long position : node.inputNodePositions)
+            {
+                CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
+                double nodeX = node.x * wConversion, nodeY = node.y * hConversion, inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
+
+                GUILine guiLine = new GUILine(this, inputNodeX, inputNodeY, nodeX, nodeY, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2]);
+                GUILine guiLine2 = new GUILine(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2], 3);
+
+                view.add(0, guiLine);
+                view.add(0, guiLine2);
+            }
+        }
+    }
+
 
     @Override
     public String title()
