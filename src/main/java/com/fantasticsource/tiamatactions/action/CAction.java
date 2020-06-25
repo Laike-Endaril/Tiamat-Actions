@@ -9,7 +9,6 @@ import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.CLong;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
-import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -35,18 +34,19 @@ public class CAction extends Component
             CAction action = new CAction("Test1");
             String event = "start";
 
-            CNodeString stringNode = new CNodeString(action.name, event, 100, 0);
+            CNodeString stringNode = new CNodeString(action.name, event, 200, 0);
             action.EVENT_NODES.get(event).put(Tools.getLong(stringNode.x, stringNode.y), stringNode);
             stringNode.string = "/time set @1";
 
-            CNodeString stringNode2 = new CNodeString(action.name, event, 0, 100);
+            CNodeString stringNode2 = new CNodeString(action.name, event, 0, 200);
             action.EVENT_NODES.get(event).put(Tools.getLong(stringNode2.x, stringNode2.y), stringNode2);
             stringNode2.string = "1000";
 
-            CNodeCommand commandNode = new CNodeCommand(action.name, event, 100, 100);
+            CNodeCommand commandNode = new CNodeCommand(action.name, event, 200, 200);
             action.EVENT_NODES.get(event).put(Tools.getLong(commandNode.x, commandNode.y), commandNode);
-//            commandNode.inputNodePositions.add(Tools.getLong(stringNode.x, stringNode.y));
-//            commandNode.inputNodePositions.add(Tools.getLong(stringNode2.x, stringNode2.y));
+
+            commandNode.addInput(stringNode);
+            commandNode.addInput(stringNode2);
 
             action.startEndpointNodes.add(commandNode);
 

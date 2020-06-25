@@ -11,7 +11,7 @@ import com.fantasticsource.tools.datastructures.Color;
 
 public class EventEditorGUI extends GUIScreen
 {
-    protected static final Color[]
+    public static final Color[]
             GREEN = new Color[]{getIdleColor(Color.GREEN), getHoverColor(Color.GREEN), Color.GREEN},
             WHITE = new Color[]{getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE},
             RED = new Color[]{getIdleColor(Color.RED), getHoverColor(Color.RED), Color.RED};

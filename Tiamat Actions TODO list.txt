@@ -1,7 +1,8 @@
-Controls for moving a node (drag)
-Controls for removing a node (delete key while selected)
-Controls for adding a node
+Controls for removing a node (delete key while over node)
+Controls for adding a node (left click on empty space)
 
 Panel for editing a node's inputs / outputs (includes delete button as well)
 
-Improve panning
+
+
+Improve panning (drag middle click)

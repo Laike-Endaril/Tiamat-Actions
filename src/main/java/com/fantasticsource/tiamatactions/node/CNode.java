@@ -1,13 +1,18 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.gui.actioneditor.EventEditorGUI;
+import com.fantasticsource.tiamatactions.gui.actioneditor.GUINode;
+import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.CLong;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,6 +29,7 @@ public abstract class CNode extends Component
     public int x, y;
 
     public ArrayList<Long> inputNodePositions = new ArrayList<>();
+    public ArrayList<Long> outputNodePositions = new ArrayList<>();
 
 
     /**
@@ -52,6 +58,65 @@ public abstract class CNode extends Component
     public abstract Class arrayInputType();
 
     public abstract Class outputType();
+
+
+    public final void addInput(CNode inputNode)
+    {
+        inputNodePositions.add(Tools.getLong(inputNode.x, inputNode.y));
+        inputNode.outputNodePositions.add(Tools.getLong(x, y));
+    }
+
+    public final void removeInput(CNode inputNode)
+    {
+        inputNodePositions.remove(Tools.getLong(inputNode.x, inputNode.y));
+        inputNode.outputNodePositions.remove(Tools.getLong(x, y));
+    }
+
+    //Passing an action here because it needs to be usable from client, which doesn't have the action database
+    public final void setPosition(CAction action, int x, int y, GUINode nodeElement)
+    {
+        long oldPos = Tools.getLong(this.x, this.y), newPos = Tools.getLong(x, y);
+
+        this.x = x;
+        this.y = y;
+
+
+        nodeElement.parent.children.removeIf(o -> o instanceof GUILine);
+
+
+        for (Long position : inputNodePositions)
+        {
+            CNode other = action.EVENT_NODES.get(eventName).get(position);
+            int index = other.outputNodePositions.indexOf(oldPos);
+            other.outputNodePositions.remove(oldPos);
+            other.outputNodePositions.add(index, newPos);
+        }
+
+        for (Long position : outputNodePositions)
+        {
+            CNode other = action.EVENT_NODES.get(eventName).get(position);
+            int index = other.inputNodePositions.indexOf(oldPos);
+            other.inputNodePositions.remove(oldPos);
+            other.inputNodePositions.add(index, newPos);
+        }
+
+
+        double wConversion = 1d / nodeElement.parent.absolutePxWidth(), hConversion = 1d / nodeElement.parent.absolutePxHeight();
+        for (CNode node : action.EVENT_NODES.get(eventName).values())
+        {
+            for (long position : node.inputNodePositions)
+            {
+                CNode inputNode = action.EVENT_NODES.get(eventName).get(position);
+                double nodeX = node.x * wConversion, nodeY = node.y * hConversion, inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
+
+                GUILine guiLine = new GUILine(nodeElement.screen, inputNodeX, inputNodeY, nodeX, nodeY, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2]);
+                GUILine guiLine2 = new GUILine(nodeElement.screen, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2], 3);
+
+                nodeElement.parent.add(0, guiLine);
+                nodeElement.parent.add(0, guiLine2);
+            }
+        }
+    }
 
 
     public final String error()
@@ -121,6 +186,12 @@ public abstract class CNode extends Component
             buf.writeLong(position);
         }
 
+        buf.writeInt(outputNodePositions.size());
+        for (Long position : outputNodePositions)
+        {
+            buf.writeLong(position);
+        }
+
         return this;
     }
 
@@ -136,6 +207,9 @@ public abstract class CNode extends Component
         inputNodePositions.clear();
         for (int i = buf.readInt(); i > 0; i--) inputNodePositions.add(buf.readLong());
 
+        outputNodePositions.clear();
+        for (int i = buf.readInt(); i > 0; i--) outputNodePositions.add(buf.readLong());
+
         return this;
     }
 
@@ -144,9 +218,12 @@ public abstract class CNode extends Component
     {
         new CStringUTF8().set(actionName).save(stream).set(eventName).save(stream);
 
-        new CInt().set(x).save(stream).set(y).save(stream).set(inputNodePositions.size()).save(stream);
+        CInt ci = new CInt().set(x).save(stream).set(y).save(stream).set(inputNodePositions.size()).save(stream);
         CLong cl = new CLong();
         for (Long position : inputNodePositions) cl.set(position).save(stream);
+
+        ci.set(outputNodePositions.size()).save(stream);
+        for (Long position : outputNodePositions) cl.set(position).save(stream);
 
         return this;
     }
@@ -166,6 +243,9 @@ public abstract class CNode extends Component
 
         inputNodePositions.clear();
         for (int i = ci.load(stream).value; i > 0; i--) inputNodePositions.add(cl.load(stream).value);
+
+        outputNodePositions.clear();
+        for (int i = ci.load(stream).value; i > 0; i--) outputNodePositions.add(cl.load(stream).value);
 
         return this;
     }

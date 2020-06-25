@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
+import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.textured.GUIImage;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Tools;
@@ -55,7 +56,8 @@ public class GUINode extends GUIImage
     @Override
     public void click()
     {
-        node.showNodeEditGUI().addOnClosedActions(this::updateTooltip);
+        GUIScreen gui = node.showNodeEditGUI();
+        if (gui != null) gui.addOnClosedActions(this::updateTooltip);
 
         super.click();
     }
@@ -97,7 +99,11 @@ public class GUINode extends GUIImage
         {
             if (wellSpaced())
             {
-                //TODO set positions
+                x = tempNode.x;
+                y = tempNode.y;
+
+                int xx = (int) (x * parent.absolutePxWidth() + GUINode.FULL_SIZE), yy = (int) (y * parent.absolutePxHeight() + GUINode.FULL_SIZE);
+                node.setPosition(((EventEditorGUI) screen).action, xx, yy, this);
             }
 
             tempNode.parent.remove(tempNode);
