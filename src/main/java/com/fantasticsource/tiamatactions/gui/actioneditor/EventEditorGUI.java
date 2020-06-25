@@ -78,6 +78,7 @@ public class EventEditorGUI extends GUIScreen
 
                 GUILine guiLine = new GUILine(this, inputNodeX, inputNodeY, nodeX, nodeY, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2]);
                 GUILine guiLine2 = new GUILine(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2], 3);
+                guiLine.linkMouseActivity(guiLine2);
 
                 view.add(0, guiLine);
                 view.add(0, guiLine2);

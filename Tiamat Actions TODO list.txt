@@ -1,4 +1,3 @@
-Link mouse activity of short lines to long lines
 Make GUIConnector extending GUILine and change isWithin() to exclude areas behind nodes
 
 
