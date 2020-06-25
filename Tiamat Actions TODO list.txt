@@ -1,3 +1,8 @@
+Fix hit detection for GUINode
+Fix scissor for GUILine
+
+
+
 Controls for adding a node (left click on empty space)
 
 Panel for editing / reordering a node's inputs / outputs

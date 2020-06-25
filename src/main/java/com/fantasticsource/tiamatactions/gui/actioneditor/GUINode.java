@@ -5,6 +5,7 @@ import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.textured.GUIImage;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tools.Collision;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.TrigLookupTable;
 import com.fantasticsource.tools.datastructures.Color;
@@ -156,6 +157,12 @@ public class GUINode extends GUIImage
         }
 
         super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
+    public boolean isWithin(double x, double y)
+    {
+        return Collision.pointCircle(x * screen.pxWidth, y * screen.pxHeight, absolutePxX() + absolutePxWidth() * 0.5, absolutePxY() + absolutePxHeight() * 0.5, absolutePxWidth() * 0.5);
     }
 
     @Override
