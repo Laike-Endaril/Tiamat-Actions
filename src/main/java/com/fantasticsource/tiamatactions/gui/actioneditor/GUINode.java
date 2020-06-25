@@ -1,10 +1,12 @@
 package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.textured.GUIImage;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.TrigLookupTable;
+import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,7 +19,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 public class GUINode extends GUIImage
 {
     protected static final TrigLookupTable SIDE_STEPPER = TrigLookupTable.getInstance(64);
-    public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1);
+    public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1), MIN_DISTANCE_SQUARED = (FULL_SIZE << 2) * (FULL_SIZE << 2);
     public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE;
     protected static double mouseAnchorX, mouseAnchorY;
     protected static GUINode tempNode = null;
@@ -72,6 +74,7 @@ public class GUINode extends GUIImage
         return super.mousePressed(button);
     }
 
+
     @Override
     public void mouseDrag(int button)
     {
@@ -79,6 +82,9 @@ public class GUINode extends GUIImage
         {
             tempNode.setAbsoluteX(mouseX() - mouseAnchorX * absoluteWidth());
             tempNode.setAbsoluteY(mouseY() - mouseAnchorY * absoluteHeight());
+
+            Color color = wellSpaced() ? Color.WHITE : Color.RED;
+            if (tempNode.color != color) tempNode.setColor(color);
         }
 
         super.mouseDrag(button);
@@ -89,12 +95,36 @@ public class GUINode extends GUIImage
     {
         if (button == 0 && active)
         {
+            if (wellSpaced())
+            {
+                //TODO set positions
+            }
+
             tempNode.parent.remove(tempNode);
             tempNode = null;
         }
 
         return super.mouseReleased(button);
     }
+
+    protected boolean wellSpaced()
+    {
+        int ww = tempNode.parent.absolutePxWidth(), hh = tempNode.parent.absolutePxHeight();
+        double xx = tempNode.x * ww, yy = tempNode.y * hh;
+        for (GUIElement element : parent.children)
+        {
+            if (!(element instanceof GUINode)) continue;
+            if (element == this || element == tempNode) continue;
+
+            if (Tools.distanceSquared(element.x * ww, element.y * hh, xx, yy) < MIN_DISTANCE_SQUARED)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     @Override
     public void draw()
