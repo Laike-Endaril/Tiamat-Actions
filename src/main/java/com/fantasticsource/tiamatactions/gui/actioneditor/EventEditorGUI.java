@@ -3,7 +3,6 @@ package com.fantasticsource.tiamatactions.gui.actioneditor;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIGradient;
-import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.tiamatactions.action.CAction;
@@ -65,7 +64,7 @@ public class EventEditorGUI extends GUIScreen
     {
         for (GUIElement element : view.children.toArray(new GUIElement[0]))
         {
-            if (element instanceof GUILine) view.remove(element);
+            if (element instanceof GUIConnector) view.remove(element);
         }
 
         double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
@@ -76,12 +75,13 @@ public class EventEditorGUI extends GUIScreen
                 CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
                 double nodeX = node.x * wConversion, nodeY = node.y * hConversion, inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
 
-                GUILine guiLine = new GUILine(this, inputNodeX, inputNodeY, nodeX, nodeY, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2]);
-                GUILine guiLine2 = new GUILine(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2], 3);
-                guiLine.linkMouseActivity(guiLine2);
+                GUIConnector connector = new GUIConnector(this, inputNodeX, inputNodeY, nodeX, nodeY, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2]);
+                GUIConnector connector2 = new GUIConnector(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2], 3);
+                connector.linkMouseActivity(connector2);
+                connector2.linkMouseActivity(connector);
 
-                view.add(0, guiLine);
-                view.add(0, guiLine2);
+                view.add(0, connector);
+                view.add(0, connector2);
             }
         }
     }

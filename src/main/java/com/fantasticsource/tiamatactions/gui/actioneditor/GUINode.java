@@ -2,7 +2,6 @@ package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
-import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.textured.GUIImage;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Collision;
@@ -145,7 +144,7 @@ public class GUINode extends GUIImage
 
             for (GUIElement element : parent.children.toArray(new GUIElement[0]))
             {
-                if (element instanceof GUILine) parent.remove(element);
+                if (element instanceof GUIConnector) parent.remove(element);
             }
 
 
