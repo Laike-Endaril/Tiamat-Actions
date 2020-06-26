@@ -45,8 +45,8 @@ public class CAction extends Component
             CNodeCommand commandNode = new CNodeCommand(action.name, event, 200, 200);
             action.EVENT_NODES.get(event).put(Tools.getLong(commandNode.x, commandNode.y), commandNode);
 
-            commandNode.addInput(stringNode);
-            commandNode.addInput(stringNode2);
+            commandNode.addInput(action, stringNode);
+            commandNode.addInput(action, stringNode2);
 
             action.startEndpointNodes.add(commandNode);
 

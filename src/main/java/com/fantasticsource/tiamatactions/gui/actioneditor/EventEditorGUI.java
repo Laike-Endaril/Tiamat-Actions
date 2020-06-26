@@ -10,11 +10,6 @@ import com.fantasticsource.tools.datastructures.Color;
 
 public class EventEditorGUI extends GUIScreen
 {
-    public static final Color[]
-            GREEN = new Color[]{getIdleColor(Color.GREEN), getHoverColor(Color.GREEN), Color.GREEN},
-            WHITE = new Color[]{getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE},
-            RED = new Color[]{getIdleColor(Color.RED), getHoverColor(Color.RED), Color.RED};
-
     protected CAction action;
     protected String event;
     protected GUINodeView view;
@@ -66,16 +61,14 @@ public class EventEditorGUI extends GUIScreen
             if (element instanceof GUIConnector) view.remove(element);
         }
 
-        double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
             for (long position : node.inputNodePositions)
             {
                 CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
-                double nodeX = node.x * wConversion, nodeY = node.y * hConversion, inputNodeX = inputNode.x * wConversion, inputNodeY = inputNode.y * hConversion;
 
-                GUIConnector connector = new GUIConnector(this, inputNodeX, inputNodeY, nodeX, nodeY, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2]);
-                GUIConnector connector2 = new GUIConnector(this, inputNodeX, inputNodeY, (inputNodeX + nodeX) * 0.5, (inputNodeY + nodeY) * 0.5, EventEditorGUI.GREEN[0], EventEditorGUI.GREEN[1], EventEditorGUI.GREEN[2], 3);
+                GUIConnector connector = new GUIConnector(this, view, inputNode, node, false);
+                GUIConnector connector2 = new GUIConnector(this, view, inputNode, node, true);
                 connector.linkMouseActivity(connector2);
                 connector2.linkMouseActivity(connector);
 

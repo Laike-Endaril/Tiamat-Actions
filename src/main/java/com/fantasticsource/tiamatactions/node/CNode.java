@@ -58,16 +58,20 @@ public abstract class CNode extends Component
     public abstract Class outputType();
 
 
-    public final void addInput(CNode inputNode)
+    //Passing an action here because it needs to be usable from client, which doesn't have the action database
+    public final void addInput(CAction action, CNode inputNode)
     {
         inputNodePositions.add(Tools.getLong(inputNode.x, inputNode.y));
         inputNode.outputNodePositions.add(Tools.getLong(x, y));
+        action.EVENT_ENDPOINT_NODES.get(eventName).remove(inputNode);
     }
 
-    public final void removeInput(CNode inputNode)
+    //Passing an action here because it needs to be usable from client, which doesn't have the action database
+    public final void removeInput(CAction action, CNode inputNode)
     {
         inputNodePositions.remove(Tools.getLong(inputNode.x, inputNode.y));
         inputNode.outputNodePositions.remove(Tools.getLong(x, y));
+        if (inputNode.outputNodePositions.size() == 0) action.EVENT_ENDPOINT_NODES.get(eventName).add(inputNode);
     }
 
 

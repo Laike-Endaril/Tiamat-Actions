@@ -1,6 +1,6 @@
-Panel for editing / reordering a node's inputs / outputs
-Add / remove nodes from endpoints as appropriate
+Addition of node inputs via CNode.addInput()
+Reordering of node inputs
 
 
 
-Improve panning (drag middle click)
+Improve panning (drag middle click?)

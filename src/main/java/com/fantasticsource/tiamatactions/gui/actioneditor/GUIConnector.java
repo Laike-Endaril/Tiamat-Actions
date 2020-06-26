@@ -3,28 +3,41 @@ package com.fantasticsource.tiamatactions.gui.actioneditor;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUILine;
+import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.datastructures.Color;
+import org.lwjgl.input.Keyboard;
 
 public class GUIConnector extends GUILine
 {
-    public GUIConnector(GUIScreen screen, double x1, double y1, double x2, double y2, Color color)
+    public static final Color[]
+            GREEN = new Color[]{GUIScreen.getIdleColor(Color.GREEN), GUIScreen.getHoverColor(Color.GREEN), Color.GREEN},
+            WHITE = new Color[]{GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE},
+            RED = new Color[]{GUIScreen.getIdleColor(Color.RED), GUIScreen.getHoverColor(Color.RED), Color.RED};
+
+    protected boolean halfPart;
+    protected CNode from, to;
+
+    public GUIConnector(GUIScreen screen, GUINodeView view, CNode from, CNode to, boolean halfPart)
     {
-        super(screen, x1, y1, x2, y2, color);
+        super(screen, (double) from.x / view.absolutePxWidth(), (double) from.y / view.absolutePxHeight(), halfPart ? (from.x + to.x) * 0.5 / view.absolutePxWidth() : (double) to.x / view.absolutePxWidth(), halfPart ? (from.y + to.y) * 0.5 / view.absolutePxHeight() : (double) to.y / view.absolutePxHeight(), GREEN[0], GREEN[1], GREEN[2], halfPart ? 3 : 1);
+
+        this.halfPart = halfPart;
+        this.from = from;
+        this.to = to;
     }
 
-    public GUIConnector(GUIScreen screen, double x1, double y1, double x2, double y2, Color color, float thickness)
-    {
-        super(screen, x1, y1, x2, y2, color, thickness);
-    }
 
-    public GUIConnector(GUIScreen screen, double x1, double y1, double x2, double y2, Color color, Color hoverColor, Color activeColor)
+    @Override
+    public void keyTyped(char typedChar, int keyCode)
     {
-        super(screen, x1, y1, x2, y2, color, hoverColor, activeColor);
-    }
+        if (!halfPart && keyCode == Keyboard.KEY_DELETE && isMouseWithin())
+        {
+            EventEditorGUI gui = (EventEditorGUI) screen;
+            to.removeInput(gui.action, from);
+            gui.refreshNodeConnections();
+        }
 
-    public GUIConnector(GUIScreen screen, double x1, double y1, double x2, double y2, Color color, Color hoverColor, Color activeColor, float thickness)
-    {
-        super(screen, x1, y1, x2, y2, color, hoverColor, activeColor, thickness);
+        super.keyTyped(typedChar, keyCode);
     }
 
 
