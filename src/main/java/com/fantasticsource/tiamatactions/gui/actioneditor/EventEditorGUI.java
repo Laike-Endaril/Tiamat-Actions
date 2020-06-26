@@ -4,7 +4,6 @@ import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIGradient;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
-import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.datastructures.Color;
@@ -18,7 +17,7 @@ public class EventEditorGUI extends GUIScreen
 
     protected CAction action;
     protected String event;
-    protected GUIPanZoomView view;
+    protected GUINodeView view;
 
     public EventEditorGUI(CAction action, String event)
     {
@@ -44,7 +43,7 @@ public class EventEditorGUI extends GUIScreen
 
 
         //Node view
-        view = new GUIPanZoomView(this, 1, 1 - navbar.height);
+        view = new GUINodeView(this, 1, 1 - navbar.height);
         root.add(view);
         double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
         for (CNode node : action.EVENT_NODES.get(event).values())

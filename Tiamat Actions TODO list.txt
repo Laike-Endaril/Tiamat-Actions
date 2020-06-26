@@ -1,6 +1,15 @@
+Fix vertical positioning of new nodes; it's off due to the navbar for some reason, even though that should already be accounted for
+
 Controls for adding a node (left click on empty space)
 
+
+
+Add / remove nodes from endpoints as appropriate when deleting nodes!
+
+
+
 Panel for editing / reordering a node's inputs / outputs
+Add / remove nodes from endpoints as appropriate
 
 
 
