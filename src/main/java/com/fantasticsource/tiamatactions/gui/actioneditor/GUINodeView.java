@@ -6,7 +6,9 @@ import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tiamatactions.node.*;
+import com.fantasticsource.tiamatactions.node.staticoutput.CNodeNumber;
+import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
 import com.fantasticsource.tools.Tools;
 
@@ -40,13 +42,12 @@ public class GUINodeView extends GUIPanZoomView
             int xx = (int) (viewPxX() + (mouseX() - absoluteX()) / absoluteWidth() * viewPxW()), yy = (int) (viewPxY() + (mouseY() - absoluteY()) / absoluteHeight() * viewPxH());
             if (!wellSpaced(xx - GUINode.FULL_SIZE, yy - GUINode.FULL_SIZE))
             {
-                System.out.println("Test");
-                //TODO
+                //TODO show error?
             }
             else
             {
                 GUIText textElement = new GUIText(screen, "String");
-                new TextSelectionGUI(textElement, "Select Node Type...", "String", "Number", "Source Entity", "", "Command", "Debug", "End Action", "Evaluate", "Get Action Variable", "Set Action Variable", "Run Sub-Action").addOnClosedActions(() ->
+                new TextSelectionGUI(textElement, "Select Node Type...", "Output String", "Output Number", "Output Source Entity", "", "Run Command", "Show Debug Message", "End Action", "Evaluate", "Get Action Variable", "Set Action Variable", "Run Sub-Action").addOnClosedActions(() ->
                 {
                     EventEditorGUI gui = (EventEditorGUI) screen;
                     CAction action = gui.action;
@@ -54,8 +55,44 @@ public class GUINodeView extends GUIPanZoomView
 
                     switch (textElement.getText())
                     {
-                        case "String":
+                        case "Output String":
                             node = new CNodeString(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "Output Number":
+                            node = new CNodeNumber(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "Output Source Entity":
+                            node = new CNodeSourceEntity(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "Run Command":
+                            node = new CNodeCommand(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "Show Debug Message":
+                            node = new CNodeDebug(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "End Action":
+                            node = new CNodeEndAction(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "Evaluate":
+                            node = new CNodeEval(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "Get Action Variable":
+                            node = new CNodeGetActionVar(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "Set Action Variable":
+                            node = new CNodeSetActionVar(action.name, gui.event, xx, yy);
+                            break;
+
+                        case "Run Sub-Action":
+                            node = new CNodeSubAction(action.name, gui.event, xx, yy);
                             break;
                     }
 
