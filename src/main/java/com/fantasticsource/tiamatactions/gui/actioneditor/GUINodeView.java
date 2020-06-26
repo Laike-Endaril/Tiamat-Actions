@@ -46,7 +46,7 @@ public class GUINodeView extends GUIPanZoomView
             }
             else
             {
-                GUIText textElement = new GUIText(screen, "String");
+                GUIText textElement = new GUIText(screen, "");
                 new TextSelectionGUI(textElement, "Select Node Type...", "Output String", "Output Number", "Output Source Entity", "", "Run Command", "Show Debug Message", "End Action", "Evaluate", "Get Action Variable", "Set Action Variable", "Run Sub-Action").addOnClosedActions(() ->
                 {
                     EventEditorGUI gui = (EventEditorGUI) screen;
