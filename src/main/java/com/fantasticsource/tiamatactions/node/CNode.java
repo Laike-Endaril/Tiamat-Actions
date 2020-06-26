@@ -76,10 +76,15 @@ public abstract class CNode extends Component
     {
         long pos = Tools.getLong(this.x, this.y);
 
+        action.EVENT_NODES.get(eventName).remove(pos);
+        ArrayList<CNode> endPoints = action.EVENT_ENDPOINT_NODES.get(eventName);
+        endPoints.remove(this);
+
         for (Long position : inputNodePositions)
         {
             CNode other = action.EVENT_NODES.get(eventName).get(position);
             other.outputNodePositions.remove(pos);
+            if (other.outputNodePositions.size() == 0) endPoints.add(other);
         }
 
         for (Long position : outputNodePositions)
@@ -87,9 +92,6 @@ public abstract class CNode extends Component
             CNode other = action.EVENT_NODES.get(eventName).get(position);
             other.inputNodePositions.remove(pos);
         }
-
-        action.EVENT_NODES.get(eventName).remove(pos);
-        action.EVENT_ENDPOINT_NODES.get(eventName).remove(this);
     }
 
 

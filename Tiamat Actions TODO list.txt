@@ -1,7 +1,3 @@
-Add / remove nodes from endpoints as appropriate when deleting nodes!
-
-
-
 Panel for editing / reordering a node's inputs / outputs
 Add / remove nodes from endpoints as appropriate
 
