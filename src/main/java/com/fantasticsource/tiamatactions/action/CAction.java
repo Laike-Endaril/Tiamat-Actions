@@ -40,7 +40,7 @@ public class CAction extends Component
             CNodeCommand commandNode = new CNodeCommand(action.name, event, 200, 200);
             action.EVENT_NODES.get(event).put(Tools.getLong(commandNode.y, commandNode.x), commandNode);
 
-            commandNode.addInput(action, stringNode);
+            commandNode.tryAddInput(action, stringNode);
 
             action.startEndpointNodes.add(commandNode, Tools.getLong(commandNode.y, commandNode.x));
 
@@ -52,7 +52,7 @@ public class CAction extends Component
             commandNode = new CNodeCommand(action.name, event, 200, 0);
             action.EVENT_NODES.get(event).put(Tools.getLong(commandNode.y, commandNode.x), commandNode);
 
-            commandNode.addInput(action, stringNode);
+            commandNode.tryAddInput(action, stringNode);
 
             action.startEndpointNodes.add(commandNode, Tools.getLong(commandNode.y, commandNode.x));
         }

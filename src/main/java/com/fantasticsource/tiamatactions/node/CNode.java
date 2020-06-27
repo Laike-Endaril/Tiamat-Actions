@@ -60,11 +60,19 @@ public abstract class CNode extends Component
 
 
     //Passing an action here because it needs to be usable from client, which doesn't have the action database
-    public final void addInput(CAction action, CNode inputNode)
+    public final boolean tryAddInput(CAction action, CNode inputNode)
     {
         inputNodePositions.add(Tools.getLong(inputNode.y, inputNode.x));
         inputNode.outputNodePositions.add(Tools.getLong(y, x));
         action.EVENT_ENDPOINT_NODES.get(eventName).removeAll(inputNode);
+
+        if (!action.inputLoopCheck(eventName))
+        {
+            removeInput(action, inputNode);
+            return false;
+        }
+
+        return true;
     }
 
     //Passing an action here because it needs to be usable from client, which doesn't have the action database

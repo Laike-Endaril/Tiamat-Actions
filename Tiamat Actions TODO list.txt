@@ -1,5 +1,7 @@
 Addition of node inputs via CNode.addInput()
-Be sure not to allow loops (check via CAction.inputLoopCheck())
+Show error if CNode.addInput() returns false
+
+
 
 Reordering of node inputs
 
