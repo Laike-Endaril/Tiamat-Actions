@@ -9,6 +9,7 @@ import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.CLong;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
+import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -61,34 +62,34 @@ public abstract class CNode extends Component
     //Passing an action here because it needs to be usable from client, which doesn't have the action database
     public final void addInput(CAction action, CNode inputNode)
     {
-        inputNodePositions.add(Tools.getLong(inputNode.x, inputNode.y));
-        inputNode.outputNodePositions.add(Tools.getLong(x, y));
-        action.EVENT_ENDPOINT_NODES.get(eventName).remove(inputNode);
+        inputNodePositions.add(Tools.getLong(inputNode.y, inputNode.x));
+        inputNode.outputNodePositions.add(Tools.getLong(y, x));
+        action.EVENT_ENDPOINT_NODES.get(eventName).removeAll(inputNode);
     }
 
     //Passing an action here because it needs to be usable from client, which doesn't have the action database
     public final void removeInput(CAction action, CNode inputNode)
     {
-        inputNodePositions.remove(Tools.getLong(inputNode.x, inputNode.y));
-        inputNode.outputNodePositions.remove(Tools.getLong(x, y));
-        if (inputNode.outputNodePositions.size() == 0) action.EVENT_ENDPOINT_NODES.get(eventName).add(inputNode);
+        inputNodePositions.remove(Tools.getLong(inputNode.y, inputNode.x));
+        inputNode.outputNodePositions.remove(Tools.getLong(y, x));
+        if (inputNode.outputNodePositions.size() == 0) action.EVENT_ENDPOINT_NODES.get(eventName).add(inputNode, Tools.getLong(inputNode.y, inputNode.x));
     }
 
 
     //Passing an action here because it needs to be usable from client, which doesn't have the action database
     public final void delete(CAction action)
     {
-        long pos = Tools.getLong(this.x, this.y);
+        long pos = Tools.getLong(y, x);
 
         action.EVENT_NODES.get(eventName).remove(pos);
-        ArrayList<CNode> endPoints = action.EVENT_ENDPOINT_NODES.get(eventName);
-        endPoints.remove(this);
+        ExplicitPriorityQueue<CNode> endPoints = action.EVENT_ENDPOINT_NODES.get(eventName);
+        endPoints.removeAll(this);
 
         for (Long position : inputNodePositions)
         {
             CNode other = action.EVENT_NODES.get(eventName).get(position);
             other.outputNodePositions.remove(pos);
-            if (other.outputNodePositions.size() == 0) endPoints.add(other);
+            if (other.outputNodePositions.size() == 0) endPoints.add(other, Tools.getLong(other.y, other.x));
         }
 
         for (Long position : outputNodePositions)
@@ -102,7 +103,7 @@ public abstract class CNode extends Component
     //Passing an action here because it needs to be usable from client, which doesn't have the action database
     public final void setPosition(CAction action, int x, int y, GUINode nodeElement)
     {
-        long oldPos = Tools.getLong(this.x, this.y), newPos = Tools.getLong(x, y);
+        long oldPos = Tools.getLong(this.y, this.x), newPos = Tools.getLong(y, x);
 
         this.x = x;
         this.y = y;

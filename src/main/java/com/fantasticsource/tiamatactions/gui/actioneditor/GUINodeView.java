@@ -100,8 +100,8 @@ public class GUINodeView extends GUIPanZoomView
 
                     if (node != null)
                     {
-                        action.EVENT_NODES.get(gui.event).put(Tools.getLong(node.x, node.y), node);
-                        action.EVENT_ENDPOINT_NODES.get(gui.event).add(node);
+                        action.EVENT_NODES.get(gui.event).put(Tools.getLong(node.y, node.x), node);
+                        action.EVENT_ENDPOINT_NODES.get(gui.event).add(node, Tools.getLong(node.y, node.x));
 
                         double wConversion = 1d / absolutePxWidth(), hConversion = 1d / absolutePxHeight();
                         add(new GUINode(screen, (node.x - GUINode.FULL_SIZE) * wConversion, (node.y - GUINode.FULL_SIZE) * hConversion, node));
