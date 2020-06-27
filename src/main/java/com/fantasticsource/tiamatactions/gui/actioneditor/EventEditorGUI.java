@@ -22,6 +22,7 @@ public class EventEditorGUI extends GUIScreen
     protected void show(CAction action, String event)
     {
         show();
+        drawStack = false;
 
 
         this.action = action;

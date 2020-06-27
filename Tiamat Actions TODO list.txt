@@ -1,4 +1,6 @@
 Addition of node inputs via CNode.addInput()
+Be sure not to allow loops
+
 Reordering of node inputs
 
 

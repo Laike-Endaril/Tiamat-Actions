@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
+import com.fantasticsource.mctools.gui.element.text.GUIFadingText;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
@@ -11,6 +12,7 @@ import com.fantasticsource.tiamatactions.node.staticoutput.CNodeNumber;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
 import com.fantasticsource.tools.Tools;
+import com.fantasticsource.tools.datastructures.Color;
 
 public class GUINodeView extends GUIPanZoomView
 {
@@ -42,7 +44,7 @@ public class GUINodeView extends GUIPanZoomView
             int xx = (int) (viewPxX() + (mouseX() - absoluteX()) / absoluteWidth() * viewPxW()), yy = (int) (viewPxY() + (mouseY() - absoluteY()) / absoluteHeight() * viewPxH());
             if (!wellSpaced(xx - GUINode.FULL_SIZE, yy - GUINode.FULL_SIZE))
             {
-                //TODO show error?
+                parent.add(new GUIFadingText(screen, x + 5d / screen.pxWidth, y + 5d / screen.pxHeight, "Cannot place a node here: too close to another node", 150, 300, Color.RED));
             }
             else
             {

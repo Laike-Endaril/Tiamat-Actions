@@ -23,6 +23,7 @@ public class ActionEditorGUI extends GUIScreen
     protected void show(CAction action, String... otherActionNames)
     {
         show();
+        drawStack = false;
 
 
         initialName = action.name;
