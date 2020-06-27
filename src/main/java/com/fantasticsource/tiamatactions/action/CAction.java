@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -98,6 +99,17 @@ public class CAction extends Component
         this();
         this.name = name;
         ALL_ACTIONS.put(name, this);
+    }
+
+
+    public boolean inputLoopCheck(String eventName)
+    {
+        for (CNode endPoint : EVENT_ENDPOINT_NODES.get(eventName).toArray(new CNode[0]))
+        {
+            if (!endPoint.inputLoopCheck(this, new ArrayList<>())) return false;
+        }
+
+        return true;
     }
 
 

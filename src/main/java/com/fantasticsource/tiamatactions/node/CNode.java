@@ -157,6 +157,23 @@ public abstract class CNode extends Component
     }
 
 
+    //Passing an action here because it needs to be usable from client, which doesn't have the action database
+    public final boolean inputLoopCheck(CAction action, ArrayList<CNode> inputBlacklist)
+    {
+        if (inputBlacklist.contains(this)) return false;
+
+        inputBlacklist.add(this);
+        for (Long inputPosition : inputNodePositions)
+        {
+            CNode input = action.EVENT_NODES.get(eventName).get(inputPosition);
+            if (!input.inputLoopCheck(action, inputBlacklist)) return false;
+        }
+
+        inputBlacklist.remove(this);
+        return true;
+    }
+
+
     public final Object executeTree(CAction parentAction, HashMap<Long, Object> results)
     {
         Object[] inputResults = new Object[inputNodePositions.size()];
