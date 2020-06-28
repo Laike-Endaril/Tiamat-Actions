@@ -10,7 +10,7 @@ import com.fantasticsource.tools.datastructures.Color;
 public class GUITempConnector extends GUILine
 {
     public static final Color[]
-            GREEN = new Color[]{GUIScreen.getIdleColor(Color.GREEN).setAF(0.3f), GUIScreen.getHoverColor(Color.GREEN).setAF(0.3f), Color.GREEN.copy().setAF(0.3f)},
+            YELLOW = new Color[]{GUIScreen.getIdleColor(Color.YELLOW).setAF(0.3f), GUIScreen.getHoverColor(Color.YELLOW).setAF(0.3f), Color.YELLOW.copy().setAF(0.3f)},
             RED = new Color[]{GUIScreen.getIdleColor(Color.RED).setAF(0.3f), GUIScreen.getHoverColor(Color.RED).setAF(0.3f), Color.RED.copy().setAF(0.3f)};
 
     protected boolean halfPart;
@@ -41,9 +41,9 @@ public class GUITempConnector extends GUILine
 
             if (element.isMouseWithin())
             {
-                color = GREEN[0];
-                hoverColor = GREEN[1];
-                activeColor = GREEN[2];
+                color = YELLOW[0];
+                hoverColor = YELLOW[1];
+                activeColor = YELLOW[2];
 
 
                 hovered = (GUINode) element;
