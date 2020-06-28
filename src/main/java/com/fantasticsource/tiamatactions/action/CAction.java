@@ -112,7 +112,6 @@ public class CAction extends Component
         return true;
     }
 
-
     public void queue(Entity source, String queueName, CAction mainAction)
     {
         ActionQueue queue = ActionQueue.ENTITY_ACTION_QUEUES.get(source).get(queueName);

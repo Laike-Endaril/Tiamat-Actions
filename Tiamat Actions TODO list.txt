@@ -1,8 +1,3 @@
-Addition of node inputs via CNode.addInput()
-Show error if CNode.addInput() returns false
-
-
-
 Reordering of node inputs
 
 

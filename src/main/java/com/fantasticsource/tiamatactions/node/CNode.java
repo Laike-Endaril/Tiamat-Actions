@@ -60,19 +60,26 @@ public abstract class CNode extends Component
 
 
     //Passing an action here because it needs to be usable from client, which doesn't have the action database
-    public final boolean tryAddInput(CAction action, CNode inputNode)
+    public final String tryAddInput(CAction action, CNode inputNode)
     {
+        if (inputNode == this) return "Same node";
+
+        if (requiredInputTypes().length == 0 && arrayInputType() == null) return "This node cannot accept inputs";
+
+        if (inputNode.outputType() == null) return "Input has no output type";
+
+
         inputNodePositions.add(Tools.getLong(inputNode.y, inputNode.x));
         inputNode.outputNodePositions.add(Tools.getLong(y, x));
         action.EVENT_ENDPOINT_NODES.get(eventName).removeAll(inputNode);
 
-        if (!action.inputLoopCheck(eventName))
+        if (!inputLoopCheck(action, new ArrayList<>()))
         {
             removeInput(action, inputNode);
-            return false;
+            return "Infinite loop";
         }
 
-        return true;
+        return null;
     }
 
     //Passing an action here because it needs to be usable from client, which doesn't have the action database

@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
+import com.fantasticsource.mctools.gui.element.text.GUIFadingText;
 import com.fantasticsource.mctools.gui.element.textured.GUIImage;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Collision;
@@ -25,6 +26,7 @@ public class GUINode extends GUIImage
     public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE;
     protected static double mouseAnchorX, mouseAnchorY;
     protected static GUINode tempNode = null;
+    protected static GUITempConnector longConnector = null, shortConnector = null;
 
     protected CNode node;
 
@@ -111,6 +113,41 @@ public class GUINode extends GUIImage
             }
 
             tempNode = null;
+        }
+
+        if (button == 1 && isMouseWithin())
+        {
+            if (longConnector == null)
+            {
+                longConnector = new GUITempConnector(screen, (GUINodeView) parent, node, false);
+                shortConnector = new GUITempConnector(screen, (GUINodeView) parent, node, true);
+
+                parent.add(0, longConnector);
+                parent.add(0, shortConnector);
+            }
+            else
+            {
+                if (node != longConnector.from)
+                {
+                    String error = node.tryAddInput(((EventEditorGUI) screen).action, longConnector.from);
+
+                    if (error == null)
+                    {
+                        ((EventEditorGUI) screen).refreshNodeConnections();
+                    }
+                    else
+                    {
+                        parent.parent.add(new GUIFadingText(screen, parent.x + 5d / screen.pxWidth, parent.y + 5d / screen.pxHeight, "Cannot add connection; " + error, 150, 300, Color.RED));
+                    }
+                }
+
+
+                parent.remove(longConnector);
+                parent.remove(shortConnector);
+
+                longConnector = null;
+                shortConnector = null;
+            }
         }
 
         return super.mouseReleased(button);

@@ -11,7 +11,6 @@ public class GUIConnector extends GUILine
 {
     public static final Color[]
             GREEN = new Color[]{GUIScreen.getIdleColor(Color.GREEN), GUIScreen.getHoverColor(Color.GREEN), Color.GREEN},
-            WHITE = new Color[]{GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE},
             RED = new Color[]{GUIScreen.getIdleColor(Color.RED), GUIScreen.getHoverColor(Color.RED), Color.RED};
 
     protected boolean halfPart;
@@ -44,7 +43,10 @@ public class GUIConnector extends GUILine
     @Override
     public boolean isWithin(double x, double y)
     {
-        for (GUIElement element : parent.children)
+        if (parent == null) return false;
+
+
+        for (GUIElement element : parent.children.toArray(new GUIElement[0]))
         {
             if (element instanceof GUINode && element.isWithin(x, y)) return false;
         }
