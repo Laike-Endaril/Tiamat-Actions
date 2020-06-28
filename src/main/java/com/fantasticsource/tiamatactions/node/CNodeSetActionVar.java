@@ -7,7 +7,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeSetActionVar extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/setActionVar.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/set_action_var.png");
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!

@@ -9,7 +9,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeSourceEntity extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/sourceEntity.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/source_entity.png");
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
