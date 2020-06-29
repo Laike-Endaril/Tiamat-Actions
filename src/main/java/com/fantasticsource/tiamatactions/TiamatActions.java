@@ -21,7 +21,7 @@ public class TiamatActions
 {
     public static final String MODID = "tiamatactions";
     public static final String NAME = "Tiamat Actions";
-    public static final String VERSION = "1.12.2.000b";
+    public static final String VERSION = "1.12.2.000c";
 
 
     private static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();
