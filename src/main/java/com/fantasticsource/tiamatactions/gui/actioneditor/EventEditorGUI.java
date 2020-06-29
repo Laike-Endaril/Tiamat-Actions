@@ -78,11 +78,16 @@ public class EventEditorGUI extends GUIScreen
                 view.add(0, connector);
                 view.add(0, connector2);
 
-                GUIText connectorLabel = new GUIText(this, 0, 0, "" + ++number);
+
+                String s = "" + ++number + " (";
+                if (number <= node.requiredInputTypes().length) s += "req)";
+                else s += "@" + (number - node.requiredInputTypes().length) + ")";
+
+                GUIText connectorLabel = new GUIText(this, 0, 0, s);
                 view.add(connectorLabel);
                 connectorLabel.setAbsoluteX(connector.absoluteX() + (connector.absoluteWidth() - connectorLabel.absoluteWidth()) * 0.5);
                 connectorLabel.setAbsoluteY(connector.absoluteY() + (connector.absoluteHeight() - connectorLabel.absoluteHeight()) * 0.5);
-                connector.setTooltip("" + number);
+                connector.setTooltip(s);
 
                 view.addRemoveChildActions(element ->
                 {
