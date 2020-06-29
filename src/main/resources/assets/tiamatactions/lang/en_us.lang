@@ -12,9 +12,15 @@ item.tiamatactions:icon.name=Tiamat Actions Icon
 
 tiamatactions.config.serverSettings=Server Settings
 tiamatactions.config.clientSettings=Client Settings
+tiamatactions.config.modpackSettings=Modpack Settings
 
 tiamatactions.config.customAttributes=Custom Attributes
 tiamatactions.config.customAttributes.tooltip=FILLSCREEN FIXNEWLINES A list of custom attributes to add to living entities\n \n
-
 tiamatactions.config.customDamageTypes=Custom Damage Types
 tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of custom damage types to add to the game\n \n
+tiamatactions.config.actionQueues=Action Queues
+tiamatactions.config.actionQueues.tooltip=FILLSCREEN FIXNEWLINES A list of action queues to add to entities.  Syntax is...\nName, size, replaceLastIfFull\nEg...\nMain, 2, true\n \n
+
+
+tiamatactions.config.customDamageTypes=Keybound Actions
+tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;actionName\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatrpg.key.test, which would run an action named TestAction\n \n

@@ -8,7 +8,16 @@ public class ModpackConfig
 {
     @Config.Name("Keybound Actions")
     @Config.LangKey(MODID + ".config.keyboundActions")
-    @Config.Comment("A list of actions that can be run by a player via keybind")
+    @Config.Comment(
+            {
+                    "A list of actions that can be run by a player via keybind",
+                    "Syntax is...",
+                    "keybindName;actionName",
+                    "",
+                    "Eg...",
+                    "test;TestAction",
+                    "...would make a keybind with the translation key tiamatrpg.key.test, which would run an action named TestAction"
+            })
     @Config.RequiresMcRestart
     public String[] keyboundActions = new String[0];
 }
