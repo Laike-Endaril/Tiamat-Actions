@@ -1,3 +1,5 @@
 Reordering of node inputs
 
 Improve panning (drag middle click?)
+
+Action triggers
