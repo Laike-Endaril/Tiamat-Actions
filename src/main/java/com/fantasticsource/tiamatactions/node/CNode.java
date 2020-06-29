@@ -66,7 +66,22 @@ public abstract class CNode extends Component
 
         if (requiredInputTypes().length == 0 && arrayInputType() == null) return "This node cannot accept inputs";
 
-        if (inputNode.outputType() == null) return "Input has no output type";
+        Class inputType = inputNode.outputType();
+        if (inputType == null) return "Input has no output type";
+
+        if (!Tools.areRelated(inputType, arrayInputType()))
+        {
+            boolean found = false;
+            for (Class c : requiredInputTypes())
+            {
+                if (Tools.areRelated(c, inputType))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) return "This node does not accept any inputs of the given type: " + inputType.getSimpleName();
+        }
 
 
         inputNodePositions.add(Tools.getLong(inputNode.y, inputNode.x));
@@ -161,11 +176,11 @@ public abstract class CNode extends Component
         for (int i = 0; i < requiredInputTypes().length; i++)
         {
             CNode inputNode = eventNodes.get(inputNodePositions.get(i));
-            if (inputNode == null) return "Node for input connection " + (i + 1) + " does not exist!";
+            if (inputNode == null) return "Node for input connection #" + (i + 1) + " does not exist!";
 
             c1 = requiredInputTypes()[i];
             c2 = inputNode.outputType();
-            if (!c1.isAssignableFrom(c2) && !c2.isAssignableFrom(c1)) return "Input " + (i + 1) + " requires a " + c1.getSimpleName() + " but is being passed a " + c2.getSimpleName();
+            if (!Tools.areRelated(c1, c2)) return "Input #" + (i + 1) + " requires a " + c1.getSimpleName() + " but is being passed a " + c2.getSimpleName();
         }
 
         return null;
