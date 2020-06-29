@@ -317,7 +317,8 @@ public class Network
             EntityPlayerMP player = ctx.getServerHandler().player;
             if (player.isCreative())
             {
-                CAction.ALL_ACTIONS.remove(packet.oldName);
+                CAction oldAction = CAction.ALL_ACTIONS.get(packet.oldName);
+                if (oldAction != null) oldAction.delete();
                 packet.action.save();
 
                 WRAPPER.sendTo(new OpenMainActionEditorPacket(), ctx.getServerHandler().player);

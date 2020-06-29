@@ -23,6 +23,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CAction extends Component
 {
+    public static final String DIR_PREFIX = MCTools.getConfigDir() + MODID + File.separator + "actions";
     public static final LinkedHashMap<String, CAction> ALL_ACTIONS = new LinkedHashMap<>();
 
     static
@@ -150,7 +151,7 @@ public class CAction extends Component
         CAction.ALL_ACTIONS.put(name, this);
 
 
-        File file = new File(MCTools.getConfigDir() + MODID + File.separator + "actions" + File.separator + name + ".dat");
+        File file = new File(DIR_PREFIX + File.separator + name + ".dat");
         file.mkdirs();
         while (file.exists()) file.delete();
 
@@ -168,7 +169,7 @@ public class CAction extends Component
 
     public static void loadAll()
     {
-        File dir = new File(MCTools.getConfigDir() + MODID + File.separator + "actions" + File.separator);
+        File dir = new File(DIR_PREFIX + File.separator);
         dir.mkdirs();
 
         for (String filename : Tools.allRecursiveRelativeFilenames(dir.getAbsolutePath()))
@@ -192,8 +193,19 @@ public class CAction extends Component
     {
         ALL_ACTIONS.remove(name);
 
-        File file = new File(MCTools.getConfigDir() + MODID + File.separator + "actions" + File.separator + name + ".dat");
+        File file = new File(DIR_PREFIX + File.separator + name + ".dat");
         while (file.exists()) file.delete();
+
+        String dir = DIR_PREFIX + File.separator + name + File.separator + "..";
+        file = new File(dir);
+        File[] files = file.listFiles();
+        while (files != null && files.length == 0)
+        {
+            while (file.exists()) file.delete();
+            dir += File.separator + "..";
+            file = new File(dir);
+            files = file.listFiles();
+        }
     }
 
 
