@@ -4,6 +4,7 @@ import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIGradient;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
+import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.datastructures.Color;
@@ -64,6 +65,7 @@ public class EventEditorGUI extends GUIScreen
 
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
+            int number = 0;
             for (long position : node.inputNodePositions)
             {
                 CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
@@ -75,6 +77,18 @@ public class EventEditorGUI extends GUIScreen
 
                 view.add(0, connector);
                 view.add(0, connector2);
+
+                GUIText connectorLabel = new GUIText(this, 0, 0, "" + ++number);
+                view.add(connectorLabel);
+                connectorLabel.setAbsoluteX(connector.absoluteX() + (connector.absoluteWidth() - connectorLabel.absoluteWidth()) * 0.5);
+                connectorLabel.setAbsoluteY(connector.absoluteY() + (connector.absoluteHeight() - connectorLabel.absoluteHeight()) * 0.5);
+                connector.setTooltip("" + number);
+
+                view.addRemoveChildActions(element ->
+                {
+                    if (element == connector) view.remove(connectorLabel);
+                    return true;
+                });
             }
         }
     }

@@ -3,6 +3,7 @@ package com.fantasticsource.tiamatactions.gui.actioneditor;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUILine;
+import com.fantasticsource.mctools.gui.element.text.GUIFadingText;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
@@ -33,77 +34,81 @@ public class GUIConnector extends GUILine
         if (!halfPart && isMouseWithin())
         {
             EventEditorGUI gui = (EventEditorGUI) screen;
-            long pos = Tools.getLong(from.y, from.x);
+
             switch (keyCode)
             {
                 case Keyboard.KEY_DELETE:
                     to.removeInput(gui.action, from);
-                    gui.refreshNodeConnections();
                     break;
 
                 case Keyboard.KEY_1:
                 case Keyboard.KEY_NUMPAD1:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(0, pos);
+                    reorder(0);
                     break;
 
                 case Keyboard.KEY_2:
                 case Keyboard.KEY_NUMPAD2:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(1, pos);
+                    reorder(1);
                     break;
 
                 case Keyboard.KEY_3:
                 case Keyboard.KEY_NUMPAD3:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(2, pos);
+                    reorder(2);
                     break;
 
                 case Keyboard.KEY_4:
                 case Keyboard.KEY_NUMPAD4:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(3, pos);
+                    reorder(3);
                     break;
 
                 case Keyboard.KEY_5:
                 case Keyboard.KEY_NUMPAD5:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(4, pos);
+                    reorder(4);
                     break;
 
                 case Keyboard.KEY_6:
                 case Keyboard.KEY_NUMPAD6:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(5, pos);
+                    reorder(5);
                     break;
 
                 case Keyboard.KEY_7:
                 case Keyboard.KEY_NUMPAD7:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(6, pos);
+                    reorder(6);
                     break;
 
                 case Keyboard.KEY_8:
                 case Keyboard.KEY_NUMPAD8:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(7, pos);
+                    reorder(7);
                     break;
 
                 case Keyboard.KEY_9:
                 case Keyboard.KEY_NUMPAD9:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(8, pos);
+                    reorder(8);
                     break;
 
                 case Keyboard.KEY_0:
                 case Keyboard.KEY_NUMPAD0:
-                    to.inputNodePositions.remove(pos);
-                    to.inputNodePositions.add(9, pos);
+                    reorder(9);
                     break;
             }
+
+            gui.refreshNodeConnections();
         }
 
         super.keyTyped(typedChar, keyCode);
+    }
+
+    protected void reorder(int newInputIndex)
+    {
+        if (newInputIndex >= to.inputNodePositions.size())
+        {
+            parent.parent.add(new GUIFadingText(screen, parent.x + 5d / screen.pxWidth, parent.y + 5d / screen.pxHeight, "Cannot set input number; given input number is higher than current number of inputs", 150, 300, Color.RED));
+            return;
+        }
+
+        long pos = Tools.getLong(from.y, from.x);
+        to.inputNodePositions.remove(pos);
+        to.inputNodePositions.add(newInputIndex, pos);
     }
 
 

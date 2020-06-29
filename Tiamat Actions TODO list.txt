@@ -1,4 +1,4 @@
-Show input node order
+Show advanced input numbers (required vs optional)
 
 Improve panning (drag middle click?)
 
