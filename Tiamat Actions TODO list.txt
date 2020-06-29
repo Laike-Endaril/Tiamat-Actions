@@ -1,9 +1,3 @@
-Saving/loading of actions
-
-
-
 Reordering of node inputs
-
-
 
 Improve panning (drag middle click?)

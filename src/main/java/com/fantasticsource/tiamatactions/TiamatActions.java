@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import java.io.File;
 import java.util.List;
 
 @Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.034ze,)")
@@ -40,6 +41,8 @@ public class TiamatActions
         DamageTypes.init();
         MinecraftForge.EVENT_BUS.register(ActionQueue.class);
         MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
+
+        CAction.loadAll();
     }
 
     @SubscribeEvent

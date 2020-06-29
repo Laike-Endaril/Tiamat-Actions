@@ -14,12 +14,13 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CAction extends Component
 {
@@ -28,6 +29,7 @@ public class CAction extends Component
     static
     {
         ALL_ACTIONS.put("None", null);
+
 
         //TODO remove test code below
         if (MCTools.devEnv())
@@ -58,6 +60,9 @@ public class CAction extends Component
             commandNode.tryAddInput(action, stringNode);
 
             action.startEndpointNodes.add(commandNode, Tools.getLong(commandNode.y, commandNode.x));
+
+
+            action.save();
         }
     }
 
@@ -101,7 +106,6 @@ public class CAction extends Component
     {
         this();
         this.name = name;
-        ALL_ACTIONS.put(name, this);
     }
 
 
@@ -170,6 +174,58 @@ public class CAction extends Component
                 for (CNode endNode : endEndpointNodes.toArray(new CNode[0])) endNode.executeTree(this, results);
                 break;
         }
+    }
+
+
+    public void save()
+    {
+        CAction.ALL_ACTIONS.put(name, this);
+
+
+        File file = new File(MCTools.getConfigDir() + MODID + File.separator + "actions" + File.separator + name + ".dat");
+        file.mkdirs();
+        while (file.exists()) file.delete();
+
+        try
+        {
+            FileOutputStream stream = new FileOutputStream(file);
+            save(stream);
+            stream.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadAll()
+    {
+        File dir = new File(MCTools.getConfigDir() + MODID + File.separator + "actions" + File.separator);
+        dir.mkdirs();
+
+        for (String filename : Tools.allRecursiveRelativeFilenames(dir.getAbsolutePath()))
+        {
+            File file = new File(dir.getAbsolutePath() + File.separator + filename);
+            try
+            {
+                FileInputStream stream = new FileInputStream(file);
+                CAction action = new CAction().load(stream);
+                stream.close();
+                ALL_ACTIONS.put(action.name, action);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void delete()
+    {
+        ALL_ACTIONS.remove(name);
+
+        File file = new File(MCTools.getConfigDir() + MODID + File.separator + "actions" + File.separator + name + ".dat");
+        while (file.exists()) file.delete();
     }
 
 

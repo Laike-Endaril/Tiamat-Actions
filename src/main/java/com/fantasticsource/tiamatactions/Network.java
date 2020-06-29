@@ -35,6 +35,7 @@ public class Network
         WRAPPER.registerMessage(OpenActionEditorPacketHandler.class, OpenActionEditorPacket.class, discriminator++, Side.CLIENT);
 
         WRAPPER.registerMessage(SaveActionPacketHandler.class, SaveActionPacket.class, discriminator++, Side.SERVER);
+        WRAPPER.registerMessage(DeleteActionPacketHandler.class, DeleteActionPacket.class, discriminator++, Side.SERVER);
     }
 
 
@@ -196,7 +197,7 @@ public class Network
             EntityPlayerMP player = ctx.getServerHandler().player;
             if (player.isCreative())
             {
-                if (!CAction.ALL_ACTIONS.containsKey(packet.actionName)) new CAction(packet.actionName);
+                if (!CAction.ALL_ACTIONS.containsKey(packet.actionName)) new CAction(packet.actionName).save();
                 CAction action = CAction.ALL_ACTIONS.get(packet.actionName);
                 FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> WRAPPER.sendTo(new OpenActionEditorPacket(action), player));
             }
@@ -300,9 +301,52 @@ public class Network
             if (player.isCreative())
             {
                 CAction.ALL_ACTIONS.remove(packet.oldName);
-                CAction.ALL_ACTIONS.put(packet.action.name, packet.action);
+                packet.action.save();
 
                 WRAPPER.sendTo(new OpenMainActionEditorPacket(), ctx.getServerHandler().player);
+            }
+            return null;
+        }
+    }
+
+
+    public static class DeleteActionPacket implements IMessage
+    {
+        String name;
+
+        public DeleteActionPacket()
+        {
+            //Required
+        }
+
+        public DeleteActionPacket(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            ByteBufUtils.writeUTF8String(buf, name);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            name = ByteBufUtils.readUTF8String(buf);
+        }
+    }
+
+    public static class DeleteActionPacketHandler implements IMessageHandler<DeleteActionPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(DeleteActionPacket packet, MessageContext ctx)
+        {
+            EntityPlayerMP player = ctx.getServerHandler().player;
+            if (player.isCreative())
+            {
+                CAction action = CAction.ALL_ACTIONS.get(packet.name);
+                if (action != null) action.delete();
             }
             return null;
         }

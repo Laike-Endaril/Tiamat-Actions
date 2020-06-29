@@ -64,6 +64,15 @@ public class MainActionEditorGUI extends GUIScreen
             actionList.height = 1 - (navbar.y + navbar.height);
             scrollbar.height = 1 - (navbar.y + navbar.height);
         });
+        actionList.addRemoveChildActions(element ->
+        {
+            if (element instanceof GUIList.Line)
+            {
+                GUIText name = (GUIText) ((GUIList.Line) element).getLineElement(1);
+                Network.WRAPPER.sendToServer(new Network.DeleteActionPacket(name.getText()));
+            }
+            return true;
+        });
     }
 
     @Override
