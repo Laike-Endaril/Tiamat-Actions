@@ -1,3 +1,7 @@
+tiamatrpg.keyCategory=Tiamat Actions
+
+
+
 itemGroup.tiamatactions=Tiamat Actions
 
 tile.tiamatactions:actioneditor.name=Action Editor

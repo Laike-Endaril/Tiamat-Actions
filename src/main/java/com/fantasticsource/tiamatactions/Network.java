@@ -1,9 +1,11 @@
 package com.fantasticsource.tiamatactions;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.gui.ActionSelectionGUI;
 import com.fantasticsource.tiamatactions.gui.actioneditor.ActionEditorGUI;
 import com.fantasticsource.tiamatactions.gui.actioneditor.MainActionEditorGUI;
+import com.fantasticsource.tools.Tools;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,10 +19,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.LinkedHashMap;
+
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class Network
 {
+    protected static final LinkedHashMap<String, String> KEYBOUND_ACTION_NAMES = new LinkedHashMap<>();
+
     public static final SimpleNetworkWrapper WRAPPER = new SimpleNetworkWrapper(MODID);
     private static int discriminator = 0;
 
@@ -36,6 +42,17 @@ public class Network
 
         WRAPPER.registerMessage(SaveActionPacketHandler.class, SaveActionPacket.class, discriminator++, Side.SERVER);
         WRAPPER.registerMessage(DeleteActionPacketHandler.class, DeleteActionPacket.class, discriminator++, Side.SERVER);
+
+        WRAPPER.registerMessage(ExecuteKeyboundActionPacketHandler.class, ExecuteKeyboundActionPacket.class, discriminator++, Side.SERVER);
+
+        for (String s : TiamatActionsConfig.modpackSettings.keyboundActions)
+        {
+            String[] tokens = Tools.fixedSplit(s, ";");
+            if (tokens.length != 2) continue;
+
+
+            KEYBOUND_ACTION_NAMES.put(tokens[0].trim(), tokens[1].trim());
+        }
     }
 
 
@@ -348,6 +365,51 @@ public class Network
                 CAction action = CAction.ALL_ACTIONS.get(packet.name);
                 if (action != null) action.delete();
             }
+            return null;
+        }
+    }
+
+
+    public static class ExecuteKeyboundActionPacket implements IMessage
+    {
+        String key;
+
+        public ExecuteKeyboundActionPacket()
+        {
+            //Required
+        }
+
+        public ExecuteKeyboundActionPacket(String key)
+        {
+            this.key = key;
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            ByteBufUtils.writeUTF8String(buf, key);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            key = ByteBufUtils.readUTF8String(buf);
+        }
+    }
+
+    public static class ExecuteKeyboundActionPacketHandler implements IMessageHandler<ExecuteKeyboundActionPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(ExecuteKeyboundActionPacket packet, MessageContext ctx)
+        {
+            String actionName = KEYBOUND_ACTION_NAMES.get(packet.key);
+            if (actionName == null) return null;
+
+            CAction action = CAction.ALL_ACTIONS.get(actionName);
+            if (action == null) return null;
+
+            EntityPlayerMP player = ctx.getServerHandler().player;
+            action.queue(player, "Main", null);
             return null;
         }
     }

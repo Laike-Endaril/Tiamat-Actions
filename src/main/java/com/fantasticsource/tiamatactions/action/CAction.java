@@ -2,8 +2,6 @@ package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.node.CNode;
-import com.fantasticsource.tiamatactions.node.CNodeCommand;
-import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.component.CInt;
 import com.fantasticsource.tools.component.CLong;
@@ -29,41 +27,6 @@ public class CAction extends Component
     static
     {
         ALL_ACTIONS.put("None", null);
-
-
-        //TODO remove test code below
-        if (MCTools.devEnv())
-        {
-            CAction action = new CAction("Test1");
-            String event = "start";
-
-
-            CNodeString stringNode = new CNodeString(action.name, event, 0, 200);
-            action.EVENT_NODES.get(event).put(Tools.getLong(stringNode.y, stringNode.x), stringNode);
-            stringNode.string = "/time set 2000";
-
-            CNodeCommand commandNode = new CNodeCommand(action.name, event, 200, 200);
-            action.EVENT_NODES.get(event).put(Tools.getLong(commandNode.y, commandNode.x), commandNode);
-
-            commandNode.tryAddInput(action, stringNode);
-
-            action.startEndpointNodes.add(commandNode, Tools.getLong(commandNode.y, commandNode.x));
-
-
-            stringNode = new CNodeString(action.name, event, 0, 0);
-            action.EVENT_NODES.get(event).put(Tools.getLong(stringNode.y, stringNode.x), stringNode);
-            stringNode.string = "/time set 1000";
-
-            commandNode = new CNodeCommand(action.name, event, 200, 0);
-            action.EVENT_NODES.get(event).put(Tools.getLong(commandNode.y, commandNode.x), commandNode);
-
-            commandNode.tryAddInput(action, stringNode);
-
-            action.startEndpointNodes.add(commandNode, Tools.getLong(commandNode.y, commandNode.x));
-
-
-            action.save();
-        }
     }
 
     public String name;
