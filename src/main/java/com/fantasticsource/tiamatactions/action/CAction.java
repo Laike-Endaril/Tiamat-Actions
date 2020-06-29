@@ -10,6 +10,7 @@ import com.fantasticsource.tools.component.Component;
 import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.*;
@@ -126,7 +127,11 @@ public class CAction extends Component
                 break;
 
             case "start":
-                for (CNode endNode : startEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, results);
+                for (CNode endNode : startEndpointNodes.toArray(new CNode[0]))
+                {
+                    System.out.println(TextFormatting.GREEN + "" + endNode.y);
+                    endNode.executeTree(mainAction, results);
+                }
                 break;
 
             case "tick":

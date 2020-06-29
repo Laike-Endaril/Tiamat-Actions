@@ -139,6 +139,9 @@ public abstract class CNode extends Component
         this.y = y;
 
 
+        if (action.EVENT_ENDPOINT_NODES.get(eventName).removeAll(this)) action.EVENT_ENDPOINT_NODES.get(eventName).add(this, Tools.getLong(y, x));
+
+
         for (Long position : inputNodePositions)
         {
             CNode other = action.EVENT_NODES.get(eventName).get(position);
