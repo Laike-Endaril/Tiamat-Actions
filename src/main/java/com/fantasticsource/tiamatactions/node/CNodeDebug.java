@@ -61,7 +61,10 @@ public class CNodeDebug extends CNode
     public Object execute(CAction parentAction, Object... inputs)
     {
         parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "<Input count: " + inputs.length + ">"));
-        for (Object input : inputs) parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + input.toString()));
+        for (Object input : inputs)
+        {
+            parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "" + input));
+        }
 
         return null;
     }
