@@ -4,6 +4,7 @@ import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import org.lwjgl.input.Keyboard;
 
@@ -29,11 +30,77 @@ public class GUIConnector extends GUILine
     @Override
     public void keyTyped(char typedChar, int keyCode)
     {
-        if (!halfPart && keyCode == Keyboard.KEY_DELETE && isMouseWithin())
+        if (!halfPart && isMouseWithin())
         {
             EventEditorGUI gui = (EventEditorGUI) screen;
-            to.removeInput(gui.action, from);
-            gui.refreshNodeConnections();
+            long pos = Tools.getLong(from.y, from.x);
+            switch (keyCode)
+            {
+                case Keyboard.KEY_DELETE:
+                    to.removeInput(gui.action, from);
+                    gui.refreshNodeConnections();
+                    break;
+
+                case Keyboard.KEY_1:
+                case Keyboard.KEY_NUMPAD1:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(0, pos);
+                    break;
+
+                case Keyboard.KEY_2:
+                case Keyboard.KEY_NUMPAD2:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(1, pos);
+                    break;
+
+                case Keyboard.KEY_3:
+                case Keyboard.KEY_NUMPAD3:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(2, pos);
+                    break;
+
+                case Keyboard.KEY_4:
+                case Keyboard.KEY_NUMPAD4:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(3, pos);
+                    break;
+
+                case Keyboard.KEY_5:
+                case Keyboard.KEY_NUMPAD5:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(4, pos);
+                    break;
+
+                case Keyboard.KEY_6:
+                case Keyboard.KEY_NUMPAD6:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(5, pos);
+                    break;
+
+                case Keyboard.KEY_7:
+                case Keyboard.KEY_NUMPAD7:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(6, pos);
+                    break;
+
+                case Keyboard.KEY_8:
+                case Keyboard.KEY_NUMPAD8:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(7, pos);
+                    break;
+
+                case Keyboard.KEY_9:
+                case Keyboard.KEY_NUMPAD9:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(8, pos);
+                    break;
+
+                case Keyboard.KEY_0:
+                case Keyboard.KEY_NUMPAD0:
+                    to.inputNodePositions.remove(pos);
+                    to.inputNodePositions.add(9, pos);
+                    break;
+            }
         }
 
         super.keyTyped(typedChar, keyCode);

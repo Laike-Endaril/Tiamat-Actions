@@ -1,4 +1,4 @@
-Reordering of node inputs
+Show input node order
 
 Improve panning (drag middle click?)
 
