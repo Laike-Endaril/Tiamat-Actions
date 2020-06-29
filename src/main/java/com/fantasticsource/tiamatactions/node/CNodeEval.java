@@ -62,7 +62,7 @@ public class CNodeEval extends CNode
 
 
     @Override
-    public Object execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction mainAction, Object... inputs)
     {
         String expression = this.expression;
         for (int i = 0; i < inputs.length; i++) expression = expression.replaceAll("@" + i, inputs[i].toString());

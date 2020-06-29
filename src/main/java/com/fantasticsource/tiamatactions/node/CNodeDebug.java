@@ -58,12 +58,12 @@ public class CNodeDebug extends CNode
 
 
     @Override
-    public Object execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction mainAction, Object... inputs)
     {
-        parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "<Input count: " + inputs.length + ">"));
+        mainAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "<Input count: " + inputs.length + ">"));
         for (Object input : inputs)
         {
-            parentAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "" + input));
+            mainAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "" + input));
         }
 
         return null;

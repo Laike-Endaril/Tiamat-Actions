@@ -56,9 +56,9 @@ public class CNodeEndAction extends CNode
 
 
     @Override
-    public Object execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction mainAction, Object... inputs)
     {
-        parentAction.active = false;
+        mainAction.active = false;
 
         return null;
     }

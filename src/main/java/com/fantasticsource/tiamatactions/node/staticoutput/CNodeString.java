@@ -74,7 +74,7 @@ public class CNodeString extends CNode
 
 
     @Override
-    public Object execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction mainAction, Object... inputs)
     {
         return string;
     }

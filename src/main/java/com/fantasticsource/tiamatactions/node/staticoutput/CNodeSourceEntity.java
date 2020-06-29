@@ -58,7 +58,7 @@ public class CNodeSourceEntity extends CNode
 
 
     @Override
-    public Object execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction mainAction, Object... inputs)
     {
         return CAction.ALL_ACTIONS.get(actionName).source;
     }

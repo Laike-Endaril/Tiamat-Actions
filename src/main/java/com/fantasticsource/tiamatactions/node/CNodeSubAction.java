@@ -56,12 +56,12 @@ public class CNodeSubAction extends CNode
 
 
     @Override
-    public Object execute(CAction parentAction, Object... inputs)
+    public Object execute(CAction mainAction, Object... inputs)
     {
         CAction subAction = CAction.ALL_ACTIONS.get(inputs[0]);
         if (subAction == null || subAction.tickEndpointNodes.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
 
-        subAction.queue(parentAction.source, parentAction.queue.name, parentAction.mainAction);
+        subAction.queue(mainAction.source, mainAction.queue.name, mainAction.mainAction);
 
         return null;
     }

@@ -204,7 +204,7 @@ public abstract class CNode extends Component
     }
 
 
-    public final Object executeTree(CAction parentAction, HashMap<Long, Object> results)
+    public final Object executeTree(CAction mainAction, HashMap<Long, Object> results)
     {
         Object[] inputResults = new Object[inputNodePositions.size()];
 
@@ -215,13 +215,13 @@ public abstract class CNode extends Component
         {
             if (!action.active) return null;
 
-            inputResults[i++] = results.computeIfAbsent(position, o -> action.EVENT_NODES.get(eventName).get(position).executeTree(parentAction, results));
+            inputResults[i++] = results.computeIfAbsent(position, o -> action.EVENT_NODES.get(eventName).get(position).executeTree(mainAction, results));
         }
 
-        return execute(parentAction, inputResults);
+        return execute(mainAction, inputResults);
     }
 
-    protected abstract Object execute(CAction parentAction, Object... inputs);
+    protected abstract Object execute(CAction mainAction, Object... inputs);
 
 
     @SideOnly(Side.CLIENT)
