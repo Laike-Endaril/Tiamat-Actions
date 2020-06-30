@@ -1,4 +1,4 @@
-tiamatrpg.keyCategory=Tiamat Actions
+tiamatactions.keyCategory=Tiamat Actions
 
 
 
@@ -21,6 +21,5 @@ tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of 
 tiamatactions.config.actionQueues=Action Queues
 tiamatactions.config.actionQueues.tooltip=FILLSCREEN FIXNEWLINES A list of action queues to add to entities.  Syntax is...\nName, size, replaceLastIfFull\nEg...\nMain, 2, true\n \n
 
-
-tiamatactions.config.customDamageTypes=Keybound Actions
-tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;actionName\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatrpg.key.test, which would run an action named TestAction\n \n
+tiamatactions.config.keyboundActions=Keybound Actions
+tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;actionName\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatrpg.key.test, which would run an action named TestAction\n \n
