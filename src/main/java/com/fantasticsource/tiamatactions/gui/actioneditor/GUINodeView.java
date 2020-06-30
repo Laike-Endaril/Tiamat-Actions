@@ -13,8 +13,26 @@ import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 
+import java.util.LinkedHashMap;
+
 public class GUINodeView extends GUIPanZoomView
 {
+    protected static final LinkedHashMap<String, Class<? extends CNode>> NODE_CHOICES = new LinkedHashMap<>();
+
+    static
+    {
+        NODE_CHOICES.put("Output String", CNodeString.class);
+        NODE_CHOICES.put("Output Source Entity", CNodeSourceEntity.class);
+        NODE_CHOICES.put("", null);
+        NODE_CHOICES.put("Run Command", CNodeCommand.class);
+        NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
+        NODE_CHOICES.put("End Action", CNodeEndAction.class);
+        NODE_CHOICES.put("Evaluate", CNodeEval.class);
+        NODE_CHOICES.put("Get Action Variable", CNodeGetActionVar.class);
+        NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);
+        NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
+    }
+
     public GUINode tempNode = null;
     public GUITempConnector longConnector = null, shortConnector = null;
 
@@ -51,53 +69,32 @@ public class GUINodeView extends GUIPanZoomView
             else
             {
                 GUIText textElement = new GUIText(screen, "");
-                new TextSelectionGUI(textElement, "Select Node Type...", "Output String", "Output Source Entity", "", "Run Command", "Show Debug Message", "End Action", "Evaluate", "Get Action Variable", "Set Action Variable", "Run Sub-Action").addOnClosedActions(() ->
+                new TextSelectionGUI(textElement, "Select Node Type...", NODE_CHOICES.keySet().toArray(new String[0])).addOnClosedActions(() ->
                 {
                     EventEditorGUI gui = (EventEditorGUI) screen;
                     CAction action = gui.action;
                     CNode node = null;
 
-                    switch (textElement.getText())
+                    Class c = NODE_CHOICES.get(textElement.getText());
+                    if (c != null)
                     {
-                        case "Output String":
-                            node = new CNodeString(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "Output Source Entity":
-                            node = new CNodeSourceEntity(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "Run Command":
-                            node = new CNodeCommand(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "Show Debug Message":
-                            node = new CNodeDebug(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "End Action":
-                            node = new CNodeEndAction(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "Evaluate":
-                            node = new CNodeEval(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "Get Action Variable":
-                            node = new CNodeGetActionVar(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "Set Action Variable":
-                            node = new CNodeSetActionVar(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "Run Sub-Action":
-                            node = new CNodeSubAction(action.name, gui.event, xx, yy);
-                            break;
+                        try
+                        {
+                            node = (CNode) c.newInstance();
+                        }
+                        catch (InstantiationException | IllegalAccessException e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
 
                     if (node != null)
                     {
+                        node.actionName = action.name;
+                        node.eventName = gui.event;
+                        node.x = xx;
+                        node.y = yy;
+
                         action.EVENT_NODES.get(gui.event).put(Tools.getLong(node.y, node.x), node);
                         action.EVENT_ENDPOINT_NODES.get(gui.event).add(node, Tools.getLong(node.y, node.x));
 
