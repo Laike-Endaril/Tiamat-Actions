@@ -63,7 +63,7 @@ public class CNodeString extends CNode
     @Override
     public Class arrayInputType()
     {
-        return null;
+        return String.class;
     }
 
     @Override
@@ -76,7 +76,14 @@ public class CNodeString extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        return string;
+        String result = string.replaceAll("@p|@P", mainAction.source.getName());
+
+        for (int i = 0; i < inputs.length; i++)
+        {
+            result = result.replaceAll("@" + (i + 1), (String) inputs[i]);
+        }
+
+        return result;
     }
 
 
