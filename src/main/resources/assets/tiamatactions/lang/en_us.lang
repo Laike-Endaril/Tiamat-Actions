@@ -21,5 +21,12 @@ tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of 
 tiamatactions.config.actionQueues=Action Queues
 tiamatactions.config.actionQueues.tooltip=FILLSCREEN FIXNEWLINES A list of action queues to add to entities.  Syntax is...\nName, size, replaceLastIfFull\nEg...\nMain, 2, true\n \n
 
+tiamatactions.config.guiSettings=GUI Settings
+
+tiamatactions.config.createEditNodeButton=Create / Edit Node (Mouse Button)
+tiamatactions.config.createEditNodeButton.tooltip=FILLSCREEN FIXNEWLINES Which mouse button creates, edits, and moves nodes in a node view (click for add/edit, drag for move)\n \n
+tiamatactions.config.createNodeConnectionButton=Create Node Connection (Mouse Button)
+tiamatactions.config.createNodeConnectionButton.tooltip=FILLSCREEN FIXNEWLINES Which mouse button creates connections between nodes in a node view (drag OR click one node, then next)\n \n
+
 tiamatactions.config.keyboundActions=Keybound Actions
 tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;actionName\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatrpg.key.test, which would run an action named TestAction\n \n

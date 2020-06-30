@@ -7,6 +7,7 @@ import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
@@ -18,6 +19,7 @@ import java.util.LinkedHashMap;
 public class GUINodeView extends GUIPanZoomView
 {
     protected static final LinkedHashMap<String, Class<? extends CNode>> NODE_CHOICES = new LinkedHashMap<>();
+    protected boolean createEditDragging = false;
 
     static
     {
@@ -46,66 +48,89 @@ public class GUINodeView extends GUIPanZoomView
         super(screen, x, y, width, height, subElements);
     }
 
-    @Override
-    public void click()
-    {
-        boolean subElementClicked = false;
-        for (GUIElement element : children)
-        {
-            if (element.isMouseWithin())
-            {
-                subElementClicked = true;
-                break;
-            }
-        }
 
-        if (!subElementClicked)
+    @Override
+    public void mouseDrag(int button)
+    {
+        if (button == TiamatActionsConfig.clientSettings.guiSettings.createEditNodeButton) createEditDragging = true;
+
+        super.mouseDrag(button);
+    }
+
+    @Override
+    public boolean mouseReleased(int button)
+    {
+        boolean result = super.mouseReleased(button);
+
+        if (button == TiamatActionsConfig.clientSettings.guiSettings.createEditNodeButton)
         {
-            int xx = (int) (viewPxX() + (mouseX() - absoluteX()) / absoluteWidth() * viewPxW()), yy = (int) (viewPxY() + (mouseY() - absoluteY()) / absoluteHeight() * viewPxH());
-            if (!wellSpaced(xx - GUINode.HALF_SIZE, yy - GUINode.HALF_SIZE))
+            if (createEditDragging)
             {
-                parent.add(new GUIFadingText(screen, x + 5d / screen.pxWidth, y + 5d / screen.pxHeight, "Cannot place a node here: too close to another node", 150, 300, Color.RED));
+                createEditDragging = false;
             }
             else
             {
-                GUIText textElement = new GUIText(screen, "");
-                new TextSelectionGUI(textElement, "Select Node Type...", NODE_CHOICES.keySet().toArray(new String[0])).addOnClosedActions(() ->
+                boolean subElementClicked = false;
+                for (GUIElement element : children)
                 {
-                    EventEditorGUI gui = (EventEditorGUI) screen;
-                    CAction action = gui.action;
-                    CNode node = null;
-
-                    Class c = NODE_CHOICES.get(textElement.getText());
-                    if (c != null)
+                    if (element.isMouseWithin())
                     {
-                        try
+                        subElementClicked = true;
+                        break;
+                    }
+                }
+
+                if (!subElementClicked)
+                {
+                    int xx = (int) (viewPxX() + (mouseX() - absoluteX()) / absoluteWidth() * viewPxW()), yy = (int) (viewPxY() + (mouseY() - absoluteY()) / absoluteHeight() * viewPxH());
+                    if (!wellSpaced(xx - GUINode.HALF_SIZE, yy - GUINode.HALF_SIZE))
+                    {
+                        parent.add(new GUIFadingText(screen, x + 5d / screen.pxWidth, y + 5d / screen.pxHeight, "Cannot place a node here: too close to another node", 150, 300, Color.RED));
+                    }
+                    else
+                    {
+                        GUIText textElement = new GUIText(screen, "");
+                        new TextSelectionGUI(textElement, "Select Node Type...", NODE_CHOICES.keySet().toArray(new String[0])).addOnClosedActions(() ->
                         {
-                            node = (CNode) c.newInstance();
-                        }
-                        catch (InstantiationException | IllegalAccessException e)
-                        {
-                            e.printStackTrace();
-                        }
+                            EventEditorGUI gui = (EventEditorGUI) screen;
+                            CAction action = gui.action;
+                            CNode node = null;
+
+                            Class c = NODE_CHOICES.get(textElement.getText());
+                            if (c != null)
+                            {
+                                try
+                                {
+                                    node = (CNode) c.newInstance();
+                                }
+                                catch (InstantiationException | IllegalAccessException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            if (node != null)
+                            {
+                                node.actionName = action.name;
+                                node.eventName = gui.event;
+                                node.x = xx;
+                                node.y = yy;
+
+                                action.EVENT_NODES.get(gui.event).put(Tools.getLong(node.y, node.x), node);
+                                action.EVENT_ENDPOINT_NODES.get(gui.event).add(node, Tools.getLong(node.y, node.x));
+
+                                double wConversion = 1d / absolutePxWidth(), hConversion = 1d / absolutePxHeight();
+                                add(new GUINode(screen, (node.x - GUINode.HALF_SIZE) * wConversion, (node.y - GUINode.HALF_SIZE) * hConversion, node));
+                            }
+                        });
                     }
 
-                    if (node != null)
-                    {
-                        node.actionName = action.name;
-                        node.eventName = gui.event;
-                        node.x = xx;
-                        node.y = yy;
-
-                        action.EVENT_NODES.get(gui.event).put(Tools.getLong(node.y, node.x), node);
-                        action.EVENT_ENDPOINT_NODES.get(gui.event).add(node, Tools.getLong(node.y, node.x));
-
-                        double wConversion = 1d / absolutePxWidth(), hConversion = 1d / absolutePxHeight();
-                        add(new GUINode(screen, (node.x - GUINode.HALF_SIZE) * wConversion, (node.y - GUINode.HALF_SIZE) * hConversion, node));
-                    }
-                });
+                    result = true;
+                }
             }
         }
 
-        super.click();
+        return result;
     }
 
     protected boolean wellSpaced(int xx, int yy)

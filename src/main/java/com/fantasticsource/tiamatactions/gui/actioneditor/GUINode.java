@@ -4,6 +4,7 @@ import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.text.GUIFadingText;
 import com.fantasticsource.mctools.gui.element.textured.GUIImage;
+import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Collision;
 import com.fantasticsource.tools.Tools;
@@ -25,6 +26,7 @@ public class GUINode extends GUIImage
     public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1), HALF_SIZE = FULL_SIZE >>> 1, MIN_DISTANCE_SQUARED = (FULL_SIZE << 2) * (FULL_SIZE << 2);
     public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE;
     protected static double mouseAnchorX, mouseAnchorY;
+    protected static boolean createEditDragging = false;
 
     protected CNode node;
 
@@ -59,40 +61,78 @@ public class GUINode extends GUIImage
 
 
     @Override
-    public void click()
-    {
-        GUIScreen gui = node.showNodeEditGUI();
-        if (gui != null) gui.addOnClosedActions(this::updateTooltip);
-
-        super.click();
-    }
-
-    @Override
     public boolean mousePressed(int button)
     {
-        if (button == 0 && isMouseWithin())
+        boolean result = super.mousePressed(button);
+
+        if (isMouseWithin())
         {
-            GUINodeView view = (GUINodeView) parent;
-            mouseAnchorX = (mouseX() - absoluteX()) / absoluteWidth();
-            mouseAnchorY = (mouseY() - absoluteY()) / absoluteHeight();
-            view.tempNode = new GUINode(screen, x, y, node);
-            parent.add(view.tempNode);
+            if (button == TiamatActionsConfig.clientSettings.guiSettings.createEditNodeButton)
+            {
+                GUINodeView view = (GUINodeView) parent;
+                mouseAnchorX = (mouseX() - absoluteX()) / absoluteWidth();
+                mouseAnchorY = (mouseY() - absoluteY()) / absoluteHeight();
+                view.tempNode = new GUINode(screen, x, y, node);
+                view.add(view.tempNode);
+
+                result = true;
+            }
+            else if (button == TiamatActionsConfig.clientSettings.guiSettings.createNodeConnectionButton)
+            {
+                GUINodeView view = (GUINodeView) parent;
+
+                if (view.longConnector == null)
+                {
+                    view.longConnector = new GUITempConnector(screen, (GUINodeView) parent, node, false);
+                    view.shortConnector = new GUITempConnector(screen, (GUINodeView) parent, node, true);
+
+                    parent.add(0, view.longConnector);
+                    parent.add(0, view.shortConnector);
+                }
+                else
+                {
+                    if (node != view.longConnector.from)
+                    {
+                        String error = node.tryAddInput(((EventEditorGUI) screen).action, view.longConnector.from);
+
+                        if (error == null)
+                        {
+                            ((EventEditorGUI) screen).refreshNodeConnections();
+                        }
+                        else
+                        {
+                            parent.parent.add(new GUIFadingText(screen, parent.x + 5d / screen.pxWidth, parent.y + 5d / screen.pxHeight, "Cannot add connection; " + error, 150, 300, Color.RED));
+                        }
+                    }
+
+
+                    view.remove(view.longConnector);
+                    view.remove(view.shortConnector);
+
+                    view.longConnector = null;
+                    view.shortConnector = null;
+                }
+
+                result = true;
+            }
         }
 
-        return super.mousePressed(button);
+        return result;
     }
 
 
     @Override
     public void mouseDrag(int button)
     {
-        if (button == 0 && active)
+        GUINodeView view = (GUINodeView) parent;
+        if (button == TiamatActionsConfig.clientSettings.guiSettings.createEditNodeButton && view.tempNode != null && view.tempNode.node == node)
         {
-            GUINodeView view = (GUINodeView) parent;
+            createEditDragging = true;
+
             view.tempNode.setAbsoluteX(mouseX() - mouseAnchorX * absoluteWidth());
             view.tempNode.setAbsoluteY(mouseY() - mouseAnchorY * absoluteHeight());
 
-            Color color = wellSpaced() ? Color.WHITE : Color.RED;
+            Color color = view.tempNode.wellSpaced() ? Color.WHITE : Color.RED;
             if (view.tempNode.color != color) view.tempNode.setColor(color);
         }
 
@@ -102,61 +142,69 @@ public class GUINode extends GUIImage
     @Override
     public boolean mouseReleased(int button)
     {
+        boolean result = super.mouseReleased(button);
+        if (parent == null) return result;
+
+
         GUINodeView view = (GUINodeView) parent;
 
-        if (button == 0 && active)
+        if (button == TiamatActionsConfig.clientSettings.guiSettings.createEditNodeButton && view.tempNode != null && view.tempNode.node == node)
         {
-            boolean wellSpaced = wellSpaced();
-            view.tempNode.parent.remove(view.tempNode);
-
-            if (wellSpaced)
+            if (createEditDragging)
             {
-                x = view.tempNode.x;
-                y = view.tempNode.y;
+                boolean wellSpaced = view.tempNode.wellSpaced();
 
-                int xx = (int) (x * parent.absolutePxWidth() + GUINode.HALF_SIZE), yy = (int) (y * parent.absolutePxHeight() + GUINode.HALF_SIZE);
-                node.setPosition(((EventEditorGUI) screen).action, xx, yy, this);
-            }
+                view.tempNode.parent.remove(view.tempNode);
 
-            view.tempNode = null;
-        }
+                if (wellSpaced)
+                {
+                    x = view.tempNode.x;
+                    y = view.tempNode.y;
 
-        if (button == 1 && isMouseWithin())
-        {
-            if (view.longConnector == null)
-            {
-                view.longConnector = new GUITempConnector(screen, (GUINodeView) parent, node, false);
-                view.shortConnector = new GUITempConnector(screen, (GUINodeView) parent, node, true);
+                    int xx = (int) (x * parent.absolutePxWidth() + GUINode.HALF_SIZE), yy = (int) (y * parent.absolutePxHeight() + GUINode.HALF_SIZE);
+                    node.setPosition(((EventEditorGUI) screen).action, xx, yy, this);
+                }
+                else
+                {
+                    view.parent.add(new GUIFadingText(screen, view.x + 5d / screen.pxWidth, view.y + 5d / screen.pxHeight, "Cannot move node here: too close to another node", 150, 300, Color.RED));
+                }
 
-                parent.add(0, view.longConnector);
-                parent.add(0, view.shortConnector);
+                view.tempNode = null;
+                createEditDragging = false;
             }
             else
             {
-                if (node != view.longConnector.from)
-                {
-                    String error = node.tryAddInput(((EventEditorGUI) screen).action, view.longConnector.from);
+                view.tempNode.parent.remove(view.tempNode);
+                view.tempNode = null;
 
-                    if (error == null)
-                    {
-                        ((EventEditorGUI) screen).refreshNodeConnections();
-                    }
-                    else
-                    {
-                        parent.parent.add(new GUIFadingText(screen, parent.x + 5d / screen.pxWidth, parent.y + 5d / screen.pxHeight, "Cannot add connection; " + error, 150, 300, Color.RED));
-                    }
-                }
-
-
-                parent.remove(view.longConnector);
-                parent.remove(view.shortConnector);
-
-                view.longConnector = null;
-                view.shortConnector = null;
+                GUIScreen gui = node.showNodeEditGUI();
+                if (gui != null) gui.addOnClosedActions(this::updateTooltip);
             }
+
+            result = true;
+        }
+        else if (button == TiamatActionsConfig.clientSettings.guiSettings.createNodeConnectionButton && isMouseWithin() && view.longConnector != null && node != view.longConnector.from)
+        {
+            String error = node.tryAddInput(((EventEditorGUI) screen).action, view.longConnector.from);
+
+            if (error == null)
+            {
+                ((EventEditorGUI) screen).refreshNodeConnections();
+            }
+            else
+            {
+                parent.parent.add(new GUIFadingText(screen, parent.x + 5d / screen.pxWidth, parent.y + 5d / screen.pxHeight, "Cannot add connection; " + error, 150, 300, Color.RED));
+            }
+
+
+            view.remove(view.longConnector);
+            view.remove(view.shortConnector);
+
+            view.longConnector = null;
+            view.shortConnector = null;
         }
 
-        return super.mouseReleased(button);
+        return result;
     }
 
     protected boolean wellSpaced()
@@ -168,7 +216,7 @@ public class GUINode extends GUIImage
         for (GUIElement element : parent.children)
         {
             if (!(element instanceof GUINode)) continue;
-            if (element == this || element == view.tempNode) continue;
+            if (element == this || ((GUINode) element).node == node) continue;
 
             if (Tools.distanceSquared(element.x * ww, element.y * hh, xx, yy) < MIN_DISTANCE_SQUARED)
             {

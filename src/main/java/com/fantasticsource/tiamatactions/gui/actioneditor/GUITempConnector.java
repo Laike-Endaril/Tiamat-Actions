@@ -3,6 +3,7 @@ package com.fantasticsource.tiamatactions.gui.actioneditor;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUILine;
+import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
@@ -87,7 +88,7 @@ public class GUITempConnector extends GUILine
     {
         GUINodeView view = (GUINodeView) parent;
 
-        if (!halfPart && button == 1 && isMouseWithin())
+        if (!halfPart && button == TiamatActionsConfig.clientSettings.guiSettings.createNodeConnectionButton && isMouseWithin())
         {
             view.longConnector.parent.remove(view.longConnector);
             view.shortConnector.parent.remove(view.shortConnector);
@@ -102,6 +103,8 @@ public class GUITempConnector extends GUILine
     @Override
     public boolean isWithin(double x, double y)
     {
+        if (parent == null) return false;
+
         for (GUIElement element : parent.children)
         {
             if (element instanceof GUINode && element.isWithin(x, y)) return false;
