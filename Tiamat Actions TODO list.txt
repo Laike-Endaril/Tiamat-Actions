@@ -4,8 +4,6 @@ Add panning MB config
 Add create/edit node MB config
 Add create connection MB config (click *or* drag) (start on button down, end on button release)
 
-Fix eval node
-
 Add inputs for string node
 
 Remove number node if not necessary

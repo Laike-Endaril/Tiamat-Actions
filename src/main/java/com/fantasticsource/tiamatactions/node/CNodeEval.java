@@ -26,9 +26,6 @@ public class CNodeEval extends CNode
     }
 
 
-    public String expression = "";
-
-
     @Override
     public ResourceLocation getTexture()
     {
@@ -45,7 +42,7 @@ public class CNodeEval extends CNode
     @Override
     public Class[] requiredInputTypes()
     {
-        return new Class[]{};
+        return new Class[]{String.class};
     }
 
     @Override
@@ -64,8 +61,8 @@ public class CNodeEval extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        String expression = this.expression;
-        for (int i = 0; i < inputs.length; i++) expression = expression.replaceAll("@" + i, inputs[i].toString());
+        String expression = (String) inputs[0];
+        for (int i = 1; i < inputs.length; i++) expression = expression.replaceAll("@" + i, inputs[i].toString());
 
         try
         {
