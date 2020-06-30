@@ -45,7 +45,7 @@ public class EventEditorGUI extends GUIScreen
         double wConversion = 1d / view.absolutePxWidth(), hConversion = 1d / view.absolutePxHeight();
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
-            view.add(new GUINode(this, (node.x - GUINode.FULL_SIZE) * wConversion, (node.y - GUINode.FULL_SIZE) * hConversion, node));
+            view.add(new GUINode(this, (node.x - GUINode.HALF_SIZE) * wConversion, (node.y - GUINode.HALF_SIZE) * hConversion, node));
         }
         refreshNodeConnections();
 

@@ -62,7 +62,7 @@ public class GUINodeView extends GUIPanZoomView
         if (!subElementClicked)
         {
             int xx = (int) (viewPxX() + (mouseX() - absoluteX()) / absoluteWidth() * viewPxW()), yy = (int) (viewPxY() + (mouseY() - absoluteY()) / absoluteHeight() * viewPxH());
-            if (!wellSpaced(xx - GUINode.FULL_SIZE, yy - GUINode.FULL_SIZE))
+            if (!wellSpaced(xx - GUINode.HALF_SIZE, yy - GUINode.HALF_SIZE))
             {
                 parent.add(new GUIFadingText(screen, x + 5d / screen.pxWidth, y + 5d / screen.pxHeight, "Cannot place a node here: too close to another node", 150, 300, Color.RED));
             }
@@ -99,7 +99,7 @@ public class GUINodeView extends GUIPanZoomView
                         action.EVENT_ENDPOINT_NODES.get(gui.event).add(node, Tools.getLong(node.y, node.x));
 
                         double wConversion = 1d / absolutePxWidth(), hConversion = 1d / absolutePxHeight();
-                        add(new GUINode(screen, (node.x - GUINode.FULL_SIZE) * wConversion, (node.y - GUINode.FULL_SIZE) * hConversion, node));
+                        add(new GUINode(screen, (node.x - GUINode.HALF_SIZE) * wConversion, (node.y - GUINode.HALF_SIZE) * hConversion, node));
                     }
                 });
             }

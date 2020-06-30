@@ -22,7 +22,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 public class GUINode extends GUIImage
 {
     protected static final TrigLookupTable SIDE_STEPPER = TrigLookupTable.getInstance(64);
-    public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1), MIN_DISTANCE_SQUARED = (FULL_SIZE << 2) * (FULL_SIZE << 2);
+    public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1), HALF_SIZE = FULL_SIZE >>> 1, MIN_DISTANCE_SQUARED = (FULL_SIZE << 2) * (FULL_SIZE << 2);
     public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE;
     protected static double mouseAnchorX, mouseAnchorY;
 
@@ -31,6 +31,7 @@ public class GUINode extends GUIImage
     public GUINode(GUIScreen screen, double x, double y, CNode node)
     {
         super(screen, x, y, FULL_SIZE, FULL_SIZE, node.getTexture());
+        ignoreMCGUIScale(true);
         this.node = node;
         updateTooltip();
     }
@@ -113,7 +114,7 @@ public class GUINode extends GUIImage
                 x = view.tempNode.x;
                 y = view.tempNode.y;
 
-                int xx = (int) (x * parent.absolutePxWidth() + GUINode.FULL_SIZE), yy = (int) (y * parent.absolutePxHeight() + GUINode.FULL_SIZE);
+                int xx = (int) (x * parent.absolutePxWidth() + GUINode.HALF_SIZE), yy = (int) (y * parent.absolutePxHeight() + GUINode.HALF_SIZE);
                 node.setPosition(((EventEditorGUI) screen).action, xx, yy, this);
             }
 
