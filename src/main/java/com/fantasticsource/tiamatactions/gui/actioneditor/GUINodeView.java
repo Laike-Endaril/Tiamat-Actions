@@ -8,7 +8,6 @@ import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.*;
-import com.fantasticsource.tiamatactions.node.staticoutput.CNodeNumber;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
 import com.fantasticsource.tools.Tools;
@@ -52,7 +51,7 @@ public class GUINodeView extends GUIPanZoomView
             else
             {
                 GUIText textElement = new GUIText(screen, "");
-                new TextSelectionGUI(textElement, "Select Node Type...", "Output String", "Output Number", "Output Source Entity", "", "Run Command", "Show Debug Message", "End Action", "Evaluate", "Get Action Variable", "Set Action Variable", "Run Sub-Action").addOnClosedActions(() ->
+                new TextSelectionGUI(textElement, "Select Node Type...", "Output String", "Output Source Entity", "", "Run Command", "Show Debug Message", "End Action", "Evaluate", "Get Action Variable", "Set Action Variable", "Run Sub-Action").addOnClosedActions(() ->
                 {
                     EventEditorGUI gui = (EventEditorGUI) screen;
                     CAction action = gui.action;
@@ -62,10 +61,6 @@ public class GUINodeView extends GUIPanZoomView
                     {
                         case "Output String":
                             node = new CNodeString(action.name, gui.event, xx, yy);
-                            break;
-
-                        case "Output Number":
-                            node = new CNodeNumber(action.name, gui.event, xx, yy);
                             break;
 
                         case "Output Source Entity":
