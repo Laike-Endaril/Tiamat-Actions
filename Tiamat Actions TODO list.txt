@@ -1,4 +1,1 @@
-Add create/edit node MB config
-Add create connection MB config (click *or* drag) (start on button down, end on button release)
-
 Fix interaction with MC GUI scaling
