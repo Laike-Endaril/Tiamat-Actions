@@ -16,6 +16,9 @@ import com.fantasticsource.tools.datastructures.Color;
 
 public class GUINodeView extends GUIPanZoomView
 {
+    public GUINode tempNode = null;
+    public GUITempConnector longConnector = null, shortConnector = null;
+
     public GUINodeView(GUIScreen screen, double width, double height, GUIElement... subElements)
     {
         super(screen, width, height, subElements);

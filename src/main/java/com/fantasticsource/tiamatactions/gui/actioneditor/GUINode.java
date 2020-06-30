@@ -25,8 +25,6 @@ public class GUINode extends GUIImage
     public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1), MIN_DISTANCE_SQUARED = (FULL_SIZE << 2) * (FULL_SIZE << 2);
     public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE;
     protected static double mouseAnchorX, mouseAnchorY;
-    protected static GUINode tempNode = null;
-    protected static GUITempConnector longConnector = null, shortConnector = null;
 
     protected CNode node;
 
@@ -47,7 +45,10 @@ public class GUINode extends GUIImage
 
     protected void updateTooltip()
     {
-        if (this == tempNode) setTooltip(null);
+        GUINodeView view = (GUINodeView) parent;
+        if (view == null) return;
+
+        if (this == view.tempNode) setTooltip(null);
         else
         {
             String error = node.error(((EventEditorGUI) screen).action);
@@ -70,10 +71,11 @@ public class GUINode extends GUIImage
     {
         if (button == 0 && isMouseWithin())
         {
+            GUINodeView view = (GUINodeView) parent;
             mouseAnchorX = (mouseX() - absoluteX()) / absoluteWidth();
             mouseAnchorY = (mouseY() - absoluteY()) / absoluteHeight();
-            tempNode = new GUINode(screen, x, y, node);
-            parent.add(tempNode);
+            view.tempNode = new GUINode(screen, x, y, node);
+            parent.add(view.tempNode);
         }
 
         return super.mousePressed(button);
@@ -85,11 +87,12 @@ public class GUINode extends GUIImage
     {
         if (button == 0 && active)
         {
-            tempNode.setAbsoluteX(mouseX() - mouseAnchorX * absoluteWidth());
-            tempNode.setAbsoluteY(mouseY() - mouseAnchorY * absoluteHeight());
+            GUINodeView view = (GUINodeView) parent;
+            view.tempNode.setAbsoluteX(mouseX() - mouseAnchorX * absoluteWidth());
+            view.tempNode.setAbsoluteY(mouseY() - mouseAnchorY * absoluteHeight());
 
             Color color = wellSpaced() ? Color.WHITE : Color.RED;
-            if (tempNode.color != color) tempNode.setColor(color);
+            if (view.tempNode.color != color) view.tempNode.setColor(color);
         }
 
         super.mouseDrag(button);
@@ -98,38 +101,40 @@ public class GUINode extends GUIImage
     @Override
     public boolean mouseReleased(int button)
     {
+        GUINodeView view = (GUINodeView) parent;
+
         if (button == 0 && active)
         {
             boolean wellSpaced = wellSpaced();
-            tempNode.parent.remove(tempNode);
+            view.tempNode.parent.remove(view.tempNode);
 
             if (wellSpaced)
             {
-                x = tempNode.x;
-                y = tempNode.y;
+                x = view.tempNode.x;
+                y = view.tempNode.y;
 
                 int xx = (int) (x * parent.absolutePxWidth() + GUINode.FULL_SIZE), yy = (int) (y * parent.absolutePxHeight() + GUINode.FULL_SIZE);
                 node.setPosition(((EventEditorGUI) screen).action, xx, yy, this);
             }
 
-            tempNode = null;
+            view.tempNode = null;
         }
 
         if (button == 1 && isMouseWithin())
         {
-            if (longConnector == null)
+            if (view.longConnector == null)
             {
-                longConnector = new GUITempConnector(screen, (GUINodeView) parent, node, false);
-                shortConnector = new GUITempConnector(screen, (GUINodeView) parent, node, true);
+                view.longConnector = new GUITempConnector(screen, (GUINodeView) parent, node, false);
+                view.shortConnector = new GUITempConnector(screen, (GUINodeView) parent, node, true);
 
-                parent.add(0, longConnector);
-                parent.add(0, shortConnector);
+                parent.add(0, view.longConnector);
+                parent.add(0, view.shortConnector);
             }
             else
             {
-                if (node != longConnector.from)
+                if (node != view.longConnector.from)
                 {
-                    String error = node.tryAddInput(((EventEditorGUI) screen).action, longConnector.from);
+                    String error = node.tryAddInput(((EventEditorGUI) screen).action, view.longConnector.from);
 
                     if (error == null)
                     {
@@ -142,11 +147,11 @@ public class GUINode extends GUIImage
                 }
 
 
-                parent.remove(longConnector);
-                parent.remove(shortConnector);
+                parent.remove(view.longConnector);
+                parent.remove(view.shortConnector);
 
-                longConnector = null;
-                shortConnector = null;
+                view.longConnector = null;
+                view.shortConnector = null;
             }
         }
 
@@ -155,12 +160,14 @@ public class GUINode extends GUIImage
 
     protected boolean wellSpaced()
     {
-        int ww = tempNode.parent.absolutePxWidth(), hh = tempNode.parent.absolutePxHeight();
-        double xx = tempNode.x * ww, yy = tempNode.y * hh;
+        GUINodeView view = (GUINodeView) parent;
+
+        int ww = view.tempNode.parent.absolutePxWidth(), hh = view.tempNode.parent.absolutePxHeight();
+        double xx = view.tempNode.x * ww, yy = view.tempNode.y * hh;
         for (GUIElement element : parent.children)
         {
             if (!(element instanceof GUINode)) continue;
-            if (element == this || element == tempNode) continue;
+            if (element == this || element == view.tempNode) continue;
 
             if (Tools.distanceSquared(element.x * ww, element.y * hh, xx, yy) < MIN_DISTANCE_SQUARED)
             {
@@ -205,12 +212,14 @@ public class GUINode extends GUIImage
     @Override
     public void draw()
     {
+        GUINodeView view = (GUINodeView) parent;
+
         if (node.error(((EventEditorGUI) screen).action) != null)
         {
             GlStateManager.disableTexture2D();
             GlStateManager.glBegin(GL_TRIANGLE_FAN);
-            if (this == tempNode) GlStateManager.color(1, 0, 0, 0.5f);
-            else if (tempNode != null && node == tempNode.node) GlStateManager.color(1, 0, 0, 0.3f);
+            if (this == view.tempNode) GlStateManager.color(1, 0, 0, 0.5f);
+            else if (view.tempNode != null && node == view.tempNode.node) GlStateManager.color(1, 0, 0, 0.3f);
             else GlStateManager.color(1, 0, 0, 1);
             double cos, sin;
             double[] array = SIDE_STEPPER.getArray();
@@ -225,8 +234,8 @@ public class GUINode extends GUIImage
 
 
         GlStateManager.enableTexture2D();
-        if (this == tempNode) GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af() * 0.5f);
-        else if (tempNode != null && node == tempNode.node) GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af() * 0.3f);
+        if (this == view.tempNode) GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af() * 0.5f);
+        else if (view.tempNode != null && node == view.tempNode.node) GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af() * 0.3f);
         else GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af());
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);

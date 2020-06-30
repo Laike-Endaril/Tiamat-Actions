@@ -85,13 +85,15 @@ public class GUITempConnector extends GUILine
     @Override
     public boolean mouseReleased(int button)
     {
+        GUINodeView view = (GUINodeView) parent;
+
         if (!halfPart && button == 1 && isMouseWithin())
         {
-            GUINode.longConnector.parent.remove(GUINode.longConnector);
-            GUINode.shortConnector.parent.remove(GUINode.shortConnector);
+            view.longConnector.parent.remove(view.longConnector);
+            view.shortConnector.parent.remove(view.shortConnector);
 
-            GUINode.longConnector = null;
-            GUINode.shortConnector = null;
+            view.longConnector = null;
+            view.shortConnector = null;
         }
 
         return super.mouseReleased(button);
