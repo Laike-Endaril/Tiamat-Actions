@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -12,6 +13,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 public class CNodeDebug extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/debug.png");
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("objects", Object.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     /**
@@ -48,9 +50,9 @@ public class CNodeDebug extends CNode
     }
 
     @Override
-    public Class arrayInputType()
+    public Pair<String, Class> getOptionalInputs()
     {
-        return Object.class;
+        return OPTIONAL_INPUTS;
     }
 
     @Override

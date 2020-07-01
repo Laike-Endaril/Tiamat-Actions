@@ -10,6 +10,7 @@ import com.fantasticsource.tools.component.CLong;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.component.Component;
 import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
+import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -54,7 +55,7 @@ public abstract class CNode extends Component
 
     public abstract LinkedHashMap<String, Class> getRequiredInputs();
 
-    public abstract Class arrayInputType();
+    public abstract Pair<String, Class> getOptionalInputs();
 
     public abstract Class outputType();
 
@@ -64,12 +65,12 @@ public abstract class CNode extends Component
     {
         if (inputNode == this) return "Same node";
 
-        if (getRequiredInputs().size() == 0 && arrayInputType() == null) return "This node cannot accept inputs";
+        if (getRequiredInputs().size() == 0 && getOptionalInputs() == null) return "This node cannot accept inputs";
 
         Class inputType = inputNode.outputType();
         if (inputType == null) return "Input has no output type";
 
-        if (!Tools.areRelated(inputType, arrayInputType()))
+        if (!Tools.areRelated(inputType, getOptionalInputs().getValue()))
         {
             boolean found = false;
             for (Class c : getRequiredInputs().values())

@@ -9,6 +9,7 @@ import com.fantasticsource.mctools.gui.element.text.filter.FilterNone;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CStringUTF8;
+import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -24,6 +25,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 public class CNodeString extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/string.png");
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("args", String.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     /**
@@ -63,9 +65,9 @@ public class CNodeString extends CNode
     }
 
     @Override
-    public Class arrayInputType()
+    public Pair<String, Class> getOptionalInputs()
     {
-        return String.class;
+        return OPTIONAL_INPUTS;
     }
 
     @Override

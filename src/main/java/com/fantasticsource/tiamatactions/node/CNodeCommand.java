@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -11,11 +12,12 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 public class CNodeCommand extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/command.png");
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("args", String.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("Command", String.class);
+        REQUIRED_INPUTS.put("command", String.class);
     }
 
     /**
@@ -52,9 +54,9 @@ public class CNodeCommand extends CNode
     }
 
     @Override
-    public Class arrayInputType()
+    public Pair<String, Class> getOptionalInputs()
     {
-        return String.class;
+        return OPTIONAL_INPUTS;
     }
 
     @Override

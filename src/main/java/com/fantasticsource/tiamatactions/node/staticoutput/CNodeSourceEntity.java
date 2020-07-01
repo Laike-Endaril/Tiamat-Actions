@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.node.staticoutput;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
@@ -48,7 +49,7 @@ public class CNodeSourceEntity extends CNode
     }
 
     @Override
-    public Class arrayInputType()
+    public Pair<String, Class> getOptionalInputs()
     {
         return null;
     }

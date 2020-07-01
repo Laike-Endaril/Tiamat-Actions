@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.LinkedHashMap;
@@ -14,8 +15,8 @@ public class CNodeSetActionVar extends CNode
 
     static
     {
-        REQUIRED_INPUTS.put("Variable", String.class);
-        REQUIRED_INPUTS.put("Value", String.class);
+        REQUIRED_INPUTS.put("varName", String.class);
+        REQUIRED_INPUTS.put("value", String.class);
     }
 
     /**
@@ -52,7 +53,7 @@ public class CNodeSetActionVar extends CNode
     }
 
     @Override
-    public Class arrayInputType()
+    public Pair<String, Class> getOptionalInputs()
     {
         return null;
     }
