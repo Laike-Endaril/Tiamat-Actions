@@ -10,7 +10,6 @@ import com.fantasticsource.tools.component.Component;
 import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.*;
@@ -130,7 +129,6 @@ public class CAction extends Component
             case "start":
                 for (CNode endNode : startEndpointNodes.toArray(new CNode[0]))
                 {
-                    System.out.println(TextFormatting.GREEN + "" + endNode.y);
                     endNode.executeTree(mainAction, results);
                 }
                 break;
@@ -219,6 +217,7 @@ public class CAction extends Component
         for (Map.Entry<Long, CNode> entry : initNodes.entrySet())
         {
             buf.writeLong(entry.getKey());
+            entry.getValue().actionName = name;
             writeMarked(buf, entry.getValue());
         }
 
@@ -226,6 +225,7 @@ public class CAction extends Component
         for (Map.Entry<Long, CNode> entry : startNodes.entrySet())
         {
             buf.writeLong(entry.getKey());
+            entry.getValue().actionName = name;
             writeMarked(buf, entry.getValue());
         }
 
@@ -233,6 +233,7 @@ public class CAction extends Component
         for (Map.Entry<Long, CNode> entry : tickNodes.entrySet())
         {
             buf.writeLong(entry.getKey());
+            entry.getValue().actionName = name;
             writeMarked(buf, entry.getValue());
         }
 
@@ -240,6 +241,7 @@ public class CAction extends Component
         for (Map.Entry<Long, CNode> entry : endNodes.entrySet())
         {
             buf.writeLong(entry.getKey());
+            entry.getValue().actionName = name;
             writeMarked(buf, entry.getValue());
         }
 
@@ -279,16 +281,36 @@ public class CAction extends Component
 
 
         initNodes.clear();
-        for (int i = buf.readInt(); i > 0; i--) initNodes.put(buf.readLong(), (CNode) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--)
+        {
+            CNode node = (CNode) readMarked(buf);
+            node.actionName = name;
+            initNodes.put(buf.readLong(), node);
+        }
 
         startNodes.clear();
-        for (int i = buf.readInt(); i > 0; i--) startNodes.put(buf.readLong(), (CNode) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--)
+        {
+            CNode node = (CNode) readMarked(buf);
+            node.actionName = name;
+            startNodes.put(buf.readLong(), node);
+        }
 
         tickNodes.clear();
-        for (int i = buf.readInt(); i > 0; i--) tickNodes.put(buf.readLong(), (CNode) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--)
+        {
+            CNode node = (CNode) readMarked(buf);
+            node.actionName = name;
+            tickNodes.put(buf.readLong(), node);
+        }
 
         endNodes.clear();
-        for (int i = buf.readInt(); i > 0; i--) endNodes.put(buf.readLong(), (CNode) readMarked(buf));
+        for (int i = buf.readInt(); i > 0; i--)
+        {
+            CNode node = (CNode) readMarked(buf);
+            node.actionName = name;
+            endNodes.put(buf.readLong(), node);
+        }
 
 
         initEndpointNodes.clear();
@@ -334,6 +356,7 @@ public class CAction extends Component
         for (Map.Entry<Long, CNode> entry : initNodes.entrySet())
         {
             cl.set(entry.getKey()).save(stream);
+            entry.getValue().actionName = name;
             saveMarked(stream, entry.getValue());
         }
 
@@ -341,6 +364,7 @@ public class CAction extends Component
         for (Map.Entry<Long, CNode> entry : startNodes.entrySet())
         {
             cl.set(entry.getKey()).save(stream);
+            entry.getValue().actionName = name;
             saveMarked(stream, entry.getValue());
         }
 
@@ -348,6 +372,7 @@ public class CAction extends Component
         for (Map.Entry<Long, CNode> entry : tickNodes.entrySet())
         {
             cl.set(entry.getKey()).save(stream);
+            entry.getValue().actionName = name;
             saveMarked(stream, entry.getValue());
         }
 
@@ -355,6 +380,7 @@ public class CAction extends Component
         for (Map.Entry<Long, CNode> entry : endNodes.entrySet())
         {
             cl.set(entry.getKey()).save(stream);
+            entry.getValue().actionName = name;
             saveMarked(stream, entry.getValue());
         }
 
@@ -397,16 +423,36 @@ public class CAction extends Component
         CInt ci = new CInt();
         CLong cl = new CLong();
         initNodes.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) initNodes.put(cl.load(stream).value, (CNode) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--)
+        {
+            CNode node = (CNode) loadMarked(stream);
+            node.actionName = name;
+            initNodes.put(cl.load(stream).value, node);
+        }
 
         startNodes.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) startNodes.put(cl.load(stream).value, (CNode) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--)
+        {
+            CNode node = (CNode) loadMarked(stream);
+            node.actionName = name;
+            startNodes.put(cl.load(stream).value, node);
+        }
 
         tickNodes.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) tickNodes.put(cl.load(stream).value, (CNode) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--)
+        {
+            CNode node = (CNode) loadMarked(stream);
+            node.actionName = name;
+            tickNodes.put(cl.load(stream).value, node);
+        }
 
         endNodes.clear();
-        for (int i = ci.load(stream).value; i > 0; i--) endNodes.put(cl.load(stream).value, (CNode) loadMarked(stream));
+        for (int i = ci.load(stream).value; i > 0; i--)
+        {
+            CNode node = (CNode) loadMarked(stream);
+            node.actionName = name;
+            endNodes.put(cl.load(stream).value, node);
+        }
 
 
         initEndpointNodes.clear();

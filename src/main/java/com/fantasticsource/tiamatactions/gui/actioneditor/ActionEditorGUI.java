@@ -7,7 +7,10 @@ import com.fantasticsource.mctools.gui.element.text.*;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.tiamatactions.Network;
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.node.CNode;
 import net.minecraft.util.text.TextFormatting;
+
+import java.util.LinkedHashMap;
 
 public class ActionEditorGUI extends GUIScreen
 {
@@ -45,7 +48,12 @@ public class ActionEditorGUI extends GUIScreen
         {
             if (name.valid() && !name.getText().equals(action.name))
             {
-                action.name = name.getText();
+                String n = name.getText();
+                action.name = n;
+                for (LinkedHashMap<Long, CNode> map : action.EVENT_NODES.values())
+                {
+                    for (CNode node : map.values()) node.actionName = n;
+                }
                 navbar.recalc(0);
             }
         });
