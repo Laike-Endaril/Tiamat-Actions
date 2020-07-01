@@ -1,0 +1,5 @@
+New node types...
+
+
+entity -> get position vector -> vector
+entity -> get look vector -> vector
