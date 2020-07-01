@@ -123,22 +123,19 @@ public class CAction extends Component
         switch (event)
         {
             case "init":
-                for (CNode endNode : initEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, results);
+                for (CNode endNode : initEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, this, results);
                 break;
 
             case "start":
-                for (CNode endNode : startEndpointNodes.toArray(new CNode[0]))
-                {
-                    endNode.executeTree(mainAction, results);
-                }
+                for (CNode endNode : startEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, this, results);
                 break;
 
             case "tick":
-                for (CNode endNode : tickEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, results);
+                for (CNode endNode : tickEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, this, results);
                 break;
 
             case "end":
-                for (CNode endNode : endEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, results);
+                for (CNode endNode : endEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, this, results);
                 break;
         }
     }
