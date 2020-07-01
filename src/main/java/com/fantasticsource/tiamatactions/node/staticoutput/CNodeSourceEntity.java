@@ -5,11 +5,14 @@ import com.fantasticsource.tiamatactions.node.CNode;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.LinkedHashMap;
+
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeSourceEntity extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/source_entity.png");
+    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
@@ -39,9 +42,9 @@ public class CNodeSourceEntity extends CNode
 
 
     @Override
-    public Class[] requiredInputTypes()
+    public LinkedHashMap<String, Class> getRequiredInputs()
     {
-        return new Class[0];
+        return REQUIRED_INPUTS;
     }
 
     @Override

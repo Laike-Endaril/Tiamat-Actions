@@ -17,12 +17,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeString extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/string.png");
+    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
@@ -55,9 +57,9 @@ public class CNodeString extends CNode
 
 
     @Override
-    public Class[] requiredInputTypes()
+    public LinkedHashMap<String, Class> getRequiredInputs()
     {
-        return new Class[0];
+        return REQUIRED_INPUTS;
     }
 
     @Override

@@ -52,7 +52,7 @@ public abstract class CNode extends Component
     public abstract String getDescription();
 
 
-    public abstract Class[] requiredInputTypes();
+    public abstract LinkedHashMap<String, Class> getRequiredInputs();
 
     public abstract Class arrayInputType();
 
@@ -64,7 +64,7 @@ public abstract class CNode extends Component
     {
         if (inputNode == this) return "Same node";
 
-        if (requiredInputTypes().length == 0 && arrayInputType() == null) return "This node cannot accept inputs";
+        if (getRequiredInputs().size() == 0 && arrayInputType() == null) return "This node cannot accept inputs";
 
         Class inputType = inputNode.outputType();
         if (inputType == null) return "Input has no output type";
@@ -72,7 +72,7 @@ public abstract class CNode extends Component
         if (!Tools.areRelated(inputType, arrayInputType()))
         {
             boolean found = false;
-            for (Class c : requiredInputTypes())
+            for (Class c : getRequiredInputs().values())
             {
                 if (Tools.areRelated(c, inputType))
                 {
@@ -173,17 +173,17 @@ public abstract class CNode extends Component
         LinkedHashMap<Long, CNode> eventNodes = action.EVENT_NODES.get(eventName);
         if (eventNodes == null) return "No action event found with name: " + '"' + eventName + '"';
 
-        if (inputNodePositions.size() < requiredInputTypes().length) return "Required input count not met; need more inputs";
+        if (inputNodePositions.size() < getRequiredInputs().size()) return "Required input count not met; need more inputs";
 
-        Class c1, c2;
-        for (int i = 0; i < requiredInputTypes().length; i++)
+        Class c2;
+        int i = 0;
+        for (Class c1 : getRequiredInputs().values())
         {
-            CNode inputNode = eventNodes.get(inputNodePositions.get(i));
-            if (inputNode == null) return "Node for input connection #" + (i + 1) + " does not exist!";
+            CNode inputNode = eventNodes.get(inputNodePositions.get(i++));
+            if (inputNode == null) return "Node for input connection #" + (i) + " does not exist!";
 
-            c1 = requiredInputTypes()[i];
             c2 = inputNode.outputType();
-            if (!Tools.areRelated(c1, c2)) return "Input #" + (i + 1) + " requires a " + c1.getSimpleName() + " but is being passed a " + c2.getSimpleName();
+            if (!Tools.areRelated(c1, c2)) return "Input #" + (i) + " requires a " + c1.getSimpleName() + " but is being passed a " + c2.getSimpleName();
         }
 
         return null;

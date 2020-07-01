@@ -6,11 +6,19 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.script.ScriptException;
 
+import java.util.LinkedHashMap;
+
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeEval extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/eval.png");
+    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
+
+    static
+    {
+        REQUIRED_INPUTS.put("Expression", String.class);
+    }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
@@ -40,9 +48,9 @@ public class CNodeEval extends CNode
 
 
     @Override
-    public Class[] requiredInputTypes()
+    public LinkedHashMap<String, Class> getRequiredInputs()
     {
-        return new Class[]{String.class};
+        return REQUIRED_INPUTS;
     }
 
     @Override

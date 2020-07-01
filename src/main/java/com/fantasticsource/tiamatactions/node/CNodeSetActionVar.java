@@ -3,11 +3,20 @@ package com.fantasticsource.tiamatactions.node;
 import com.fantasticsource.tiamatactions.action.CAction;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.LinkedHashMap;
+
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeSetActionVar extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/set_action_var.png");
+    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
+
+    static
+    {
+        REQUIRED_INPUTS.put("Variable", String.class);
+        REQUIRED_INPUTS.put("Value", String.class);
+    }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
@@ -37,9 +46,9 @@ public class CNodeSetActionVar extends CNode
 
 
     @Override
-    public Class[] requiredInputTypes()
+    public LinkedHashMap<String, Class> getRequiredInputs()
     {
-        return new Class[]{String.class, Object.class};
+        return REQUIRED_INPUTS;
     }
 
     @Override

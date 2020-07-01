@@ -1,5 +1,15 @@
+Add required input names to connectors
+Add inputs (and their names) and outputs to tooltips
+
+
+
 New node types...
 
-
 entity -> get position vector -> vector
+entity, vector -> set position vector
+
 entity -> get look vector -> vector
+entity, vector -> set look vector
+
+targetEntity, trueSourceEntity, damageTypeString, damageAmountString -> damage entity
+targetEntity, trueSourceEntity, sourceEntity, damageTypeString, damageAmountString -> damage entity

@@ -4,11 +4,19 @@ import com.fantasticsource.tiamatactions.action.CAction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import java.util.LinkedHashMap;
+
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeCommand extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/command.png");
+    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
+
+    static
+    {
+        REQUIRED_INPUTS.put("Command", String.class);
+    }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
@@ -38,9 +46,9 @@ public class CNodeCommand extends CNode
 
 
     @Override
-    public Class[] requiredInputTypes()
+    public LinkedHashMap<String, Class> getRequiredInputs()
     {
-        return new Class[]{String.class};
+        return REQUIRED_INPUTS;
     }
 
     @Override
