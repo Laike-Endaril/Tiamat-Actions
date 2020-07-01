@@ -283,33 +283,37 @@ public class CAction extends Component
         initNodes.clear();
         for (int i = buf.readInt(); i > 0; i--)
         {
+            long pos = buf.readLong();
             CNode node = (CNode) readMarked(buf);
             node.actionName = name;
-            initNodes.put(buf.readLong(), node);
+            initNodes.put(pos, node);
         }
 
         startNodes.clear();
         for (int i = buf.readInt(); i > 0; i--)
         {
+            long pos = buf.readLong();
             CNode node = (CNode) readMarked(buf);
             node.actionName = name;
-            startNodes.put(buf.readLong(), node);
+            startNodes.put(pos, node);
         }
 
         tickNodes.clear();
         for (int i = buf.readInt(); i > 0; i--)
         {
+            long pos = buf.readLong();
             CNode node = (CNode) readMarked(buf);
             node.actionName = name;
-            tickNodes.put(buf.readLong(), node);
+            tickNodes.put(pos, node);
         }
 
         endNodes.clear();
         for (int i = buf.readInt(); i > 0; i--)
         {
+            long pos = buf.readLong();
             CNode node = (CNode) readMarked(buf);
             node.actionName = name;
-            endNodes.put(buf.readLong(), node);
+            endNodes.put(pos, node);
         }
 
 
@@ -425,33 +429,37 @@ public class CAction extends Component
         initNodes.clear();
         for (int i = ci.load(stream).value; i > 0; i--)
         {
+            long pos = cl.load(stream).value;
             CNode node = (CNode) loadMarked(stream);
             node.actionName = name;
-            initNodes.put(cl.load(stream).value, node);
+            initNodes.put(pos, node);
         }
 
         startNodes.clear();
         for (int i = ci.load(stream).value; i > 0; i--)
         {
+            long pos = cl.load(stream).value;
             CNode node = (CNode) loadMarked(stream);
             node.actionName = name;
-            startNodes.put(cl.load(stream).value, node);
+            startNodes.put(pos, node);
         }
 
         tickNodes.clear();
         for (int i = ci.load(stream).value; i > 0; i--)
         {
+            long pos = cl.load(stream).value;
             CNode node = (CNode) loadMarked(stream);
             node.actionName = name;
-            tickNodes.put(cl.load(stream).value, node);
+            tickNodes.put(pos, node);
         }
 
         endNodes.clear();
         for (int i = ci.load(stream).value; i > 0; i--)
         {
+            long pos = cl.load(stream).value;
             CNode node = (CNode) loadMarked(stream);
             node.actionName = name;
-            endNodes.put(cl.load(stream).value, node);
+            endNodes.put(pos, node);
         }
 
 
