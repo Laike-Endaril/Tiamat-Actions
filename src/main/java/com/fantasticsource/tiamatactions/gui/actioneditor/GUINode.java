@@ -87,7 +87,7 @@ public class GUINode extends GUIImage
                 if (i >= node.inputNodePositions.size()) s += "\n" + TextFormatting.GREEN + "(None currently set)";
                 else while (i < node.inputNodePositions.size())
                 {
-                    CNode input = node.inputNodePositions.size() > i ? action.EVENT_NODES.get(node.eventName).get(node.inputNodePositions.get(i)) : null;
+                    CNode input = action.EVENT_NODES.get(node.eventName).get(node.inputNodePositions.get(i));
 
                     TextFormatting color = input != null && Tools.areRelated(input.outputType(), optionalInputs.getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
                     TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;

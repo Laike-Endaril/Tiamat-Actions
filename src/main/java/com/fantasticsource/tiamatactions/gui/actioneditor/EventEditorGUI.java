@@ -7,7 +7,11 @@ import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
+import net.minecraft.util.text.TextFormatting;
+
+import java.util.Map;
 
 public class EventEditorGUI extends GUIScreen
 {
@@ -65,7 +69,8 @@ public class EventEditorGUI extends GUIScreen
 
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
-            int number = 0;
+            int i = 0;
+            String s, s2;
             for (long position : node.inputNodePositions)
             {
                 CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
@@ -79,21 +84,42 @@ public class EventEditorGUI extends GUIScreen
                 view.add(0, connector2);
 
 
-                String s = "" + ++number + " (";
-                if (number <= node.getRequiredInputs().size()) s += node.getRequiredInputs().keySet().toArray(new String[0])[number - 1] + ")";
-                else s += "@" + (number - node.getRequiredInputs().size()) + ")";
+                s = TextFormatting.WHITE + "" + (i + 1) + ": ";
+                Map.Entry<String, Class>[] requiredInputs = node.getRequiredInputs().entrySet().toArray(new Map.Entry[0]);
+                if (i < node.getRequiredInputs().size())
+                {
+                    TextFormatting color = Tools.areRelated(inputNode.outputType(), requiredInputs[i].getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
+                    TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
+
+                    s += color + requiredInputs[i].getValue().getSimpleName() + " " + color2 + requiredInputs[i].getKey();
+
+                    s2 = s;
+                    if (color == TextFormatting.RED) s2 += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
+                }
+                else
+                {
+                    TextFormatting color = Tools.areRelated(inputNode.outputType(), node.getOptionalInputs().getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
+                    TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
+
+                    s += color + node.getOptionalInputs().getValue().getSimpleName() + " " + color2 + "@" + (i + 1 - node.getRequiredInputs().size());
+
+                    s2 = s;
+                    if (color == TextFormatting.RED) s2 += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
+                }
 
                 GUIText connectorLabel = new GUIText(this, 0, 0, s);
                 view.add(connectorLabel);
                 connectorLabel.setAbsoluteX(connector.absoluteX() + (connector.absoluteWidth() - connectorLabel.absoluteWidth()) * 0.5);
                 connectorLabel.setAbsoluteY(connector.absoluteY() + (connector.absoluteHeight() - connectorLabel.absoluteHeight()) * 0.5);
-                connector.setTooltip(s);
+                connector.setTooltip(s2);
 
                 view.addRemoveChildActions(element ->
                 {
                     if (element == connector) view.remove(connectorLabel);
                     return true;
                 });
+
+                i++;
             }
         }
     }
