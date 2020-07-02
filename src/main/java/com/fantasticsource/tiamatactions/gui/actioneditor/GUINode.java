@@ -23,7 +23,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 public class GUINode extends GUIImage
 {
     protected static final TrigLookupTable SIDE_STEPPER = TrigLookupTable.getInstance(64);
-    public static final int ICON_SIZE = 32, ERROR_BORDER_THICKNESS = 4, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1), HALF_SIZE = FULL_SIZE >>> 1, MIN_DISTANCE_SQUARED = (FULL_SIZE << 2) * (FULL_SIZE << 2);
+    public static final int ICON_SIZE = 64, ERROR_BORDER_THICKNESS = ICON_SIZE >>> 3, FULL_SIZE = ICON_SIZE + (ERROR_BORDER_THICKNESS << 1), HALF_SIZE = FULL_SIZE >>> 1, MIN_DISTANCE_SQUARED = (FULL_SIZE << 2) * (FULL_SIZE << 2);
     public static final double ERROR_BORDER_PERCENT = (double) ERROR_BORDER_THICKNESS / FULL_SIZE;
     protected static double mouseAnchorX, mouseAnchorY;
     protected static boolean createEditDragging = false;

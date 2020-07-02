@@ -80,7 +80,7 @@ public class EventEditorGUI extends GUIScreen
 
 
                 String s = "" + ++number + " (";
-                if (number <= node.getRequiredInputs().size()) s += "req)";
+                if (number <= node.getRequiredInputs().size()) s += node.getRequiredInputs().keySet().toArray(new String[0])[number - 1] + ")";
                 else s += "@" + (number - node.getRequiredInputs().size()) + ")";
 
                 GUIText connectorLabel = new GUIText(this, 0, 0, s);

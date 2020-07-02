@@ -1,9 +1,28 @@
-Add required input names to connectors
 Add inputs (and their names) and outputs to tooltips
 
 
 
 New node types...
+
+boolean -> continue if true ->
+
+string, string -> equal -> boolean
+string, string -> not equal -> boolean
+string, string -> less than -> boolean
+string, string -> greater than -> boolean
+string, string -> less than or equal to -> boolean
+string, string -> greater than or equal to -> boolean
+
+entity -> get mainhand item -> itemstack
+entity -> get offhand item -> itemstack
+entity -> get head item -> itemstack
+entity -> get shoulder item -> itemstack
+entity -> get cape item -> itemstack
+entity -> get chest item -> itemstack
+entity -> get leg item -> itemstack
+entity -> get foot item -> itemstack
+
+entity, string -> get attribute -> string (call new version of MCTools.getAttribute())
 
 entity -> get position vector -> vector
 entity, vector -> set position vector

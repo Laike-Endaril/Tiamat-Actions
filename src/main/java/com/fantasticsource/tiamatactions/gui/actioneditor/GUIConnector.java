@@ -11,9 +11,7 @@ import org.lwjgl.input.Keyboard;
 
 public class GUIConnector extends GUILine
 {
-    public static final Color[]
-            GREEN = new Color[]{GUIScreen.getIdleColor(Color.GREEN), GUIScreen.getHoverColor(Color.GREEN), Color.GREEN},
-            RED = new Color[]{GUIScreen.getIdleColor(Color.RED), GUIScreen.getHoverColor(Color.RED), Color.RED};
+    public static final Color[] GREEN = new Color[]{GUIScreen.getIdleColor(Color.GREEN), GUIScreen.getHoverColor(Color.GREEN), Color.GREEN};
 
     protected boolean halfPart;
     protected CNode from, to;
