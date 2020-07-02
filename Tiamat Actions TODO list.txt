@@ -1,4 +1,4 @@
-Add inputs (and their names) and outputs to tooltips
+Make connector tooltips better match node tooltips
 
 
 

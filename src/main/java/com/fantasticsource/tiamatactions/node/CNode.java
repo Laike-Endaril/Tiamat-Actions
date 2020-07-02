@@ -70,7 +70,7 @@ public abstract class CNode extends Component
         Class inputType = inputNode.outputType();
         if (inputType == null) return "Input has no output type";
 
-        if (!Tools.areRelated(inputType, getOptionalInputs().getValue()))
+        if (getOptionalInputs() == null || !Tools.areRelated(inputType, getOptionalInputs().getValue()))
         {
             boolean found = false;
             for (Class c : getRequiredInputs().values())

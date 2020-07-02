@@ -4,18 +4,23 @@ import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.text.GUIFadingText;
 import com.fantasticsource.mctools.gui.element.textured.GUIImage;
+import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Collision;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.TrigLookupTable;
 import com.fantasticsource.tools.datastructures.Color;
+import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
+
+import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
@@ -54,8 +59,50 @@ public class GUINode extends GUIImage
         if (this == view.tempNode) setTooltip(null);
         else
         {
+            EventEditorGUI gui = (EventEditorGUI) screen;
+            CAction action = gui.action;
+
+            String s = TextFormatting.WHITE + node.getDescription();
+
+            s += "\n" + TextFormatting.LIGHT_PURPLE + "Output type: " + TextFormatting.GREEN + (node.outputType() == null ? "(None)" : node.outputType().getSimpleName());
+
+            if (node.getRequiredInputs().size() > 0) s += "\n\n" + TextFormatting.WHITE + "Required inputs...";
+            int i = 0;
+            for (Map.Entry<String, Class> entry : node.getRequiredInputs().entrySet())
+            {
+                CNode input = i < node.inputNodePositions.size() ? action.EVENT_NODES.get(node.eventName).get(node.inputNodePositions.get(i)) : null;
+
+                TextFormatting color = input != null && Tools.areRelated(input.outputType(), entry.getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
+                TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
+
+                s += "\n" + TextFormatting.WHITE + (i + 1) + ": " + color + entry.getValue().getSimpleName() + " " + color2 + entry.getKey();
+                if (color == TextFormatting.RED) s += color + " (current input type is " + (input == null || input.outputType() == null ? "null" : input.outputType().getSimpleName()) + ")";
+
+                i++;
+            }
+            Pair<String, Class> optionalInputs = node.getOptionalInputs();
+            if (optionalInputs != null)
+            {
+                s += "\n\n" + TextFormatting.WHITE + "Optional " + TextFormatting.YELLOW + optionalInputs.getValue().getSimpleName() + TextFormatting.GOLD + " " + optionalInputs.getKey() + "... ";
+                if (i >= node.inputNodePositions.size()) s += "\n" + TextFormatting.GREEN + "(None currently set)";
+                else while (i < node.inputNodePositions.size())
+                {
+                    CNode input = node.inputNodePositions.size() > i ? action.EVENT_NODES.get(node.eventName).get(node.inputNodePositions.get(i)) : null;
+
+                    TextFormatting color = input != null && Tools.areRelated(input.outputType(), optionalInputs.getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
+                    TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
+
+                    s += "\n" + TextFormatting.WHITE + (i + 1) + ": " + color + optionalInputs.getValue().getSimpleName() + " " + color2 + "@" + (i + 1 - node.getRequiredInputs().size());
+                    if (color == TextFormatting.RED) s += color + " (current input type is " + (input == null || input.outputType() == null ? "null" : input.outputType().getSimpleName()) + ")";
+
+                    i++;
+                }
+            }
+
             String error = node.error(((EventEditorGUI) screen).action);
-            setTooltip(error == null ? node.getDescription() : node.getDescription() + " (" + error + ")");
+            if (error != null) s += "\n\n" + TextFormatting.RED + error;
+
+            setTooltip(s);
         }
     }
 
