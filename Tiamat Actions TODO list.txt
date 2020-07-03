@@ -4,15 +4,6 @@ Think it crashes if more than one input is added to test condition node; test an
 
 New node types...
 
-entity -> get mainhand item -> itemstack
-entity -> get offhand item -> itemstack
-entity -> get head item -> itemstack
-entity -> get shoulder item -> itemstack
-entity -> get cape item -> itemstack
-entity -> get chest item -> itemstack
-entity -> get leg item -> itemstack
-entity -> get foot item -> itemstack
-
 entity, string -> get attribute -> string (call new version of MCTools.getAttribute())
 
 entity -> get position vector -> vector
