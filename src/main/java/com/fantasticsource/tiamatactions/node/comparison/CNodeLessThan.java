@@ -1,4 +1,4 @@
-package com.fantasticsource.tiamatactions.node.highbool;
+package com.fantasticsource.tiamatactions.node.comparison;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
@@ -9,27 +9,26 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeEqual extends CNode
+public class CNodeLessThan extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/equal_to.png");
-    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("moreValues", Object.class);
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/less_than.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("value1", Object.class);
-        REQUIRED_INPUTS.put("value2", Object.class);
+        REQUIRED_INPUTS.put("value1", Comparable.class);
+        REQUIRED_INPUTS.put("value2", Comparable.class);
     }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeEqual()
+    public CNodeLessThan()
     {
         super();
     }
 
-    public CNodeEqual(String actionName, String event, int x, int y)
+    public CNodeLessThan(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -44,7 +43,7 @@ public class CNodeEqual extends CNode
     @Override
     public String getDescription()
     {
-        return "Do all inputs have the same value?";
+        return "Is value1 less than value2?";
     }
 
 
@@ -57,7 +56,7 @@ public class CNodeEqual extends CNode
     @Override
     public Pair<String, Class> getOptionalInputs()
     {
-        return OPTIONAL_INPUTS;
+        return null;
     }
 
     @Override
@@ -70,21 +69,6 @@ public class CNodeEqual extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        if (inputs[0] == null)
-        {
-            for (int i = 1; i < inputs.length; i++)
-            {
-                if (inputs[i] != null) return false;
-            }
-            return true;
-        }
-        else
-        {
-            for (int i = 1; i < inputs.length; i++)
-            {
-                if (!inputs[0].equals(inputs[i])) return false;
-            }
-            return true;
-        }
+        return ((Comparable) inputs[0]).compareTo(inputs[1]) < 0;
     }
 }

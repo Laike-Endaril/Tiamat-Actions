@@ -1,4 +1,4 @@
-package com.fantasticsource.tiamatactions.node.lowbool;
+package com.fantasticsource.tiamatactions.node.comparison;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
@@ -9,25 +9,26 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeNot extends CNode
+public class CNodeGreaterThan extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/not.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/greater_than.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("toNegate", Boolean.class);
+        REQUIRED_INPUTS.put("value1", Comparable.class);
+        REQUIRED_INPUTS.put("value2", Comparable.class);
     }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeNot()
+    public CNodeGreaterThan()
     {
         super();
     }
 
-    public CNodeNot(String actionName, String event, int x, int y)
+    public CNodeGreaterThan(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -42,7 +43,7 @@ public class CNodeNot extends CNode
     @Override
     public String getDescription()
     {
-        return "Return the opposite of the input";
+        return "Is value1 greater than value2?";
     }
 
 
@@ -68,6 +69,6 @@ public class CNodeNot extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        return !(boolean) inputs[0];
+        return ((Comparable) inputs[0]).compareTo(inputs[1]) > 0;
     }
 }

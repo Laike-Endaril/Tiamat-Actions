@@ -3,10 +3,6 @@ New node types...
 boolean, boolean, boolean... -> or -> boolean
 boolean, boolean, boolean... -> and -> boolean
 
-comparable, comparable -> less than -> boolean
-comparable, comparable -> less than or equal to -> boolean
-comparable, comparable -> greater than or equal to -> boolean
-
 entity -> get mainhand item -> itemstack
 entity -> get offhand item -> itemstack
 entity -> get head item -> itemstack

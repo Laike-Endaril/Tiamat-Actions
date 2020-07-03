@@ -1,4 +1,4 @@
-package com.fantasticsource.tiamatactions.node.highbool;
+package com.fantasticsource.tiamatactions.node.comparison;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
@@ -9,26 +9,26 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeGreaterThan extends CNode
+public class CNodeLessThanOrEqualTo extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/greater_than.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/less_than_or_equal_to.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("trueIfGreater", Comparable.class);
-        REQUIRED_INPUTS.put("trueIfLess", Comparable.class);
+        REQUIRED_INPUTS.put("value1", Comparable.class);
+        REQUIRED_INPUTS.put("value2", Comparable.class);
     }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeGreaterThan()
+    public CNodeLessThanOrEqualTo()
     {
         super();
     }
 
-    public CNodeGreaterThan(String actionName, String event, int x, int y)
+    public CNodeLessThanOrEqualTo(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -43,7 +43,7 @@ public class CNodeGreaterThan extends CNode
     @Override
     public String getDescription()
     {
-        return "Is value 1 greater than value 2?";
+        return "Is value1 less than or equal to value2?";
     }
 
 
@@ -69,6 +69,6 @@ public class CNodeGreaterThan extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        return ((Comparable) inputs[0]).compareTo(inputs[1]) > 0;
+        return ((Comparable) inputs[0]).compareTo(inputs[1]) <= 0;
     }
 }
