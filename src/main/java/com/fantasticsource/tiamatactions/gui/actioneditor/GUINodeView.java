@@ -9,10 +9,6 @@ import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
-import com.fantasticsource.tiamatactions.node.bool.CNodeAnd;
-import com.fantasticsource.tiamatactions.node.bool.CNodeNot;
-import com.fantasticsource.tiamatactions.node.bool.CNodeOr;
-import com.fantasticsource.tiamatactions.node.CNodeComparison;
 import com.fantasticsource.tiamatactions.node.inventory.*;
 import com.fantasticsource.tiamatactions.node.inventory.tiamat.*;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
@@ -32,12 +28,6 @@ public class GUINodeView extends GUIPanZoomView
         //Special
         NODE_CHOICES.put("Test Condition", CNodeTestCondition.class);
 
-        //Boolean
-        NODE_CHOICES.put("", null);
-        NODE_CHOICES.put("Not", CNodeNot.class);
-        NODE_CHOICES.put("Or", CNodeOr.class);
-        NODE_CHOICES.put("And", CNodeAnd.class);
-
         //Static
         NODE_CHOICES.put("\r\r", null);
         NODE_CHOICES.put("Output String", CNodeString.class);
@@ -45,6 +35,7 @@ public class GUINodeView extends GUIPanZoomView
 
         //Misc.
         NODE_CHOICES.put("\r\r\r", null);
+        NODE_CHOICES.put("Boolean", CNodeBoolean.class);
         NODE_CHOICES.put("Comparison", CNodeComparison.class);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
         NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
