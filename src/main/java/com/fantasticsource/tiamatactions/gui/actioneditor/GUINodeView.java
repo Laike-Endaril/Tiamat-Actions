@@ -9,6 +9,7 @@ import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
+import com.fantasticsource.tiamatactions.node.bool.CNodeEqual;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
 import com.fantasticsource.tools.Tools;
@@ -25,9 +26,11 @@ public class GUINodeView extends GUIPanZoomView
     {
         NODE_CHOICES.put("Test Condition", CNodeTestCondition.class);
         NODE_CHOICES.put("", null);
+        NODE_CHOICES.put("Equal", CNodeEqual.class);
+        NODE_CHOICES.put("\r", null);
         NODE_CHOICES.put("Output String", CNodeString.class);
         NODE_CHOICES.put("Output Source Entity", CNodeSourceEntity.class);
-        NODE_CHOICES.put("\r", null);
+        NODE_CHOICES.put("\r\r", null);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
         NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
         NODE_CHOICES.put("End Action", CNodeEndAction.class);
