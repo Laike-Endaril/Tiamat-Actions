@@ -218,20 +218,16 @@ public class CNodeGetItemstack extends CNode
                 return GlobalInventory.getVanillaFootItem((Entity) inputs[0]);
 
             case TYPE_TIAMAT_SHEATHED_MAINHAND_1:
-                //TODO
-                return null;
+                return GlobalInventory.getTiamatSheathedMainhand1((Entity) inputs[0]);
 
             case TYPE_TIAMAT_SHEATHED_OFFHAND_1:
-                //TODO
-                return null;
+                return GlobalInventory.getTiamatSheathedOffhand1((Entity) inputs[0]);
 
             case TYPE_TIAMAT_SHEATHED_MAINHAND_2:
-                //TODO
-                return null;
+                return GlobalInventory.getTiamatSheathedMainhand2((Entity) inputs[0]);
 
             case TYPE_TIAMAT_SHEATHED_OFFHAND_2:
-                //TODO
-                return null;
+                return GlobalInventory.getTiamatSheathedOffhand2((Entity) inputs[0]);
 
             case TYPE_TIAMAT_SHOULDER:
                 return GlobalInventory.getTiamatShoulderItem((Entity) inputs[0]);
