@@ -1,3 +1,7 @@
+Think it crashes if more than one input is added to test condition node; test and fix
+
+
+
 New node types...
 
 entity -> get mainhand item -> itemstack
