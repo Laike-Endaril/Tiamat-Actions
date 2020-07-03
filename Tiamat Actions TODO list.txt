@@ -1,8 +1,5 @@
 New node types...
 
-boolean, boolean, boolean... -> or -> boolean
-boolean, boolean, boolean... -> and -> boolean
-
 entity -> get mainhand item -> itemstack
 entity -> get offhand item -> itemstack
 entity -> get head item -> itemstack
