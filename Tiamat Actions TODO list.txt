@@ -4,8 +4,6 @@ Think it crashes if more than one input is added to test condition node; test an
 
 New node types...
 
-entity, string -> get attribute -> string (call new version of MCTools.getAttribute())
-
 entity -> get position vector -> vector
 entity, vector -> set position vector
 

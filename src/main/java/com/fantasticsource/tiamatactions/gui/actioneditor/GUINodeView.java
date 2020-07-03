@@ -29,13 +29,16 @@ public class GUINodeView extends GUIPanZoomView
 
     static
     {
+        //Special
         NODE_CHOICES.put("Test Condition", CNodeTestCondition.class);
 
+        //Boolean
         NODE_CHOICES.put("", null);
         NODE_CHOICES.put("Not", CNodeNot.class);
         NODE_CHOICES.put("Or", CNodeOr.class);
         NODE_CHOICES.put("And", CNodeAnd.class);
 
+        //Comparison
         NODE_CHOICES.put("\r", null);
         NODE_CHOICES.put("Equal", CNodeEqual.class);
         NODE_CHOICES.put("Less Than", CNodeLessThan.class);
@@ -43,10 +46,12 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Less Than or Equal To", CNodeLessThanOrEqualTo.class);
         NODE_CHOICES.put("Greater Than or Equal To", CNodeGreaterThanOrEqualTo.class);
 
+        //Static
         NODE_CHOICES.put("\r\r", null);
         NODE_CHOICES.put("Output String", CNodeString.class);
         NODE_CHOICES.put("Output Source Entity", CNodeSourceEntity.class);
 
+        //Misc.
         NODE_CHOICES.put("\r\r\r", null);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
         NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
@@ -55,7 +60,9 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Get Action Variable", CNodeGetActionVar.class);
         NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);
         NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
+        NODE_CHOICES.put("Get Attribute", CNodeGetAttribute.class);
 
+        //Vanilla Inventory
         NODE_CHOICES.put("\r\r\r\r", null);
         NODE_CHOICES.put("Get Mainhand Item", CNodeGetMainhandItem.class);
         NODE_CHOICES.put("Get Offhand Item", CNodeGetOffhandItem.class);
@@ -64,6 +71,7 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Get Leg Item", CNodeGetLegItem.class);
         NODE_CHOICES.put("Get Foot Item", CNodeGetFootItem.class);
 
+        //Tiamat Inventory
         NODE_CHOICES.put("\r\r\r\r\r", null);
         NODE_CHOICES.put("Get Tiamat RPG Shoulder Item", CNodeGetShoulderItem.class);
         NODE_CHOICES.put("Get Tiamat RPG Cape Item", CNodeGetCapeItem.class);
