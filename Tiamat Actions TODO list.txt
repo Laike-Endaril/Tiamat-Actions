@@ -1,6 +1,6 @@
 New node types...
 
-boolean -> continue if true ->
+boolean, object -> continue if true -> object (the one passed in)
 
 string, string -> equal -> boolean
 string, string -> not equal -> boolean

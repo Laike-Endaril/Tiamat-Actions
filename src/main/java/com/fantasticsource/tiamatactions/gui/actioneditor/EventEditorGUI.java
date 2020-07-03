@@ -67,61 +67,80 @@ public class EventEditorGUI extends GUIScreen
             if (element instanceof GUIConnector) view.remove(element);
         }
 
+        int i;
         for (CNode node : action.EVENT_NODES.get(event).values())
         {
-            int i = 0;
-            String s, s2;
+            i = 0;
+            for (long position : node.conditionNodePositions)
+            {
+                refreshNodeConnection(node, position, i++, true);
+            }
+
+            i = 0;
             for (long position : node.inputNodePositions)
             {
-                CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
-
-                GUIConnector connector = new GUIConnector(this, view, inputNode, node, false);
-                GUIConnector connector2 = new GUIConnector(this, view, inputNode, node, true);
-                connector.linkMouseActivity(connector2);
-                connector2.linkMouseActivity(connector);
-
-                view.add(0, connector);
-                view.add(0, connector2);
-
-
-                s = TextFormatting.WHITE + "" + (i + 1) + ": ";
-                Map.Entry<String, Class>[] requiredInputs = node.getRequiredInputs().entrySet().toArray(new Map.Entry[0]);
-                if (i < node.getRequiredInputs().size())
-                {
-                    TextFormatting color = Tools.areRelated(inputNode.outputType(), requiredInputs[i].getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
-                    TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
-
-                    s += color + requiredInputs[i].getValue().getSimpleName() + " " + color2 + requiredInputs[i].getKey();
-
-                    s2 = s;
-                    if (color == TextFormatting.RED) s2 += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
-                }
-                else
-                {
-                    TextFormatting color = Tools.areRelated(inputNode.outputType(), node.getOptionalInputs().getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
-                    TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
-
-                    s += color + node.getOptionalInputs().getValue().getSimpleName() + " " + color2 + "@" + (i + 1 - node.getRequiredInputs().size());
-
-                    s2 = s;
-                    if (color == TextFormatting.RED) s2 += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
-                }
-
-                GUIText connectorLabel = new GUIText(this, 0, 0, s);
-                view.add(connectorLabel);
-                connectorLabel.setAbsoluteX(connector.absoluteX() + (connector.absoluteWidth() - connectorLabel.absoluteWidth()) * 0.5);
-                connectorLabel.setAbsoluteY(connector.absoluteY() + (connector.absoluteHeight() - connectorLabel.absoluteHeight()) * 0.5);
-                connector.setTooltip(s2);
-
-                view.addRemoveChildActions(element ->
-                {
-                    if (element == connector) view.remove(connectorLabel);
-                    return true;
-                });
-
-                i++;
+                refreshNodeConnection(node, position, i++, false);
             }
         }
+    }
+
+    protected void refreshNodeConnection(CNode node, long position, int i, boolean inputIsConditionNode)
+    {
+        CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
+
+        GUIConnector connector = new GUIConnector(this, view, inputNode, node, false);
+        GUIConnector connector2 = new GUIConnector(this, view, inputNode, node, true);
+        connector.linkMouseActivity(connector2);
+        connector2.linkMouseActivity(connector);
+
+        view.add(0, connector);
+        view.add(0, connector2);
+
+
+        String s, s2;
+        if (inputIsConditionNode)
+        {
+            s = TextFormatting.AQUA + "Condition #" + (i + 1);
+            s2 = s;
+        }
+        else
+        {
+            s = TextFormatting.WHITE + "" + (i + 1) + ": ";
+            Map.Entry<String, Class>[] requiredInputs = node.getRequiredInputs().entrySet().toArray(new Map.Entry[0]);
+            if (i < node.getRequiredInputs().size())
+            {
+                TextFormatting color = Tools.areRelated(inputNode.outputType(), requiredInputs[i].getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
+                TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
+
+                s += color + requiredInputs[i].getValue().getSimpleName() + " " + color2 + requiredInputs[i].getKey();
+
+                s2 = s;
+                if (color == TextFormatting.RED) s2 += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
+            }
+            else
+            {
+                TextFormatting color = Tools.areRelated(inputNode.outputType(), node.getOptionalInputs().getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
+                TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
+
+                s += color + node.getOptionalInputs().getValue().getSimpleName() + " " + color2 + "@" + (i + 1 - node.getRequiredInputs().size());
+
+                s2 = s;
+                if (color == TextFormatting.RED) s2 += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
+            }
+        }
+
+
+        GUIText connectorLabel = new GUIText(this, 0, 0, s);
+        view.add(connectorLabel);
+        connectorLabel.setAbsoluteX(connector.absoluteX() + (connector.absoluteWidth() - connectorLabel.absoluteWidth()) * 0.5);
+        connectorLabel.setAbsoluteY(connector.absoluteY() + (connector.absoluteHeight() - connectorLabel.absoluteHeight()) * 0.5);
+        connector.setTooltip(s2);
+
+        view.addRemoveChildActions(element ->
+        {
+            if (element == connector) view.remove(connectorLabel);
+            return true;
+        });
     }
 
 

@@ -23,9 +23,11 @@ public class GUINodeView extends GUIPanZoomView
 
     static
     {
+        NODE_CHOICES.put("Test Condition", CNodeTestCondition.class);
+        NODE_CHOICES.put("", null);
         NODE_CHOICES.put("Output String", CNodeString.class);
         NODE_CHOICES.put("Output Source Entity", CNodeSourceEntity.class);
-        NODE_CHOICES.put("", null);
+        NODE_CHOICES.put("\r", null);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
         NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
         NODE_CHOICES.put("End Action", CNodeEndAction.class);

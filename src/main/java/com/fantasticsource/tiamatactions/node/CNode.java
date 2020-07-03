@@ -28,6 +28,7 @@ public abstract class CNode extends Component
     public String actionName, eventName;
     public int x, y;
 
+    public ArrayList<Long> conditionNodePositions = new ArrayList<>();
     public ArrayList<Long> inputNodePositions = new ArrayList<>();
     public ArrayList<Long> outputNodePositions = new ArrayList<>();
 
@@ -65,29 +66,38 @@ public abstract class CNode extends Component
     {
         if (inputNode == this) return "Same node";
 
-        if (getRequiredInputs().size() == 0 && getOptionalInputs() == null) return "This node cannot accept inputs";
-
-        Class inputType = inputNode.outputType();
-        if (inputType == null) return "Input has no output type";
-
-        if (getOptionalInputs() == null || !Tools.areRelated(inputType, getOptionalInputs().getValue()))
+        if (inputNode instanceof CNodeTestCondition)
         {
-            boolean found = false;
-            for (Class c : getRequiredInputs().values())
-            {
-                if (Tools.areRelated(c, inputType))
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) return "This node does not accept any inputs of the given type: " + inputType.getSimpleName();
+            conditionNodePositions.add(Tools.getLong(inputNode.y, inputNode.x));
+            inputNode.outputNodePositions.add(Tools.getLong(y, x));
+            action.EVENT_ENDPOINT_NODES.get(eventName).removeAll(inputNode);
         }
+        else
+        {
+            if (getRequiredInputs().size() == 0 && getOptionalInputs() == null) return "This node cannot accept inputs";
+
+            Class inputType = inputNode.outputType();
+            if (inputType == null) return "Input has no output type";
+
+            if (getOptionalInputs() == null || !Tools.areRelated(inputType, getOptionalInputs().getValue()))
+            {
+                boolean found = false;
+                for (Class c : getRequiredInputs().values())
+                {
+                    if (Tools.areRelated(c, inputType))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) return "This node does not accept any inputs of the given type: " + inputType.getSimpleName();
+            }
 
 
-        inputNodePositions.add(Tools.getLong(inputNode.y, inputNode.x));
-        inputNode.outputNodePositions.add(Tools.getLong(y, x));
-        action.EVENT_ENDPOINT_NODES.get(eventName).removeAll(inputNode);
+            inputNodePositions.add(Tools.getLong(inputNode.y, inputNode.x));
+            inputNode.outputNodePositions.add(Tools.getLong(y, x));
+            action.EVENT_ENDPOINT_NODES.get(eventName).removeAll(inputNode);
+        }
 
         if (!inputLoopCheck(action, new ArrayList<>()))
         {
@@ -101,6 +111,7 @@ public abstract class CNode extends Component
     //Passing an action here because it needs to be usable from client, which doesn't have the action database
     public final void removeInput(CAction action, CNode inputNode)
     {
+        conditionNodePositions.remove(Tools.getLong(inputNode.y, inputNode.x));
         inputNodePositions.remove(Tools.getLong(inputNode.y, inputNode.x));
         inputNode.outputNodePositions.remove(Tools.getLong(y, x));
         if (inputNode.outputNodePositions.size() == 0) action.EVENT_ENDPOINT_NODES.get(eventName).add(inputNode, Tools.getLong(inputNode.y, inputNode.x));
@@ -116,16 +127,24 @@ public abstract class CNode extends Component
         ExplicitPriorityQueue<CNode> endPoints = action.EVENT_ENDPOINT_NODES.get(eventName);
         endPoints.removeAll(this);
 
-        for (Long position : inputNodePositions)
+        for (long position : conditionNodePositions)
         {
             CNode other = action.EVENT_NODES.get(eventName).get(position);
             other.outputNodePositions.remove(pos);
             if (other.outputNodePositions.size() == 0) endPoints.add(other, Tools.getLong(other.y, other.x));
         }
 
-        for (Long position : outputNodePositions)
+        for (long position : inputNodePositions)
         {
             CNode other = action.EVENT_NODES.get(eventName).get(position);
+            other.outputNodePositions.remove(pos);
+            if (other.outputNodePositions.size() == 0) endPoints.add(other, Tools.getLong(other.y, other.x));
+        }
+
+        for (long position : outputNodePositions)
+        {
+            CNode other = action.EVENT_NODES.get(eventName).get(position);
+            other.conditionNodePositions.remove(pos);
             other.inputNodePositions.remove(pos);
         }
     }
@@ -143,6 +162,14 @@ public abstract class CNode extends Component
         if (action.EVENT_ENDPOINT_NODES.get(eventName).removeAll(this)) action.EVENT_ENDPOINT_NODES.get(eventName).add(this, Tools.getLong(y, x));
 
 
+        for (Long position : conditionNodePositions)
+        {
+            CNode other = action.EVENT_NODES.get(eventName).get(position);
+            int index = other.outputNodePositions.indexOf(oldPos);
+            other.outputNodePositions.remove(oldPos);
+            other.outputNodePositions.add(index, newPos);
+        }
+
         for (Long position : inputNodePositions)
         {
             CNode other = action.EVENT_NODES.get(eventName).get(position);
@@ -154,9 +181,17 @@ public abstract class CNode extends Component
         for (Long position : outputNodePositions)
         {
             CNode other = action.EVENT_NODES.get(eventName).get(position);
-            int index = other.inputNodePositions.indexOf(oldPos);
-            other.inputNodePositions.remove(oldPos);
-            other.inputNodePositions.add(index, newPos);
+            int index = other.inputNodePositions.indexOf(oldPos), index2 = other.conditionNodePositions.indexOf(oldPos);
+            if (index != -1)
+            {
+                other.inputNodePositions.remove(oldPos);
+                other.inputNodePositions.add(index, newPos);
+            }
+            if (index2 != -1)
+            {
+                other.conditionNodePositions.remove(oldPos);
+                other.conditionNodePositions.add(index, newPos);
+            }
         }
 
 
@@ -197,27 +232,58 @@ public abstract class CNode extends Component
         if (inputBlacklist.contains(this)) return false;
 
         inputBlacklist.add(this);
+
+
+        for (Long inputPosition : conditionNodePositions)
+        {
+            CNode input = action.EVENT_NODES.get(eventName).get(inputPosition);
+            if (!input.inputLoopCheck(action, inputBlacklist)) return false;
+        }
+
         for (Long inputPosition : inputNodePositions)
         {
             CNode input = action.EVENT_NODES.get(eventName).get(inputPosition);
             if (!input.inputLoopCheck(action, inputBlacklist)) return false;
         }
 
+
         inputBlacklist.remove(this);
+
         return true;
     }
 
 
-    public final Object executeTree(CAction mainAction, CAction subAction, HashMap<Long, Object> results)
+    public final void executeTree(CAction mainAction, CAction subAction, HashMap<Long, Object> results)
+    {
+        try
+        {
+            executeTreeInternal(mainAction, subAction, results);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    protected final Object executeTreeInternal(CAction mainAction, CAction subAction, HashMap<Long, Object> results)
     {
         Object[] inputResults = new Object[inputNodePositions.size()];
+
+        for (long position : conditionNodePositions)
+        {
+            if (!mainAction.active) return null;
+
+            CNodeTestCondition input = (CNodeTestCondition) subAction.EVENT_NODES.get(eventName).get(position);
+
+            if (input.executeTreeInternal(mainAction, subAction, results) == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
+        }
 
         int i = 0;
         for (long position : inputNodePositions)
         {
             if (!mainAction.active) return null;
 
-            inputResults[i++] = results.computeIfAbsent(position, o -> subAction.EVENT_NODES.get(eventName).get(position).executeTree(mainAction, subAction, results));
+            inputResults[i++] = results.computeIfAbsent(position, o -> subAction.EVENT_NODES.get(eventName).get(position).executeTreeInternal(mainAction, subAction, results));
         }
 
         return execute(mainAction, inputResults);
@@ -241,6 +307,12 @@ public abstract class CNode extends Component
 
         buf.writeInt(x);
         buf.writeInt(y);
+
+        buf.writeInt(conditionNodePositions.size());
+        for (Long position : conditionNodePositions)
+        {
+            buf.writeLong(position);
+        }
 
         buf.writeInt(inputNodePositions.size());
         for (Long position : inputNodePositions)
@@ -266,6 +338,9 @@ public abstract class CNode extends Component
         x = buf.readInt();
         y = buf.readInt();
 
+        conditionNodePositions.clear();
+        for (int i = buf.readInt(); i > 0; i--) conditionNodePositions.add(buf.readLong());
+
         inputNodePositions.clear();
         for (int i = buf.readInt(); i > 0; i--) inputNodePositions.add(buf.readLong());
 
@@ -280,8 +355,14 @@ public abstract class CNode extends Component
     {
         new CStringUTF8().set(actionName).save(stream).set(eventName).save(stream);
 
-        CInt ci = new CInt().set(x).save(stream).set(y).save(stream).set(inputNodePositions.size()).save(stream);
+        CInt ci = new CInt().set(x).save(stream).set(y).save(stream);
+
         CLong cl = new CLong();
+
+        ci.set(conditionNodePositions.size()).save(stream);
+        for (Long position : conditionNodePositions) cl.set(position).save(stream);
+
+        ci.set(inputNodePositions.size()).save(stream);
         for (Long position : inputNodePositions) cl.set(position).save(stream);
 
         ci.set(outputNodePositions.size()).save(stream);
@@ -302,6 +383,9 @@ public abstract class CNode extends Component
 
         x = ci.load(stream).value;
         y = ci.load(stream).value;
+
+        conditionNodePositions.clear();
+        for (int i = ci.load(stream).value; i > 0; i--) conditionNodePositions.add(cl.load(stream).value);
 
         inputNodePositions.clear();
         for (int i = ci.load(stream).value; i > 0; i--) inputNodePositions.add(cl.load(stream).value);

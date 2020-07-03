@@ -5,20 +5,23 @@ import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.text.GUIFadingText;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tiamatactions.node.CNodeTestCondition;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import org.lwjgl.input.Keyboard;
 
 public class GUIConnector extends GUILine
 {
-    public static final Color[] GREEN = new Color[]{GUIScreen.getIdleColor(Color.GREEN), GUIScreen.getHoverColor(Color.GREEN), Color.GREEN};
+    public static final Color[]
+            GREEN = new Color[]{GUIScreen.getIdleColor(Color.GREEN), GUIScreen.getHoverColor(Color.GREEN), Color.GREEN},
+            AQUA = new Color[]{GUIScreen.getIdleColor(Color.AQUA), GUIScreen.getHoverColor(Color.AQUA), Color.AQUA};
 
     protected boolean halfPart;
     protected CNode from, to;
 
     public GUIConnector(GUIScreen screen, GUINodeView view, CNode from, CNode to, boolean halfPart)
     {
-        super(screen, (double) from.x / view.absolutePxWidth(), (double) from.y / view.absolutePxHeight(), halfPart ? (from.x + to.x) * 0.5 / view.absolutePxWidth() : (double) to.x / view.absolutePxWidth(), halfPart ? (from.y + to.y) * 0.5 / view.absolutePxHeight() : (double) to.y / view.absolutePxHeight(), GREEN[0], GREEN[1], GREEN[2], halfPart ? 3 : 1);
+        super(screen, (double) from.x / view.absolutePxWidth(), (double) from.y / view.absolutePxHeight(), halfPart ? (from.x + to.x) * 0.5 / view.absolutePxWidth() : (double) to.x / view.absolutePxWidth(), halfPart ? (from.y + to.y) * 0.5 / view.absolutePxHeight() : (double) to.y / view.absolutePxHeight(), from instanceof CNodeTestCondition ? AQUA[0] : GREEN[0], from instanceof CNodeTestCondition ? AQUA[1] : GREEN[1], from instanceof CNodeTestCondition ? AQUA[2] : GREEN[2], halfPart ? 3 : 1);
 
         this.halfPart = halfPart;
         this.from = from;
@@ -98,6 +101,9 @@ public class GUIConnector extends GUILine
 
     protected void reorder(int newInputIndex)
     {
+        if (from instanceof CNodeTestCondition) return;
+
+
         if (newInputIndex >= to.inputNodePositions.size())
         {
             parent.parent.add(new GUIFadingText(screen, parent.x + 5d / screen.pxWidth, parent.y + 5d / screen.pxHeight, "Cannot set input number; given input number is higher than current number of inputs", 150, 300, Color.RED));
