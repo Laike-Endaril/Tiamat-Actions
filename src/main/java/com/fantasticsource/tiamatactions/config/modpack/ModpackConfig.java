@@ -16,7 +16,7 @@ public class ModpackConfig
                     "",
                     "Eg...",
                     "test;TestAction",
-                    "...would make a keybind with the translation key tiamatrpg.key.test, which would run an action named TestAction"
+                    "...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction"
             })
     @Config.RequiresMcRestart
     public String[] keyboundActions = new String[0];

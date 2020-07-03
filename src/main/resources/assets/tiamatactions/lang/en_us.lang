@@ -29,4 +29,4 @@ tiamatactions.config.createNodeConnectionButton=Create Node Connection (Mouse Bu
 tiamatactions.config.createNodeConnectionButton.tooltip=FILLSCREEN FIXNEWLINES Which mouse button creates connections between nodes in a node view (drag OR click one node, then next)\n \n
 
 tiamatactions.config.keyboundActions=Keybound Actions
-tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;actionName\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatrpg.key.test, which would run an action named TestAction\n \n
+tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;actionName\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction\n \n
