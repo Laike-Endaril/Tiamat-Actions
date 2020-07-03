@@ -9,8 +9,6 @@ import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
-import com.fantasticsource.tiamatactions.node.inventory.*;
-import com.fantasticsource.tiamatactions.node.inventory.tiamat.*;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
 import com.fantasticsource.tools.Tools;
@@ -35,6 +33,7 @@ public class GUINodeView extends GUIPanZoomView
 
         //Misc.
         NODE_CHOICES.put("\r\r\r", null);
+        NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Boolean", CNodeBoolean.class);
         NODE_CHOICES.put("Comparison", CNodeComparison.class);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
@@ -45,32 +44,6 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);
         NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
         NODE_CHOICES.put("Get Attribute", CNodeGetAttribute.class);
-
-        //Vanilla Inventory
-        NODE_CHOICES.put("\r\r\r\r", null);
-        NODE_CHOICES.put("Get Mainhand Item", CNodeGetMainhandItem.class);
-        NODE_CHOICES.put("Get Offhand Item", CNodeGetOffhandItem.class);
-        NODE_CHOICES.put("Get Head Item", CNodeGetHeadItem.class);
-        NODE_CHOICES.put("Get Chest Item", CNodeGetChestItem.class);
-        NODE_CHOICES.put("Get Leg Item", CNodeGetLegItem.class);
-        NODE_CHOICES.put("Get Foot Item", CNodeGetFootItem.class);
-
-        //Tiamat Inventory
-        NODE_CHOICES.put("\r\r\r\r\r", null);
-        NODE_CHOICES.put("Get Tiamat RPG Shoulder Item", CNodeGetShoulderItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Cape Item", CNodeGetCapeItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Quickslot Item", CNodeGetQuickslotItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Backpack Item", CNodeGetBackpackItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Pet Item", CNodeGetPetItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Deck Item", CNodeGetDeckItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Class Item", CNodeGetClassItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Offensive Skill Item", CNodeGetOffensiveSkillItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Utility Skill Item", CNodeGetUtilitySkillItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Ultimate Skill Item", CNodeGetUltimateSkillItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Passive Skill Item", CNodeGetPassiveSkillItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Gathering Profession Item", CNodeGetGatheringProfessionItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Crafting Profession Item", CNodeGetCraftingProfessionItem.class);
-        NODE_CHOICES.put("Get Tiamat RPG Recipe Item", CNodeGetRecipeItem.class);
     }
 
     public GUINode tempNode = null;
