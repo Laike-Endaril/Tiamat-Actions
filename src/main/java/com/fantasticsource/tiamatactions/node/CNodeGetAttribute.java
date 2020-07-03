@@ -44,7 +44,7 @@ public class CNodeGetAttribute extends CNode
     @Override
     public String getDescription()
     {
-        return "Output the given action variable";
+        return "Get an entity's attribute total";
     }
 
 
