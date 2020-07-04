@@ -140,6 +140,7 @@ public class CNodeString extends CNode
     }
 
 
+    @SideOnly(Side.CLIENT)
     public static class StringNodeGUI extends GUIScreen
     {
         protected StringNodeGUI(CNodeString node)

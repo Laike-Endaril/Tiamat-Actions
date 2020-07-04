@@ -23,10 +23,6 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeComparison extends CNode
 {
-    protected static final Color[]
-            WHITE = new Color[]{GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE},
-            PURPLE = new Color[]{GUIScreen.getIdleColor(Color.PURPLE), GUIScreen.getHoverColor(Color.PURPLE), Color.PURPLE};
-
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/comparison.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
@@ -193,8 +189,13 @@ public class CNodeComparison extends CNode
     }
 
 
+    @SideOnly(Side.CLIENT)
     public static class ComparisonNodeGUI extends GUIScreen
     {
+        protected static final Color[]
+                WHITE = new Color[]{GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE},
+                PURPLE = new Color[]{GUIScreen.getIdleColor(Color.PURPLE), GUIScreen.getHoverColor(Color.PURPLE), Color.PURPLE};
+
         protected ComparisonNodeGUI(CNodeComparison node)
         {
             show(node);

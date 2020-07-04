@@ -23,10 +23,6 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeBoolean extends CNode
 {
-    protected static final Color[]
-            WHITE = new Color[]{GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE},
-            PURPLE = new Color[]{GUIScreen.getIdleColor(Color.PURPLE), GUIScreen.getHoverColor(Color.PURPLE), Color.PURPLE};
-
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/boolean.png");
     protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("moreInputs", Boolean.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
@@ -204,8 +200,13 @@ public class CNodeBoolean extends CNode
     }
 
 
+    @SideOnly(Side.CLIENT)
     public static class BooleanNodeGUI extends GUIScreen
     {
+        protected static final Color[]
+                WHITE = new Color[]{GUIScreen.getIdleColor(Color.WHITE), GUIScreen.getHoverColor(Color.WHITE), Color.WHITE},
+                PURPLE = new Color[]{GUIScreen.getIdleColor(Color.PURPLE), GUIScreen.getHoverColor(Color.PURPLE), Color.PURPLE};
+
         protected BooleanNodeGUI(CNodeBoolean node)
         {
             show(node);
