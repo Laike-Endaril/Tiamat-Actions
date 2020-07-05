@@ -74,9 +74,7 @@ public class CNodeSetPosition extends CNode
     {
         Entity entity = (Entity) inputs[0];
         Vec3d position = (Vec3d) inputs[1];
-
-        //TODO this doesn't seem to work
-        entity.setPosition(position.x, position.y, position.z);
+        entity.setPositionAndUpdate(position.x, position.y, position.z);
         return null;
     }
 }
