@@ -1,4 +1,4 @@
-package com.fantasticsource.tiamatactions.node.staticoutput;
+package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
@@ -7,7 +7,6 @@ import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNone;
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.component.CStringUTF8;
 import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;

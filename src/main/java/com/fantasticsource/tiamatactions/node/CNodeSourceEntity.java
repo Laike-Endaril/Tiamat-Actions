@@ -1,4 +1,4 @@
-package com.fantasticsource.tiamatactions.node.staticoutput;
+package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;

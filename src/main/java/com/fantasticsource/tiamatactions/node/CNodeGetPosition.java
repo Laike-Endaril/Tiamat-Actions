@@ -1,7 +1,6 @@
-package com.fantasticsource.tiamatactions.node.vector;
+package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,26 +11,25 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeSetPosition extends CNode
+public class CNodeGetPosition extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/set_position.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_position.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
         REQUIRED_INPUTS.put("entity", EntityLivingBase.class);
-        REQUIRED_INPUTS.put("position", Vec3d.class);
     }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeSetPosition()
+    public CNodeGetPosition()
     {
         super();
     }
 
-    public CNodeSetPosition(String actionName, String event, int x, int y)
+    public CNodeGetPosition(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -46,7 +44,7 @@ public class CNodeSetPosition extends CNode
     @Override
     public String getDescription()
     {
-        return "Set an entity's position";
+        return "Get an entity's position";
     }
 
 
@@ -65,7 +63,7 @@ public class CNodeSetPosition extends CNode
     @Override
     public Class outputType()
     {
-        return null;
+        return Vec3d.class;
     }
 
 
@@ -73,8 +71,6 @@ public class CNodeSetPosition extends CNode
     public Object execute(CAction mainAction, Object... inputs)
     {
         Entity entity = (Entity) inputs[0];
-        Vec3d position = (Vec3d) inputs[1];
-        entity.setPositionAndUpdate(position.x, position.y, position.z);
-        return null;
+        return entity.getPositionVector();
     }
 }

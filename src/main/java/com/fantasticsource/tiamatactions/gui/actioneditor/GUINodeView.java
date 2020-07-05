@@ -9,10 +9,10 @@ import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
-import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
-import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
-import com.fantasticsource.tiamatactions.node.vector.CNodeGetPosition;
-import com.fantasticsource.tiamatactions.node.vector.CNodeSetPosition;
+import com.fantasticsource.tiamatactions.node.CNodeSourceEntity;
+import com.fantasticsource.tiamatactions.node.CNodeString;
+import com.fantasticsource.tiamatactions.node.CNodeGetPosition;
+import com.fantasticsource.tiamatactions.node.CNodeSetPosition;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 
