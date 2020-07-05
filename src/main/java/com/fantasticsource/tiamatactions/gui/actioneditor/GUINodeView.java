@@ -53,13 +53,18 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
+        //Actions
+        NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
+        NODE_CHOICES.put("End Action", CNodeEndAction.class);
+        NODE_CHOICES.put("Queue Action", CNodeQueueAction.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
         //Misc.
         NODE_CHOICES.put("Evaluate", CNodeEval.class);
         NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
-        NODE_CHOICES.put("End Action", CNodeEndAction.class);
-        NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 

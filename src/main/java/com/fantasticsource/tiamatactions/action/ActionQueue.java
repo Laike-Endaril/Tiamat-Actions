@@ -3,7 +3,6 @@ package com.fantasticsource.tiamatactions.action;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -13,7 +12,7 @@ import java.util.LinkedHashMap;
 
 public class ActionQueue
 {
-    public static final LinkedHashMap<Entity, LinkedHashMap<String, ActionQueue>> ENTITY_ACTION_QUEUES = new LinkedHashMap<>();
+    protected static final LinkedHashMap<Entity, LinkedHashMap<String, ActionQueue>> ENTITY_ACTION_QUEUES = new LinkedHashMap<>();
 
     public String name;
     int size;
@@ -57,12 +56,8 @@ public class ActionQueue
         }
     }
 
-    @SubscribeEvent
-    public static void entityConstructing(EntityEvent.EntityConstructing event)
+    public static ActionQueue get(Entity entity, String queueName)
     {
-        LinkedHashMap<String, ActionQueue> map = new LinkedHashMap<>();
-        ENTITY_ACTION_QUEUES.put(event.getEntity(), map);
-        int size;
         for (String line : TiamatActionsConfig.serverSettings.actionQueues)
         {
             String[] tokens = Tools.fixedSplit(line, ",");
@@ -71,6 +66,7 @@ public class ActionQueue
                 throw new IllegalArgumentException("Bad syntax in queue config: " + line);
             }
 
+            int size;
             try
             {
                 size = Integer.parseInt(tokens[1].trim());
@@ -80,10 +76,16 @@ public class ActionQueue
                 throw new IllegalArgumentException("Bad syntax in queue config: " + line);
             }
 
+
+            if (!tokens[0].trim().equals(queueName)) continue;
+
+
+            LinkedHashMap<String, ActionQueue> map = ENTITY_ACTION_QUEUES.computeIfAbsent(entity, o -> new LinkedHashMap<>());
             String r = tokens[2].trim();
-            String name = tokens[0].trim();
-            map.put(name, new ActionQueue(name, size, r.toLowerCase().equals("t") || r.toLowerCase().equals("true")));
+            return map.computeIfAbsent(queueName, o -> new ActionQueue(queueName, size, r.toLowerCase().equals("t") || r.toLowerCase().equals("true")));
         }
+
+        throw new IllegalArgumentException("Queue does not exist: " + queueName);
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
