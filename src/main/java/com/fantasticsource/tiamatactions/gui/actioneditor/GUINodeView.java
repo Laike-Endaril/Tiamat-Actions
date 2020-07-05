@@ -11,6 +11,8 @@ import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeSourceEntity;
 import com.fantasticsource.tiamatactions.node.staticoutput.CNodeString;
+import com.fantasticsource.tiamatactions.node.vector.CNodeGetPosition;
+import com.fantasticsource.tiamatactions.node.vector.CNodeSetPosition;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 
@@ -31,6 +33,11 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Output String", CNodeString.class);
         NODE_CHOICES.put("Output Source Entity", CNodeSourceEntity.class);
 
+        //Vector
+        NODE_CHOICES.put("\r", null);
+        NODE_CHOICES.put("Get Entity Position", CNodeGetPosition.class);
+        NODE_CHOICES.put("Set Entity Position", CNodeSetPosition.class);
+
         //Misc.
         NODE_CHOICES.put("\r\r\r", null);
         NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
@@ -43,7 +50,7 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Get Action Variable", CNodeGetActionVar.class);
         NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);
         NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
-        NODE_CHOICES.put("Get Attribute", CNodeGetAttribute.class);
+        NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
     }
 
     public GUINode tempNode = null;
