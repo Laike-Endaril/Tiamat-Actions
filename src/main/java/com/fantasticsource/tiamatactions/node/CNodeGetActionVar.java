@@ -15,7 +15,7 @@ public class CNodeGetActionVar extends CNode
 
     static
     {
-        REQUIRED_INPUTS.put("varName", String.class);
+        REQUIRED_INPUTS.put("varName", Object.class);
     }
 
     /**

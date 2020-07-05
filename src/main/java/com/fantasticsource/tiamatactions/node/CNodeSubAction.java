@@ -15,7 +15,7 @@ public class CNodeSubAction extends CNode
 
     static
     {
-        REQUIRED_INPUTS.put("actionName", String.class);
+        REQUIRED_INPUTS.put("actionName", Object.class);
     }
 
     /**

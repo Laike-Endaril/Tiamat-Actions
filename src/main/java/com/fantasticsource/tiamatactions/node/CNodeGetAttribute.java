@@ -18,7 +18,7 @@ public class CNodeGetAttribute extends CNode
     static
     {
         REQUIRED_INPUTS.put("entity", EntityLivingBase.class);
-        REQUIRED_INPUTS.put("attribute", String.class);
+        REQUIRED_INPUTS.put("attribute", Object.class);
     }
 
     /**
@@ -70,6 +70,6 @@ public class CNodeGetAttribute extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        return MCTools.getAttribute((EntityLivingBase) inputs[0], (String) inputs[1]);
+        return MCTools.getAttribute((EntityLivingBase) inputs[0], "" + inputs[1]);
     }
 }

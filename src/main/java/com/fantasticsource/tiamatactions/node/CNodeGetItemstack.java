@@ -28,7 +28,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 public class CNodeGetItemstack extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_itemstack.png");
-    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("slotNumber", String.class);
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("slotNumber", Object.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static

@@ -15,7 +15,7 @@ public class CNodeSetActionVar extends CNode
 
     static
     {
-        REQUIRED_INPUTS.put("varName", String.class);
+        REQUIRED_INPUTS.put("varName", Object.class);
         REQUIRED_INPUTS.put("value", Object.class);
     }
 
@@ -68,7 +68,7 @@ public class CNodeSetActionVar extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        mainAction.actionVars.put((String) inputs[0], inputs[1]);
+        mainAction.actionVars.put("" + inputs[0], inputs[1]);
 
         return null;
     }

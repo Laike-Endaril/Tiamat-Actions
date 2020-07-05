@@ -24,7 +24,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 public class CNodeString extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/string.png");
-    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("args", String.class);
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("args", Object.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     /**
@@ -83,7 +83,7 @@ public class CNodeString extends CNode
 
         for (int i = 0; i < inputs.length; i++)
         {
-            result = result.replaceAll("@" + (i + 1), (String) inputs[i]);
+            result = result.replaceAll("@" + (i + 1), "" + inputs[i]);
         }
 
         return result;

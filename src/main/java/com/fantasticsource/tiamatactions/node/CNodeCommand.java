@@ -12,12 +12,12 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 public class CNodeCommand extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/command.png");
-    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("args", String.class);
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("args", Object.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("command", String.class);
+        REQUIRED_INPUTS.put("command", Object.class);
     }
 
     /**
@@ -69,11 +69,11 @@ public class CNodeCommand extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        String command = ((String) inputs[0]).replaceAll("@p|@P", mainAction.source.getName());
+        String command = ("" + inputs[0]).replaceAll("@p|@P", mainAction.source.getName());
 
         for (int i = 1; i < inputs.length; i++)
         {
-            command = command.replaceAll("@" + i, (String) inputs[i]);
+            command = command.replaceAll("@" + i, "" + inputs[i]);
         }
 
         FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(mainAction.source, command);

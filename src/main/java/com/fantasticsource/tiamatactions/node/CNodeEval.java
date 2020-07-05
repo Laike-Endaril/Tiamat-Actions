@@ -6,7 +6,6 @@ import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.util.ResourceLocation;
 
 import javax.script.ScriptException;
-
 import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
@@ -14,12 +13,12 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 public class CNodeEval extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/eval.png");
-    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("args", String.class);
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("args", Object.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("expression", String.class);
+        REQUIRED_INPUTS.put("expression", Object.class);
     }
 
     /**
@@ -71,8 +70,8 @@ public class CNodeEval extends CNode
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        String expression = (String) inputs[0];
-        for (int i = 1; i < inputs.length; i++) expression = expression.replaceAll("@" + i, inputs[i].toString());
+        String expression = "" + inputs[0];
+        for (int i = 1; i < inputs.length; i++) expression = expression.replaceAll("@" + i, "" + inputs[i]);
 
         try
         {
