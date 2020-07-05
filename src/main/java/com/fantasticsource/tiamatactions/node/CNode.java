@@ -190,7 +190,7 @@ public abstract class CNode extends Component
             if (index2 != -1)
             {
                 other.conditionNodePositions.remove(oldPos);
-                other.conditionNodePositions.add(index, newPos);
+                other.conditionNodePositions.add(index2, newPos);
             }
         }
 
@@ -283,7 +283,9 @@ public abstract class CNode extends Component
         {
             if (!mainAction.active) return null;
 
-            inputResults[i++] = results.computeIfAbsent(position, o -> subAction.EVENT_NODES.get(eventName).get(position).executeTreeInternal(mainAction, subAction, results));
+            inputResults[i] = results.computeIfAbsent(position, o -> subAction.EVENT_NODES.get(eventName).get(position).executeTreeInternal(mainAction, subAction, results));
+
+            if (inputResults[i++] == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
         }
 
         return execute(mainAction, inputResults);
