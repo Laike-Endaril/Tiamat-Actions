@@ -9,10 +9,6 @@ import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
-import com.fantasticsource.tiamatactions.node.CNodeSourceEntity;
-import com.fantasticsource.tiamatactions.node.CNodeString;
-import com.fantasticsource.tiamatactions.node.CNodeGetPosition;
-import com.fantasticsource.tiamatactions.node.CNodeSetPosition;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 
@@ -45,6 +41,7 @@ public class GUINodeView extends GUIPanZoomView
         separator += "\r";
 
         //Positions and Vectors
+        NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
         NODE_CHOICES.put("Get Entity Position", CNodeGetPosition.class);
         NODE_CHOICES.put("Set Entity Position", CNodeSetPosition.class);
         NODE_CHOICES.put(separator, null);
