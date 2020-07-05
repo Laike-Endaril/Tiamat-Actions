@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ActionQueue
 {
@@ -92,18 +91,14 @@ public class ActionQueue
     {
         if (event.phase != TickEvent.Phase.END || ENTITY_ACTION_QUEUES == null) return;
 
-        //entrySet.removeIf() caused very strange behavior.  I'm not sure if this approach actually fixes anything or if it merely hides the issue
-        for (Object o : ENTITY_ACTION_QUEUES.entrySet().toArray())
+        //TODO Strange behavior using entrySet.removeIf(), and an alternate method using entrySet.toArray() didn't work right either...need to figure out why this crashes
+        ENTITY_ACTION_QUEUES.entrySet().removeIf(entry ->
         {
-            Map.Entry<Entity, LinkedHashMap<String, ActionQueue>> entry = (Map.Entry<Entity, LinkedHashMap<String, ActionQueue>>) o;
-
-            if (!entry.getKey().isAddedToWorld() && entry.getKey().isDead)
-            {
-                ENTITY_ACTION_QUEUES.remove(entry.getKey());
-                continue;
-            }
+            if (!entry.getKey().isAddedToWorld() && entry.getKey().isDead) return true;
 
             for (ActionQueue queue : entry.getValue().values()) queue.tick();
-        }
+
+            return false;
+        });
     }
 }
