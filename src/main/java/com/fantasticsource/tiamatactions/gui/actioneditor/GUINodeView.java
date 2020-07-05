@@ -25,32 +25,49 @@ public class GUINodeView extends GUIPanZoomView
 
     static
     {
-        //Special
+        String separator = "";
+
+        //Booleans and Conditions
         NODE_CHOICES.put("Test Condition", CNodeTestCondition.class);
-
-        //Static
-        NODE_CHOICES.put("\r\r", null);
-        NODE_CHOICES.put("Output String", CNodeString.class);
-        NODE_CHOICES.put("Output Source Entity", CNodeSourceEntity.class);
-
-        //Vector
-        NODE_CHOICES.put("\r", null);
-        NODE_CHOICES.put("Get Entity Position", CNodeGetPosition.class);
-        NODE_CHOICES.put("Set Entity Position", CNodeSetPosition.class);
-
-        //Misc.
-        NODE_CHOICES.put("\r\r\r", null);
-        NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Boolean", CNodeBoolean.class);
         NODE_CHOICES.put("Comparison", CNodeComparison.class);
-        NODE_CHOICES.put("Run Command", CNodeCommand.class);
-        NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
-        NODE_CHOICES.put("End Action", CNodeEndAction.class);
-        NODE_CHOICES.put("Evaluate", CNodeEval.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //Static
+        NODE_CHOICES.put("Output String", CNodeString.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //Entities
+        NODE_CHOICES.put("Output Source Entity", CNodeSourceEntity.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //Positions and Vectors
+        NODE_CHOICES.put("Get Entity Position", CNodeGetPosition.class);
+        NODE_CHOICES.put("Set Entity Position", CNodeSetPosition.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //Variables
         NODE_CHOICES.put("Get Action Variable", CNodeGetActionVar.class);
         NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);
-        NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //Misc.
+        NODE_CHOICES.put("Evaluate", CNodeEval.class);
+        NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
+        NODE_CHOICES.put("Run Command", CNodeCommand.class);
+        NODE_CHOICES.put("End Action", CNodeEndAction.class);
+        NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //Debug
+        NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
     }
 
     public GUINode tempNode = null;
