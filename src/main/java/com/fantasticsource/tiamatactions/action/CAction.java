@@ -168,6 +168,7 @@ public class CAction extends Component
             {
                 FileInputStream stream = new FileInputStream(file);
                 CAction action = new CAction().load(stream);
+                action.name = filename.replace(".dat", "");
                 stream.close();
                 ALL_ACTIONS.put(action.name, action);
             }
