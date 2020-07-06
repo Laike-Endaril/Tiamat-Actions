@@ -70,7 +70,7 @@ public class CNodeSubAction extends CNode
         CAction subAction = CAction.ALL_ACTIONS.get(inputs[0]);
         if (subAction == null || subAction.tickEndpointNodes.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
 
-        subAction.queue(mainAction.source, mainAction.queue.name, mainAction.mainAction);
+        subAction.queue(mainAction.source, null, mainAction.mainAction);
 
         return null;
     }

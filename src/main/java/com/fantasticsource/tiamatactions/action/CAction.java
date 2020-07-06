@@ -79,7 +79,7 @@ public class CAction extends Component
 
     public void queue(Entity entity, String queueName, CAction mainAction)
     {
-        ActionQueue queue = ActionQueue.get(entity, queueName);
+        ActionQueue queue = queueName == null ? null : ActionQueue.get(entity, queueName);
 
         CAction action = (CAction) copy();
         action.source = entity;
@@ -100,7 +100,7 @@ public class CAction extends Component
 
 
         action.execute("init");
-        if (!action.active) return;
+        if (!action.mainAction.active) return;
 
 
         if (queue.queue.size() < queue.size) queue.queue.add(action);
