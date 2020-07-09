@@ -40,13 +40,16 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
-        //Positions and Vectors
+        //Positions, Vectors, etc.
         NODE_CHOICES.put("Output Vector", CNodeVector.class);
-        NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
-        NODE_CHOICES.put("Get Entity Position", CNodeGetPosition.class);
-        NODE_CHOICES.put("Set Entity Position", CNodeSetPosition.class);
+        NODE_CHOICES.put("Get Entity Position Vector", CNodeGetPosition.class);
+        NODE_CHOICES.put("Set Entity Position Vector", CNodeSetPosition.class);
         NODE_CHOICES.put("Get Entity Look Vector", CNodeGetLookVector.class);
         NODE_CHOICES.put("Set Entity Look Vector", CNodeSetLookVector.class);
+        NODE_CHOICES.put("Vector Sum", CNodeVectorSum.class);
+        NODE_CHOICES.put("Vector Difference", CNodeVectorDifference.class);
+        NODE_CHOICES.put("Ray", CNodeRay.class);
+        NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
