@@ -53,6 +53,12 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
+        //Array
+        NODE_CHOICES.put("Get From Array", CNodeGetFromArray.class);
+        NODE_CHOICES.put("Get Array Size", CNodeGetArraySize.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
         //Entity status
         NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
