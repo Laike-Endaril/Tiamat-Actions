@@ -42,6 +42,7 @@ public class GUINodeView extends GUIPanZoomView
 
         //Blocks
         NODE_CHOICES.put("Blockstate", CNodeBlockstate.class);
+        NODE_CHOICES.put("Get Blockstate", CNodeGetBlockstate.class);
         NODE_CHOICES.put("Set Blockstate", CNodeSetBlockstate.class);
         NODE_CHOICES.put("Blocks in Ray", CNodeBlocksInRay.class);
         NODE_CHOICES.put(separator, null);
