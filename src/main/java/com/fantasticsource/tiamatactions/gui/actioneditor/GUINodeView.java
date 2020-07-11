@@ -58,6 +58,7 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
         NODE_CHOICES.put("Get Entity World", CNodeGetWorld.class);
         NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
+        NODE_CHOICES.put("Get Entity Eye Position Vector", CNodeGetEyePosition.class);
         NODE_CHOICES.put("Get Entity Position Vector", CNodeGetPosition.class);
         NODE_CHOICES.put("Set Entity Position Vector", CNodeSetPosition.class);
         NODE_CHOICES.put("Get Entity Look Vector", CNodeGetLookVector.class);

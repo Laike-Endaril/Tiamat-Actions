@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
@@ -67,11 +68,26 @@ public class CNodeDebug extends CNode
     {
         if (inputs.length == 0) mainAction.source.sendMessage(new TextComponentString(TextFormatting.DARK_PURPLE + "(Nothing)"));
 
-        for (Object input : inputs)
-        {
-            mainAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "" + input));
-        }
+        for (String s : expandArray(inputs)) mainAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + s));
 
         return null;
+    }
+
+    protected ArrayList<String> expandArray(Object[] array)
+    {
+        return expandArray("", array);
+    }
+
+    protected ArrayList<String> expandArray(String prefix, Object[] array)
+    {
+        ArrayList<String> result = new ArrayList<>();
+
+        for (Object o : array)
+        {
+            result.add("" + o);
+            if (o.getClass().isArray()) result.addAll(expandArray(prefix + " ", (Object[]) o));
+        }
+
+        return result;
     }
 }

@@ -11,4 +11,10 @@ public class Ray
         this.origin = origin;
         this.direction = direction;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Ray: " + origin.toString() + ", " + direction.toString();
+    }
 }
