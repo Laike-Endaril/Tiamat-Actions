@@ -25,11 +25,11 @@ public class CNodeBoolean extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/boolean.png");
     protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("moreInputs", Boolean.class);
-    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
+    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS_TF = new LinkedHashMap<>(), REQUIRED_INPUTS_OTHER = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("input1", Boolean.class);
+        REQUIRED_INPUTS_OTHER.put("input1", Boolean.class);
     }
 
     public static final int
@@ -38,7 +38,9 @@ public class CNodeBoolean extends CNode
             TYPE_AND = 2,
             TYPE_NAND = 3,
             TYPE_XOR = 4,
-            TYPE_XNOR = 5;
+            TYPE_XNOR = 5,
+            TYPE_TRUE = 6,
+            TYPE_FALSE = 7;
 
     protected int type = TYPE_OR;
 
@@ -85,6 +87,12 @@ public class CNodeBoolean extends CNode
             case TYPE_XNOR:
                 return "XNOR";
 
+            case TYPE_TRUE:
+                return "TRUE";
+
+            case TYPE_FALSE:
+                return "FALSE";
+
             default:
                 return TextFormatting.RED + "ERROR" + TextFormatting.RESET;
         }
@@ -94,7 +102,7 @@ public class CNodeBoolean extends CNode
     @Override
     public LinkedHashMap<String, Class> getRequiredInputs()
     {
-        return REQUIRED_INPUTS;
+        return type == TYPE_TRUE || type == TYPE_FALSE ? REQUIRED_INPUTS_TF : REQUIRED_INPUTS_OTHER;
     }
 
     @Override
@@ -144,6 +152,12 @@ public class CNodeBoolean extends CNode
                 for (Object input : inputs) if ((boolean) input) count++;
                 return count % 2 == 0;
             }
+
+            case TYPE_TRUE:
+                return true;
+
+            case TYPE_FALSE:
+                return false;
 
             default:
                 throw new IllegalStateException("Invalid boolean type: " + type);
@@ -277,6 +291,22 @@ public class CNodeBoolean extends CNode
             root.add(new GUIText(this, "XNOR", color[0], color[1], color[2]).addClickActions(() ->
             {
                 node.type = TYPE_XNOR;
+                close();
+            }));
+
+            color = node.type == TYPE_TRUE ? PURPLE : WHITE;
+            root.add(new GUIElement(this, 1, 0));
+            root.add(new GUIText(this, "TRUE", color[0], color[1], color[2]).addClickActions(() ->
+            {
+                node.type = TYPE_TRUE;
+                close();
+            }));
+
+            color = node.type == TYPE_FALSE ? PURPLE : WHITE;
+            root.add(new GUIElement(this, 1, 0));
+            root.add(new GUIText(this, "FALSE", color[0], color[1], color[2]).addClickActions(() ->
+            {
+                node.type = TYPE_FALSE;
                 close();
             }));
         }

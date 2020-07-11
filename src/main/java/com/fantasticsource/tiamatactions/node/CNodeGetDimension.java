@@ -3,7 +3,6 @@ package com.fantasticsource.tiamatactions.node;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.LinkedHashMap;
@@ -17,7 +16,7 @@ public class CNodeGetDimension extends CNode
 
     static
     {
-        REQUIRED_INPUTS.put("entity", EntityLivingBase.class);
+        REQUIRED_INPUTS.put("entity", Entity.class);
     }
 
     /**

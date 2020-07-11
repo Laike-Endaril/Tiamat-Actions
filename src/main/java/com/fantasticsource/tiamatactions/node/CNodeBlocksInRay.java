@@ -1,35 +1,39 @@
 package com.fantasticsource.tiamatactions.node;
 
+import com.fantasticsource.mctools.ImprovedRayTracing;
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.data.Ray;
 import com.fantasticsource.tools.datastructures.Pair;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeSetPosition extends CNode
+public class CNodeBlocksInRay extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/set_position.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/blocks_in_ray.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("entity", Entity.class);
-        REQUIRED_INPUTS.put("position", Vec3d.class);
+        REQUIRED_INPUTS.put("world", World.class);
+        REQUIRED_INPUTS.put("ray", Ray.class);
+        REQUIRED_INPUTS.put("maxDistance", String.class);
+        REQUIRED_INPUTS.put("collideOnAllSolids", Boolean.class);
     }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeSetPosition()
+    public CNodeBlocksInRay()
     {
         super();
     }
 
-    public CNodeSetPosition(String actionName, String event, int x, int y)
+    public CNodeBlocksInRay(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -44,7 +48,7 @@ public class CNodeSetPosition extends CNode
     @Override
     public String getDescription()
     {
-        return "Set an entity's position";
+        return "Find blocks that intersect a ray";
     }
 
 
@@ -63,16 +67,14 @@ public class CNodeSetPosition extends CNode
     @Override
     public Class outputType()
     {
-        return null;
+        return BlockPos[].class;
     }
 
 
     @Override
     public Object execute(CAction mainAction, Object... inputs)
     {
-        Entity entity = (Entity) inputs[0];
-        Vec3d position = (Vec3d) inputs[1];
-        entity.setPositionAndUpdate(position.x, position.y, position.z);
-        return null;
+        Ray ray = (Ray) inputs[1];
+        return ImprovedRayTracing.blocksInRay((World) inputs[0], ray.origin, ray.direction, Double.parseDouble("" + inputs[2]), (boolean) inputs[3]);
     }
 }

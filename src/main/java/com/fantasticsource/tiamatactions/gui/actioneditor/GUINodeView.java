@@ -36,20 +36,32 @@ public class GUINodeView extends GUIPanZoomView
         separator += "\r";
 
         //Entities
-        NODE_CHOICES.put("Output Source Entity", CNodeSourceEntity.class);
+        NODE_CHOICES.put("Source Entity", CNodeSourceEntity.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
-        //Positions, Vectors, etc.
+        //Blocks
+        NODE_CHOICES.put("Blocks in Ray", CNodeBlocksInRay.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //Trig
         NODE_CHOICES.put("Output Vector", CNodeVector.class);
+        NODE_CHOICES.put("Vector Sum", CNodeVectorSum.class);
+        NODE_CHOICES.put("Vector Difference", CNodeVectorDifference.class);
+        NODE_CHOICES.put("Ray", CNodeRay.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //Entity status
+        NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
+        NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
+        NODE_CHOICES.put("Get Entity World", CNodeGetWorld.class);
+        NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
         NODE_CHOICES.put("Get Entity Position Vector", CNodeGetPosition.class);
         NODE_CHOICES.put("Set Entity Position Vector", CNodeSetPosition.class);
         NODE_CHOICES.put("Get Entity Look Vector", CNodeGetLookVector.class);
         NODE_CHOICES.put("Set Entity Look Vector", CNodeSetLookVector.class);
-        NODE_CHOICES.put("Vector Sum", CNodeVectorSum.class);
-        NODE_CHOICES.put("Vector Difference", CNodeVectorDifference.class);
-        NODE_CHOICES.put("Ray", CNodeRay.class);
-        NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
@@ -68,8 +80,6 @@ public class GUINodeView extends GUIPanZoomView
 
         //Misc.
         NODE_CHOICES.put("Evaluate", CNodeEval.class);
-        NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
-        NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";

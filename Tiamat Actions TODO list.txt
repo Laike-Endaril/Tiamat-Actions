@@ -1,3 +1,17 @@
+Node types that need icons:
+Get entity dimension
+Get entity position
+Set entity position
+Queue action (different from "run sub-action")
+Get entity look vector
+Set entity look vector
+Output Vector (ie. like string node, but for vectors)
+Vector sum
+Vector difference
+Ray
+
+
+
 Think it crashes if more than one input is added to test condition node; test and fix
 
 

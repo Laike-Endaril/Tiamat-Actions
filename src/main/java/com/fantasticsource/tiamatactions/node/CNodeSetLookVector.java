@@ -5,7 +5,6 @@ import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.TrigLookupTable;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -21,7 +20,7 @@ public class CNodeSetLookVector extends CNode
 
     static
     {
-        REQUIRED_INPUTS.put("entity", EntityLivingBase.class);
+        REQUIRED_INPUTS.put("entity", Entity.class);
         REQUIRED_INPUTS.put("lookVec", Vec3d.class);
     }
 
