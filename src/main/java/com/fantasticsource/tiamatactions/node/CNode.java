@@ -74,7 +74,11 @@ public abstract class CNode extends Component
         }
         else
         {
-            if (getRequiredInputs().size() == 0 && getOptionalInputs() == null) return "This node cannot accept inputs";
+            if (getOptionalInputs() == null)
+            {
+                if (getRequiredInputs().size() == 0) return "This node cannot accept inputs";
+                if (inputNodePositions.size() >= getRequiredInputs().size()) return "This node cannot accept any more inputs";
+            }
 
             Class inputType = inputNode.outputType();
             if (inputType == null) return "Input has no output type";
