@@ -16,12 +16,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.036a,)")
+@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.036c,)")
 public class TiamatActions
 {
     public static final String MODID = "tiamatactions";
     public static final String NAME = "Tiamat Actions";
-    public static final String VERSION = "1.12.2.000s";
+    public static final String VERSION = "1.12.2.000t";
 
 
     private static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();

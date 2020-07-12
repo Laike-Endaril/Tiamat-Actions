@@ -41,7 +41,9 @@ public class GUINodeView extends GUIPanZoomView
         separator += "\r";
 
         //Itemstacks
+        NODE_CHOICES.put("Itemstack", CNodeItemstack.class);
         NODE_CHOICES.put("Get Inventory Itemstack", CNodeGetItemstack.class);
+        NODE_CHOICES.put("Set Inventory Itemstack", CNodeSetItemstack.class);
         NODE_CHOICES.put("Get Itemstack NBT", CNodeGetItemstackNBT.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
