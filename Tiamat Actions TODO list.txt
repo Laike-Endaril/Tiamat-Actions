@@ -1,7 +1,3 @@
-Nodes for getting NBT
-
-
-
 New node types...
 
 targetEntity, damageTypeString, damageAmountString, trueSourceEntity, [sourceEntity] -> damage entity
