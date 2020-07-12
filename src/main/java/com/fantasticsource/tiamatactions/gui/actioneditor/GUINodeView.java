@@ -40,6 +40,12 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
+        //Itemstacks
+        NODE_CHOICES.put("Get Inventory Itemstack", CNodeGetItemstack.class);
+        NODE_CHOICES.put("Get Itemstack NBT", CNodeGetItemstackNBT.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
         //Blocks
         NODE_CHOICES.put("Blockstate", CNodeBlockstate.class);
         NODE_CHOICES.put("Get Blockstate", CNodeGetBlockstate.class);
@@ -64,7 +70,6 @@ public class GUINodeView extends GUIPanZoomView
         separator += "\r";
 
         //Entity status
-        NODE_CHOICES.put("Get Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
         NODE_CHOICES.put("Get Entity World", CNodeGetWorld.class);
         NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);

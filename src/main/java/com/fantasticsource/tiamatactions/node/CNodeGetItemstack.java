@@ -182,7 +182,7 @@ public class CNodeGetItemstack extends CNode
     @Override
     public Class outputType()
     {
-        return Boolean.class;
+        return ItemStack.class;
     }
 
 

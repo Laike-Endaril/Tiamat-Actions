@@ -1,7 +1,9 @@
 package com.fantasticsource.tiamatactions.node;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Pair;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -84,8 +86,14 @@ public class CNodeDebug extends CNode
 
         for (Object o : array)
         {
+            if (o instanceof NBTBase)
+            {
+                for (String s : MCTools.legibleNBT((NBTBase) o)) result.add(prefix + s);
+                continue;
+            }
+
             result.add("" + o);
-            if (o.getClass().isArray()) result.addAll(expandArray(prefix + " ", (Object[]) o));
+            if (o != null && o.getClass().isArray()) result.addAll(expandArray(prefix + " ", (Object[]) o));
         }
 
         return result;
