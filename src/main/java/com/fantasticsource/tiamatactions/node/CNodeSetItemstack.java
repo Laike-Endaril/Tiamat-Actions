@@ -188,7 +188,7 @@ public class CNodeSetItemstack extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         int index = inputs.length > 2 ? Integer.parseInt("" + inputs[2]) - 1 : 0;
 

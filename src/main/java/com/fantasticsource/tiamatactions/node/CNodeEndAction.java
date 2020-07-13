@@ -60,7 +60,7 @@ public class CNodeEndAction extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         mainAction.active = false;
 

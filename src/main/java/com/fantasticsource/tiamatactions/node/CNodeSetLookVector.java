@@ -71,7 +71,7 @@ public class CNodeSetLookVector extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         Entity entity = (Entity) inputs[0];
         Vec3d vector = (Vec3d) inputs[1];

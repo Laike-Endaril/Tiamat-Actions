@@ -68,7 +68,7 @@ public class CNodeBlockstate extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         String[] tokens = Tools.fixedSplit("" + inputs[0], ":");
         String domain = "minecraft", name;

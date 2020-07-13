@@ -11,6 +11,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 public class CNodeSubAction extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/sub_action.png");
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("forEach", Object.class);
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
@@ -54,24 +55,30 @@ public class CNodeSubAction extends CNode
     @Override
     public Pair<String, Class> getOptionalInputs()
     {
-        return null;
+        return OPTIONAL_INPUTS;
     }
 
     @Override
     public Class outputType()
     {
-        return null;
+        return Object.class;
     }
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        CAction subAction = CAction.ALL_ACTIONS.get(inputs[0]);
-        if (subAction == null || subAction.tickEndpointNodes.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
+        CAction newSubAction = CAction.ALL_ACTIONS.get(inputs[0]);
+        if (newSubAction == null || newSubAction.tickEndpointNodes.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
 
-        subAction.queue(mainAction.source, null, mainAction.mainAction);
+        if (inputs.length == 1) return newSubAction.queue(mainAction.source, null, mainAction.mainAction);
 
+        if (inputs.length == 2) return newSubAction.queue(mainAction.source, null, mainAction.mainAction, inputs[1]);
+
+        for (int i = 1; i < inputs.length; i++)
+        {
+            newSubAction.queue(mainAction.source, null, mainAction.mainAction, inputs[i]);
+        }
         return null;
     }
 }

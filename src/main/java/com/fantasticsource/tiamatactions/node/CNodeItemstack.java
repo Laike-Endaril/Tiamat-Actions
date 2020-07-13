@@ -68,7 +68,7 @@ public class CNodeItemstack extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         int count = inputs.length > 1 ? Integer.parseInt("" + inputs[1]) : 1;
         ItemStack stack = MCTools.getItemStack("" + inputs[0]);

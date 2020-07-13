@@ -68,7 +68,7 @@ public class CNodeVectorDifference extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         Vec3d result = (Vec3d) inputs[0];
         result = result.add(result);

@@ -66,7 +66,7 @@ public class CNodeGetArraySize extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         return ((Object[]) inputs[0]).length;
     }

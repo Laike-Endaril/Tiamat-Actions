@@ -66,7 +66,7 @@ public class CNodeTestCondition extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         return !(boolean) inputs[0] ? CANCEL : null;
     }

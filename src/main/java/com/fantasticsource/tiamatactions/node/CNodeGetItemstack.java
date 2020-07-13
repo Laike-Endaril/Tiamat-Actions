@@ -187,7 +187,7 @@ public class CNodeGetItemstack extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         int index = inputs.length > 1 ? Integer.parseInt("" + inputs[1]) - 1 : 0;
         ArrayList<ItemStack> items;

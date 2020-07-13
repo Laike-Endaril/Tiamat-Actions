@@ -68,7 +68,7 @@ public class CNodeVectorSum extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         Vec3d result = new Vec3d(0, 0, 0);
         for (Object input : inputs) result = result.add((Vec3d) input);

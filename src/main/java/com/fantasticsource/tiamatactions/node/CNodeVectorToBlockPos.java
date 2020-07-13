@@ -67,7 +67,7 @@ public class CNodeVectorToBlockPos extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         return new BlockPos((Vec3d) inputs[0]);
     }

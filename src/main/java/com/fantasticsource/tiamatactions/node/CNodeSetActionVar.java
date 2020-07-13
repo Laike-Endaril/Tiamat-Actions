@@ -66,7 +66,7 @@ public class CNodeSetActionVar extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         mainAction.actionVars.put("" + inputs[0], inputs[1]);
 

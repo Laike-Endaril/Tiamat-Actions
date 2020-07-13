@@ -47,6 +47,7 @@ public class CAction extends Component
             tickNodes = new LinkedHashMap<>(),
             endNodes = new LinkedHashMap<>();
     public final LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
+    public Object argument = null, result = null;
 
 
     /**
@@ -72,12 +73,22 @@ public class CAction extends Component
     }
 
 
-    public void queue(Entity source, String queueName)
+    public Object queue(Entity source, String queueName)
     {
-        queue(source, queueName, null);
+        return queue(source, queueName, null);
     }
 
-    public void queue(Entity entity, String queueName, CAction mainAction)
+    public Object queue(Entity source, String queueName, Object argument)
+    {
+        return queue(source, queueName, null, argument);
+    }
+
+    public Object queue(Entity entity, String queueName, CAction mainAction)
+    {
+        return queue(entity, queueName, mainAction, null);
+    }
+
+    public Object queue(Entity entity, String queueName, CAction mainAction, Object argument)
     {
         ActionQueue queue = queueName == null ? null : ActionQueue.get(entity, queueName);
 
@@ -85,6 +96,7 @@ public class CAction extends Component
         action.source = entity;
         action.queue = queue;
         action.mainAction = mainAction == null ? action : mainAction;
+        action.argument = argument;
 
         //"Execute immediate" style
         if ((queue == null || queue.queue.size() == 0) && action.tickEndpointNodes.size() == 0)
@@ -92,15 +104,15 @@ public class CAction extends Component
             action.execute("init");
             action.execute("start");
             action.execute("end");
-            return;
+            return result;
         }
 
-        if (queue.size <= 0) return;
-        if (queue.queue.size() >= queue.size && !queue.replaceLastIfFull) return;
+        if (queue.size <= 0) return result;
+        if (queue.queue.size() >= queue.size && !queue.replaceLastIfFull) return result;
 
 
         action.execute("init");
-        if (!action.mainAction.active) return;
+        if (!action.mainAction.active) return result;
 
 
         if (queue.queue.size() < queue.size) queue.queue.add(action);
@@ -109,6 +121,8 @@ public class CAction extends Component
             queue.queue.remove(queue.queue.size() - 1);
             queue.queue.add(action);
         }
+
+        return result;
     }
 
     protected void execute(String event)

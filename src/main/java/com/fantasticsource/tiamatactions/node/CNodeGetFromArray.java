@@ -67,7 +67,7 @@ public class CNodeGetFromArray extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         return ((Object[]) inputs[0])[Integer.parseInt("" + inputs[1]) - 1];
     }

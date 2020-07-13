@@ -72,7 +72,7 @@ public class CNodeBlocksInRay extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         Ray ray = (Ray) inputs[1];
         return ImprovedRayTracing.blocksInRay((World) inputs[0], ray.origin, ray.origin.add(ray.direction), Double.parseDouble("" + inputs[2]), (boolean) inputs[3]);

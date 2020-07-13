@@ -77,7 +77,7 @@ public class CNodeString extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         String result = string.replaceAll("@p|@P", mainAction.source.getName());
 

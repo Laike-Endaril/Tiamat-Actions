@@ -112,7 +112,7 @@ public class CNodeComparison extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         String s1 = "" + inputs[0], s2 = "" + inputs[1];
         int result = s1.compareTo(s2);

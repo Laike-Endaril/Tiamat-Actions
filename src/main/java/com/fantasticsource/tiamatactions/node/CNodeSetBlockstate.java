@@ -70,7 +70,7 @@ public class CNodeSetBlockstate extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         ((World) inputs[0]).setBlockState((BlockPos) inputs[1], (IBlockState) inputs[2]);
         return null;

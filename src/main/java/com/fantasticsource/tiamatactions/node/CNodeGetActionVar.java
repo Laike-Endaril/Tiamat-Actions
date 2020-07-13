@@ -65,7 +65,7 @@ public class CNodeGetActionVar extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         return mainAction.actionVars.get(inputs[0]);
     }

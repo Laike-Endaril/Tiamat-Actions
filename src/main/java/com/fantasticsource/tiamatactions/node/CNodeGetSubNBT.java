@@ -70,7 +70,7 @@ public class CNodeGetSubNBT extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         NBTBase nbt = (NBTBase) inputs[0];
         for (String ref : Tools.fixedSplit("" + inputs[1], ":"))

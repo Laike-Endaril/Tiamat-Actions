@@ -69,7 +69,7 @@ public class CNodeGetBlockstate extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         return ((World) inputs[0]).getBlockState((BlockPos) inputs[1]);
     }

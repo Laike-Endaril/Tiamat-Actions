@@ -66,7 +66,7 @@ public class CNodeDebug extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         if (inputs.length == 0) mainAction.source.sendMessage(new TextComponentString(TextFormatting.DARK_PURPLE + "(Nothing)"));
 

@@ -292,10 +292,10 @@ public abstract class CNode extends Component
             if (inputResults[i++] == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
         }
 
-        return execute(mainAction, inputResults);
+        return execute(mainAction, subAction, inputResults);
     }
 
-    protected abstract Object execute(CAction mainAction, Object... inputs);
+    protected abstract Object execute(CAction mainAction, CAction subAction, Object... inputs);
 
 
     @SideOnly(Side.CLIENT)

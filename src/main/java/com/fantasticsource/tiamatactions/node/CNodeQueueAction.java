@@ -68,7 +68,7 @@ public class CNodeQueueAction extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         CAction action = CAction.ALL_ACTIONS.get("" + inputs[2]);
         action.queue((Entity) inputs[0], "" + inputs[1]);

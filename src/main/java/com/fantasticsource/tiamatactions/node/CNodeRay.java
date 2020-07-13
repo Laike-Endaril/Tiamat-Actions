@@ -68,7 +68,7 @@ public class CNodeRay extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         return new Ray((Vec3d) inputs[0], (Vec3d) inputs[1]);
     }

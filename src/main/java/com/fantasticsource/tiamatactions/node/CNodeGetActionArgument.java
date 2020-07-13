@@ -2,33 +2,26 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Pair;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeGetEyePosition extends CNode
+public class CNodeGetActionArgument extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_eye_position.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_action_arg.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
-
-    static
-    {
-        REQUIRED_INPUTS.put("entity", Entity.class);
-    }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeGetEyePosition()
+    public CNodeGetActionArgument()
     {
         super();
     }
 
-    public CNodeGetEyePosition(String actionName, String event, int x, int y)
+    public CNodeGetActionArgument(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -43,7 +36,7 @@ public class CNodeGetEyePosition extends CNode
     @Override
     public String getDescription()
     {
-        return "Get the position of an entity's eyes";
+        return "Output the object passed into this action when it was executed as a sub-action";
     }
 
 
@@ -62,14 +55,13 @@ public class CNodeGetEyePosition extends CNode
     @Override
     public Class outputType()
     {
-        return Vec3d.class;
+        return Object.class;
     }
 
 
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        Entity entity = (Entity) inputs[0];
-        return entity.getPositionVector().addVector(0, entity.getEyeHeight(), 0);
+        return subAction.argument;
     }
 }

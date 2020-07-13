@@ -67,7 +67,7 @@ public class CNodeCommand extends CNode
 
 
     @Override
-    public Object execute(CAction mainAction, Object... inputs)
+    public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         String command = ("" + inputs[0]).replaceAll("@p|@P", mainAction.source.getName());
 
