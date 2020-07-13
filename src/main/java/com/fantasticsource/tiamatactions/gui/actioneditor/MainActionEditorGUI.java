@@ -1,7 +1,6 @@
 package com.fantasticsource.tiamatactions.gui.actioneditor;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
-import com.fantasticsource.mctools.gui.Namespace;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIButton;
 import com.fantasticsource.mctools.gui.element.other.GUIGradient;
@@ -36,8 +35,14 @@ public class MainActionEditorGUI extends GUIScreen
             @Override
             public GUIElement[] newLineDefaultElements()
             {
-                Namespace namespace = namespaces.computeIfAbsent("Actions", o -> new Namespace());
-                String nameString = namespace.getFirstAvailableNumberedName("Action");
+                String nameString = "Action";
+
+                if (listContainsName(nameString))
+                {
+                    int i = 2;
+                    while (listContainsName(nameString + i)) i++;
+                    nameString += i;
+                }
 
                 GUIText name = new GUIText(screen, nameString);
 
@@ -73,6 +78,15 @@ public class MainActionEditorGUI extends GUIScreen
             }
             return true;
         });
+    }
+
+    protected boolean listContainsName(String name)
+    {
+        for (GUIList.Line line : actionList.getLines())
+        {
+            if (((GUIText) line.getLineElement(1)).getText().equals(name)) return true;
+        }
+        return false;
     }
 
     @Override
