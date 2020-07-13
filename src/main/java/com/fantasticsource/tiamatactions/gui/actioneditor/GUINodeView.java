@@ -92,6 +92,7 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("End Action", CNodeEndAction.class);
         NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
         NODE_CHOICES.put("Get Action Argument", CNodeGetActionArgument.class);
+        NODE_CHOICES.put("Set Action Result", CNodeSetActionResult.class);
         NODE_CHOICES.put("Queue Action", CNodeQueueAction.class);
         NODE_CHOICES.put("Get Action Variable", CNodeGetActionVar.class);
         NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);

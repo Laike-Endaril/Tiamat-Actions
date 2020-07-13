@@ -104,15 +104,15 @@ public class CAction extends Component
             action.execute("init");
             action.execute("start");
             action.execute("end");
-            return result;
+            return action.result;
         }
 
-        if (queue.size <= 0) return result;
-        if (queue.queue.size() >= queue.size && !queue.replaceLastIfFull) return result;
+        if (queue.size <= 0) return action.result;
+        if (queue.queue.size() >= queue.size && !queue.replaceLastIfFull) return action.result;
 
 
         action.execute("init");
-        if (!action.mainAction.active) return result;
+        if (!action.mainAction.active) return action.result;
 
 
         if (queue.queue.size() < queue.size) queue.queue.add(action);
@@ -122,7 +122,7 @@ public class CAction extends Component
             queue.queue.add(action);
         }
 
-        return result;
+        return action.result;
     }
 
     protected void execute(String event)
