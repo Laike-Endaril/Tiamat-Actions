@@ -77,6 +77,8 @@ public class GUINodeView extends GUIPanZoomView
 
         //Array
         NODE_CHOICES.put("Get From Array", CNodeGetFromArray.class);
+        NODE_CHOICES.put("Add to Array", CNodeAddToArray.class);
+        NODE_CHOICES.put("Remove from Array", CNodeRemoveFromArray.class);
         NODE_CHOICES.put("Get Array Size", CNodeGetArraySize.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
