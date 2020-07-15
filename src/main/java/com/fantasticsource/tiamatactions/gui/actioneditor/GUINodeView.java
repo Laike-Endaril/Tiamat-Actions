@@ -37,6 +37,8 @@ public class GUINodeView extends GUIPanZoomView
 
         //Entities
         NODE_CHOICES.put("Source Entity", CNodeSourceEntity.class);
+        NODE_CHOICES.put("World Entities", CNodeWorldEntities.class);
+        NODE_CHOICES.put("Entity Filter: In Cone", CNodeEntityFilterInCone.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
