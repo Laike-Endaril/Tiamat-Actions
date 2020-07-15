@@ -13,6 +13,7 @@ import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
 import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -265,6 +266,7 @@ public abstract class CNode extends Component
         }
         catch (Exception e)
         {
+            System.err.println(TextFormatting.RED + "Exception caught in action: " + subAction.name + " (Main action: " + mainAction.name + ")");
             e.printStackTrace();
         }
     }

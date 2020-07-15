@@ -38,6 +38,8 @@ public class GUINodeView extends GUIPanZoomView
         //Entities
         NODE_CHOICES.put("Source Entity", CNodeSourceEntity.class);
         NODE_CHOICES.put("World Entities", CNodeWorldEntities.class);
+        NODE_CHOICES.put("Entity Filter: In Cube", CNodeEntityFilterInCube.class);
+        NODE_CHOICES.put("Entity Filter: In Sphere", CNodeEntityFilterInSphere.class);
         NODE_CHOICES.put("Entity Filter: In Cone", CNodeEntityFilterInCone.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
@@ -69,6 +71,7 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Vector Sum", CNodeVectorSum.class);
         NODE_CHOICES.put("Vector Difference", CNodeVectorDifference.class);
         NODE_CHOICES.put("Ray", CNodeRay.class);
+        NODE_CHOICES.put("Ray Collision Vector", CNodeRayCollisionVector.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
