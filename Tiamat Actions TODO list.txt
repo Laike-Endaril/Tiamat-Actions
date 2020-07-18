@@ -1,8 +1,0 @@
-Combine entity data getters?
-Combine entity data setters?
-
-
-
-New node types...
-
-targetEntity, damageTypeString, damageAmountString, trueSourceEntity, [sourceEntity] -> damage entity

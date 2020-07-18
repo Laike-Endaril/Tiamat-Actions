@@ -33,7 +33,7 @@ public class TiamatActions
         MinecraftForge.EVENT_BUS.register(TiamatActions.class);
         Network.init();
         Attributes.init();
-        DamageTypes.init();
+        DamageTypes.refresh();
         MinecraftForge.EVENT_BUS.register(ActionQueue.class);
         MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
 
@@ -50,5 +50,11 @@ public class TiamatActions
     public static void saveConfig(ConfigChangedEvent.OnConfigChangedEvent event)
     {
         if (event.getModID().equals(MODID)) ConfigManager.sync(MODID, Config.Type.INSTANCE);
+    }
+
+    @SubscribeEvent
+    public static void syncConfig(ConfigChangedEvent.PostConfigChangedEvent event)
+    {
+        DamageTypes.refresh();
     }
 }

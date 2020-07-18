@@ -83,7 +83,8 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
-        //Entity status
+        //Entity
+        NODE_CHOICES.put("Damage Entity", CNodeDamageEntity.class);
         NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
         NODE_CHOICES.put("Get Entity World", CNodeGetWorld.class);
         NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
@@ -107,6 +108,7 @@ public class GUINodeView extends GUIPanZoomView
         separator += "\r";
 
         //Misc.
+        NODE_CHOICES.put("Null", CNodeNull.class);
         NODE_CHOICES.put("Evaluate", CNodeEval.class);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
         NODE_CHOICES.put(separator, null);
