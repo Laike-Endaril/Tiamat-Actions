@@ -29,7 +29,7 @@ public class MainActionEditorGUI extends GUIScreen
         root.add(navbar);
 
 
-        //List of existing actions
+        //List of actions
         actionList = new GUIList(this, true, 0.98, 1 - (navbar.y + navbar.height))
         {
             @Override

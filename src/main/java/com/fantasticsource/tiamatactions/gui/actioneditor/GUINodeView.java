@@ -11,6 +11,7 @@ import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
+import net.minecraftforge.fml.common.Loader;
 
 import java.util.LinkedHashMap;
 
@@ -113,6 +114,19 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
+
+        //API
+        int apiCount = 0;
+        if (Loader.isModLoaded("tiamathud"))
+        {
+            apiCount++;
+            NODE_CHOICES.put("Set Custom HUD Data", CNodeSetCustomHUDData.class);
+        }
+        if (apiCount > 0)
+        {
+            NODE_CHOICES.put(separator, null);
+            separator += "\r";
+        }
 
         //Debug
         NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);

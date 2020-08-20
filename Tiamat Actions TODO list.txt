@@ -1,2 +1,8 @@
 Add action triggers for when things take damage (as an event intercept)
 Add these as a new config which filters by damage name?
+
+
+
+New node types...
+Random number
+Play sound
