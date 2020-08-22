@@ -49,11 +49,12 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Itemstack", CNodeItemstack.class);
         NODE_CHOICES.put("Get Inventory Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Set Inventory Itemstack", CNodeSetItemstack.class);
-        NODE_CHOICES.put("Get Itemstack NBT", CNodeGetItemstackNBT.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
         //NBT
+        NODE_CHOICES.put("Get Itemstack NBT", CNodeGetItemstackNBT.class);
+        NODE_CHOICES.put("Get Entity NBTCap NBT", CNodeGetEntityNBTCapNBT.class);
         NODE_CHOICES.put("Get Sub-NBT", CNodeGetNBTValue.class);
         NODE_CHOICES.put("Set Sub-NBT", CNodeSetNBTValue.class);
         NODE_CHOICES.put(separator, null);

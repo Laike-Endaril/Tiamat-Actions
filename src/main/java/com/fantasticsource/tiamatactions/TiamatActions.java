@@ -1,5 +1,6 @@
 package com.fantasticsource.tiamatactions;
 
+import com.fantasticsource.fantasticlib.api.FLibAPI;
 import com.fantasticsource.tiamatactions.action.ActionQueue;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.block.BlocksAndItems;
@@ -30,6 +31,8 @@ public class TiamatActions
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event)
     {
+        FLibAPI.attachNBTCapToEntityIf(MODID, (o) -> true);
+
         MinecraftForge.EVENT_BUS.register(TiamatActions.class);
         Network.init();
         Attributes.init();
