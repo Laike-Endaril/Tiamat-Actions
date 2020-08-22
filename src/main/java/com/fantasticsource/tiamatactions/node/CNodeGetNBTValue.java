@@ -3,18 +3,18 @@ package com.fantasticsource.tiamatactions.node;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Pair;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.*;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeGetSubNBT extends CNode
+public class CNodeGetNBTValue extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_sub_nbt.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_nbt_value.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
@@ -26,12 +26,12 @@ public class CNodeGetSubNBT extends CNode
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeGetSubNBT()
+    public CNodeGetNBTValue()
     {
         super();
     }
 
-    public CNodeGetSubNBT(String actionName, String event, int x, int y)
+    public CNodeGetNBTValue(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -46,7 +46,7 @@ public class CNodeGetSubNBT extends CNode
     @Override
     public String getDescription()
     {
-        return "Get NBT from within other NBT";
+        return "Get a NBT tag value";
     }
 
 
@@ -78,6 +78,32 @@ public class CNodeGetSubNBT extends CNode
             if (nbt instanceof NBTTagCompound) nbt = ((NBTTagCompound) nbt).getTag(ref);
             else throw new NotImplementedException("Have not yet added sub-accessors for " + nbt.getClass().getSimpleName());
         }
-        return nbt;
+
+        switch (nbt.getId())
+        {
+            case Constants.NBT.TAG_INT:
+                return ((NBTTagInt) nbt).getInt();
+
+            case Constants.NBT.TAG_DOUBLE:
+                return ((NBTTagDouble) nbt).getDouble();
+
+            case Constants.NBT.TAG_FLOAT:
+                return ((NBTTagFloat) nbt).getFloat();
+
+            case Constants.NBT.TAG_STRING:
+                return ((NBTTagString) nbt).getString();
+
+            case Constants.NBT.TAG_SHORT:
+                return ((NBTTagShort) nbt).getShort();
+
+            case Constants.NBT.TAG_BYTE:
+                return ((NBTTagByte) nbt).getByte();
+
+            case Constants.NBT.TAG_LONG:
+                return ((NBTTagLong) nbt).getLong();
+
+            default:
+                return nbt;
+        }
     }
 }

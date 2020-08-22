@@ -54,7 +54,8 @@ public class GUINodeView extends GUIPanZoomView
         separator += "\r";
 
         //NBT
-        NODE_CHOICES.put("Get Sub-NBT", CNodeGetSubNBT.class);
+        NODE_CHOICES.put("Get Sub-NBT", CNodeGetNBTValue.class);
+        NODE_CHOICES.put("Set Sub-NBT", CNodeSetNBTValue.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 

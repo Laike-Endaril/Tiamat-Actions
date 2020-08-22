@@ -69,6 +69,8 @@ public class CNodeGetItemstackNBT extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        return ((ItemStack) inputs[0]).getTagCompound();
+        ItemStack stack = (ItemStack) inputs[0];
+        if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
+        return stack.getTagCompound();
     }
 }
