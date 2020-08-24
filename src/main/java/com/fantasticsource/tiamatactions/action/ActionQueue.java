@@ -96,7 +96,9 @@ public class ActionQueue
         //TODO Strange behavior using entrySet.removeIf(), and an alternate method using entrySet.toArray() didn't work right either...need to figure out why this crashes
         ENTITY_ACTION_QUEUES.entrySet().removeIf(entry ->
         {
-            if (!entry.getKey().isAddedToWorld() && entry.getKey().isDead) return true;
+            Entity entity = entry.getKey();
+            if (!entity.isAddedToWorld() && entity.isDead) return true;
+            if (!entity.isEntityAlive()) return true;
 
             for (ActionQueue queue : entry.getValue().values()) queue.tick();
 

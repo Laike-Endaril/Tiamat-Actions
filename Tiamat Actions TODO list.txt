@@ -1,3 +1,6 @@
+Startup action trigger
+Trigger on respawn
+
 Add action triggers for when things take damage (as an event intercept)
 Add these as a new config which filters by damage name?
 
