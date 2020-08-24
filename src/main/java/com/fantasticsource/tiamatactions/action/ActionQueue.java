@@ -3,6 +3,7 @@ package com.fantasticsource.tiamatactions.action;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -104,5 +105,19 @@ public class ActionQueue
 
             return false;
         });
+    }
+
+    @SubscribeEvent
+    public static void entityJoinWorld(EntityJoinWorldEvent event)
+    {
+        Entity entity = event.getEntity();
+        for (String s : TiamatActionsConfig.serverSettings.spawnActions)
+        {
+            String[] tokens = Tools.fixedSplit(s, ",");
+            CAction action = CAction.ALL_ACTIONS.get(tokens[1].trim());
+            if (action == null) continue;
+
+            action.queue(entity, tokens[0].trim(), null);
+        }
     }
 }

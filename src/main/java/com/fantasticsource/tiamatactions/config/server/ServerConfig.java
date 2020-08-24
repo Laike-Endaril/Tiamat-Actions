@@ -44,6 +44,17 @@ public class ServerConfig
     @Config.RequiresMcRestart
     public String[] actionQueues = new String[]
             {
-                    "Main, 2, true"
+                    "Main, 2, true",
+                    "Spawn, 1, true"
             };
+
+    @Config.Name("Spawn Actions")
+    @Config.LangKey(MODID + ".config.spawnActions")
+    @Config.Comment(
+            {
+                    "A list of actions to run when entities spawn.  Syntax is...",
+                    "QueueName, ActionName",
+            })
+    @Config.RequiresMcRestart
+    public String[] spawnActions = new String[0];
 }

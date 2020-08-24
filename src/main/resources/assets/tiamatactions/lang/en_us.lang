@@ -20,6 +20,8 @@ tiamatactions.config.customDamageTypes=Custom Damage Types
 tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of custom damage types to add to the game\nSyntax is...\nName, translationKey, option1, option2, option3...\n\nAny number of optional arguments can be added to an entry.  Optional arguments are...\nbypassArmor\nabsolute\ncreative\ndifficultyScaled\nexplosion\nfire\nmagic\nprojectile"\n \n
 tiamatactions.config.actionQueues=Action Queues
 tiamatactions.config.actionQueues.tooltip=FILLSCREEN FIXNEWLINES A list of action queues to add to entities.  Syntax is...\nName, size, replaceLastIfFull\nEg...\nMain, 2, true\n \n
+tiamatactions.config.spawnActions=Spawn Actions
+tiamatactions.config.spawnActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions to run when entities spawn.  Syntax is...\nQueueName, ActionName\n \n
 
 tiamatactions.config.guiSettings=GUI Settings
 
