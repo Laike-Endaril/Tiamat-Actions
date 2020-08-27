@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions;
 
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
+import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeMap;
@@ -24,7 +25,15 @@ public class Attributes
         CUSTOM_ATTRIBUTES = new LinkedHashMap<>();
         for (String attributeString : TiamatActionsConfig.serverSettings.customAttributes)
         {
-            CUSTOM_ATTRIBUTES.put(attributeString, new RangedAttribute(null, MODID + "." + attributeString, 0, -Double.MAX_VALUE, Double.MAX_VALUE));
+            String[] tokens = Tools.fixedSplit(attributeString, ",");
+
+            String name = tokens[0].trim();
+            double defaultValue = tokens.length < 2 ? 0 : Double.parseDouble(tokens[1].trim());
+            RangedAttribute parent = tokens.length < 3 ? null : CUSTOM_ATTRIBUTES.get(tokens[2].trim());
+            double min = tokens.length < 4 ? -Double.MAX_VALUE : Double.parseDouble(tokens[3].trim());
+            double max = tokens.length < 5 ? -Double.MAX_VALUE : Double.parseDouble(tokens[4].trim());
+
+            CUSTOM_ATTRIBUTES.put(name, new RangedAttribute(parent, MODID + "." + name, defaultValue, min, max));
         }
     }
 
