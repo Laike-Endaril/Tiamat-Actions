@@ -31,7 +31,7 @@ public class Attributes
             double defaultValue = tokens.length < 2 ? 0 : Double.parseDouble(tokens[1].trim());
             RangedAttribute parent = tokens.length < 3 ? null : CUSTOM_ATTRIBUTES.get(tokens[2].trim());
             double min = tokens.length < 4 ? -Double.MAX_VALUE : Double.parseDouble(tokens[3].trim());
-            double max = tokens.length < 5 ? -Double.MAX_VALUE : Double.parseDouble(tokens[4].trim());
+            double max = tokens.length < 5 ? Double.MAX_VALUE : Double.parseDouble(tokens[4].trim());
 
             CUSTOM_ATTRIBUTES.put(name, new RangedAttribute(parent, MODID + "." + name, defaultValue, min, max));
         }
