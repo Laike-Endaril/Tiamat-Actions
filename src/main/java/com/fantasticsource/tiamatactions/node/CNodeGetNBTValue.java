@@ -79,6 +79,8 @@ public class CNodeGetNBTValue extends CNode
             else throw new NotImplementedException("Have not yet added sub-accessors for " + nbt.getClass().getSimpleName());
         }
 
+        if (nbt == null) return null;
+
         switch (nbt.getId())
         {
             case Constants.NBT.TAG_INT:
