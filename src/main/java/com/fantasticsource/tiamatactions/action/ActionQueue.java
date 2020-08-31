@@ -111,6 +111,8 @@ public class ActionQueue
     public static void entityJoinWorld(EntityJoinWorldEvent event)
     {
         Entity entity = event.getEntity();
+        if (entity.world.isRemote) return;
+
         for (String s : TiamatActionsConfig.serverSettings.spawnActions)
         {
             String[] tokens = Tools.fixedSplit(s, ",");
