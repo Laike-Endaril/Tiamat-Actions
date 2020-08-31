@@ -68,9 +68,10 @@ public class CNodeDebug extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        if (inputs.length == 0) mainAction.source.sendMessage(new TextComponentString(TextFormatting.DARK_PURPLE + "(Nothing)"));
+        if (inputs.length == 0) mainAction.source.sendMessage(new TextComponentString(TextFormatting.DARK_PURPLE + "(No Results)"));
 
-        for (String s : expandArray(inputs)) mainAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + s));
+        int i = 0;
+        for (String s : expandArray(inputs)) mainAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "" + ++i + ". " + s));
 
         return null;
     }
