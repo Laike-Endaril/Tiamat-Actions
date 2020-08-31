@@ -260,9 +260,14 @@ public abstract class CNode extends Component
 
     public final void executeTree(CAction mainAction, CAction subAction, HashMap<Long, Object> results)
     {
+        executeTree(mainAction, subAction, results, false);
+    }
+
+    public final void executeTree(CAction mainAction, CAction subAction, HashMap<Long, Object> results, boolean isEndEvent)
+    {
         try
         {
-            executeTreeInternal(mainAction, subAction, results);
+            executeTreeInternal(mainAction, subAction, results, isEndEvent);
         }
         catch (Exception e)
         {
@@ -275,25 +280,25 @@ public abstract class CNode extends Component
         }
     }
 
-    protected final Object executeTreeInternal(CAction mainAction, CAction subAction, HashMap<Long, Object> results)
+    protected final Object executeTreeInternal(CAction mainAction, CAction subAction, HashMap<Long, Object> results, boolean isEndEvent)
     {
         Object[] inputResults = new Object[inputNodePositions.size()];
 
         for (long position : conditionNodePositions)
         {
-            if (!mainAction.active) return null;
+            if (!isEndEvent && !mainAction.active) return null;
 
             CNodeTestCondition input = (CNodeTestCondition) subAction.EVENT_NODES.get(eventName).get(position);
 
-            if (input.executeTreeInternal(mainAction, subAction, results) == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
+            if (input.executeTreeInternal(mainAction, subAction, results, isEndEvent) == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
         }
 
         int i = 0;
         for (long position : inputNodePositions)
         {
-            if (!mainAction.active) return null;
+            if (!isEndEvent && !mainAction.active) return null;
 
-            inputResults[i] = results.computeIfAbsent(position, o -> subAction.EVENT_NODES.get(eventName).get(position).executeTreeInternal(mainAction, subAction, results));
+            inputResults[i] = results.computeIfAbsent(position, o -> subAction.EVENT_NODES.get(eventName).get(position).executeTreeInternal(mainAction, subAction, results, isEndEvent));
 
             if (inputResults[i++] == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
         }

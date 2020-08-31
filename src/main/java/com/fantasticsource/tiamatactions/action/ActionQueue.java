@@ -27,19 +27,22 @@ public class ActionQueue
         this.replaceLastIfFull = replaceLastIfFull;
     }
 
-    protected void tick()
+    protected void tick(Entity entity)
     {
+        boolean entityDead = !entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead);
         boolean queueTicked = false;
         while (queue.size() > 0)
         {
             CAction action = queue.get(0);
             if (!action.started)
             {
+                if (entityDead) return;
+
                 action.execute("start");
                 if (action.mainAction.active) action.started = true;
             }
 
-            if (action.tickEndpointNodes.size() == 0) action.mainAction.active = false;
+            if (entityDead || action.tickEndpointNodes.size() == 0) action.mainAction.active = false;
             if (action.mainAction.active)
             {
                 if (queueTicked) return;
@@ -95,15 +98,12 @@ public class ActionQueue
         if (event.phase != TickEvent.Phase.END || ENTITY_ACTION_QUEUES == null) return;
 
         //TODO Strange behavior using entrySet.removeIf(), and an alternate method using entrySet.toArray() didn't work right either...need to figure out why this crashes
+        //TODO Probably fixed; both server and client sides were referencing the static field in entityJoinWorld
         ENTITY_ACTION_QUEUES.entrySet().removeIf(entry ->
         {
             Entity entity = entry.getKey();
-            if (!entity.isAddedToWorld() && entity.isDead) return true;
-            if (!entity.isEntityAlive()) return true;
-
-            for (ActionQueue queue : entry.getValue().values()) queue.tick();
-
-            return false;
+            for (ActionQueue queue : entry.getValue().values()) queue.tick(entity);
+            return !entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead);
         });
     }
 
@@ -115,6 +115,8 @@ public class ActionQueue
 
         for (String s : TiamatActionsConfig.serverSettings.spawnActions)
         {
+            if (!entity.isEntityAlive()) continue;
+
             String[] tokens = Tools.fixedSplit(s, ",");
             CAction action = CAction.ALL_ACTIONS.get(tokens[1].trim());
             if (action == null) continue;
