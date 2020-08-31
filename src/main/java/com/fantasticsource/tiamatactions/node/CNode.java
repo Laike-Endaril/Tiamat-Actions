@@ -266,8 +266,12 @@ public abstract class CNode extends Component
         }
         catch (Exception e)
         {
-            System.err.println(TextFormatting.RED + "Exception caught in action: " + subAction.name + " (Main action: " + mainAction.name + ")");
-            e.printStackTrace();
+            StackTraceElement[] stackTrace = e.getStackTrace();
+            if (mainAction.loggedErrors.add(stackTrace))
+            {
+                System.err.println(TextFormatting.RED + "Exception caught in action: " + subAction.name + " (Main action: " + mainAction.name + ")");
+                e.printStackTrace();
+            }
         }
     }
 

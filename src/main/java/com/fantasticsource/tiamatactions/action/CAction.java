@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -48,6 +49,8 @@ public class CAction extends Component
             endNodes = new LinkedHashMap<>();
     public final LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
     public Object argument = null, result = null;
+
+    public HashSet<StackTraceElement[]> loggedErrors = new HashSet<>();
 
 
     /**
