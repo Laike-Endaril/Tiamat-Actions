@@ -102,24 +102,31 @@ public class CNodeSetNBTValue extends CNode
                 {
                     case "Integer":
                         ((NBTTagCompound) nbt).setInteger(ref, Integer.parseInt("" + inputs[2]));
+                        break;
 
                     case "Double":
                         ((NBTTagCompound) nbt).setDouble(ref, Double.parseDouble("" + inputs[2]));
+                        break;
 
                     case "Float":
                         ((NBTTagCompound) nbt).setFloat(ref, Float.parseFloat("" + inputs[2]));
+                        break;
 
                     case "String":
                         ((NBTTagCompound) nbt).setString(ref, "" + inputs[2]);
+                        break;
 
                     case "Short":
                         ((NBTTagCompound) nbt).setShort(ref, Short.parseShort("" + inputs[2]));
+                        break;
 
                     case "Byte":
                         ((NBTTagCompound) nbt).setByte(ref, Byte.parseByte("" + inputs[2]));
+                        break;
 
                     case "Long":
                         ((NBTTagCompound) nbt).setLong(ref, Long.parseLong("" + inputs[2]));
+                        break;
                 }
             }
         }
