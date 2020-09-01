@@ -14,5 +14,4 @@ Add these as a new config which filters by damage name?
 
 
 New node types...
-Random number
 Play sound

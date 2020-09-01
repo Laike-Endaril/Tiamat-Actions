@@ -115,7 +115,15 @@ public class CNodeComparison extends CNode
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         String s1 = "" + inputs[0], s2 = "" + inputs[1];
-        int result = s1.compareTo(s2);
+        int result;
+        try
+        {
+            result = Double.compare(Double.parseDouble(s1), Double.parseDouble(s2));
+        }
+        catch (NumberFormatException e)
+        {
+            result = s1.compareTo(s2);
+        }
 
         switch (type)
         {
