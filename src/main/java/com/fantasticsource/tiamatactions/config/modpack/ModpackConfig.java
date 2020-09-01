@@ -6,6 +6,18 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class ModpackConfig
 {
+    @Config.Name("Custom Attributes")
+    @Config.LangKey(MODID + ".config.customAttributes")
+    @Config.Comment(
+            {
+                    "A list of custom attributes to add to living entities",
+                    "Syntax is...",
+                    "name, defaultValue, parentName, minValue, maxValue",
+                    "All arguments except name are optional, but must include all preceding arguments"
+            })
+    @Config.RequiresMcRestart
+    public String[] customAttributes = new String[0];
+
     @Config.Name("Keybound Actions")
     @Config.LangKey(MODID + ".config.keyboundActions")
     @Config.Comment(

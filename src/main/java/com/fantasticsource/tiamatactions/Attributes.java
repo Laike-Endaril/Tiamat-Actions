@@ -23,7 +23,7 @@ public class Attributes
         MinecraftForge.EVENT_BUS.register(Attributes.class);
 
         CUSTOM_ATTRIBUTES = new LinkedHashMap<>();
-        for (String attributeString : TiamatActionsConfig.serverSettings.customAttributes)
+        for (String attributeString : TiamatActionsConfig.modpackSettings.customAttributes)
         {
             String[] tokens = Tools.fixedSplit(attributeString, ",");
 
