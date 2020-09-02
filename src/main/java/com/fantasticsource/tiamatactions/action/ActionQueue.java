@@ -97,8 +97,6 @@ public class ActionQueue
     {
         if (event.phase != TickEvent.Phase.END || ENTITY_ACTION_QUEUES == null) return;
 
-        //TODO Strange behavior using entrySet.removeIf(), and an alternate method using entrySet.toArray() didn't work right either...need to figure out why this crashes
-        //TODO Probably fixed; both server and client sides were referencing the static field in entityJoinWorld
         ENTITY_ACTION_QUEUES.entrySet().removeIf(entry ->
         {
             Entity entity = entry.getKey();

@@ -38,6 +38,8 @@ public class GUINodeView extends GUIPanZoomView
 
         //Entities
         NODE_CHOICES.put("Source Entity", CNodeSourceEntity.class);
+        NODE_CHOICES.put("Get Entity Variable", CNodeGetEntityVar.class);
+        NODE_CHOICES.put("Set Entity Variable", CNodeSetEntityVar.class);
         NODE_CHOICES.put("Get Entity Classname", CNodeGetEntityClassname.class);
         NODE_CHOICES.put("World Entities", CNodeWorldEntities.class);
         NODE_CHOICES.put("Entity Filter: In Cube", CNodeEntityFilterInCube.class);

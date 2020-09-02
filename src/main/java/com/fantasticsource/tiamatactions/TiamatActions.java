@@ -37,6 +37,7 @@ public class TiamatActions
         Network.init();
         Attributes.init();
         DamageTypes.refresh();
+        MinecraftForge.EVENT_BUS.register(EntityVars.class);
         MinecraftForge.EVENT_BUS.register(ActionQueue.class);
         MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
 
