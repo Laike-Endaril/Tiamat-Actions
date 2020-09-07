@@ -38,6 +38,8 @@ public class GUINodeView extends GUIPanZoomView
 
         //Entities
         NODE_CHOICES.put("Source Entity", CNodeSourceEntity.class);
+        NODE_CHOICES.put("Get Entity HP", CNodeGetEntityHP.class);
+        NODE_CHOICES.put("Set Entity HP", CNodeSetEntityHP.class);
         NODE_CHOICES.put("Get Entity Variable", CNodeGetEntityVar.class);
         NODE_CHOICES.put("Set Entity Variable", CNodeSetEntityVar.class);
         NODE_CHOICES.put("Get Entity Classname", CNodeGetEntityClassname.class);
@@ -58,8 +60,8 @@ public class GUINodeView extends GUIPanZoomView
         //NBT
         NODE_CHOICES.put("Get Itemstack NBT", CNodeGetItemstackNBT.class);
         NODE_CHOICES.put("Get Entity NBTCap NBT", CNodeGetEntityNBTCapNBT.class);
-        NODE_CHOICES.put("Get Sub-NBT", CNodeGetNBTValue.class);
-        NODE_CHOICES.put("Set Sub-NBT", CNodeSetNBTValue.class);
+        NODE_CHOICES.put("Get NBT Value", CNodeGetNBTValue.class);
+        NODE_CHOICES.put("Set NBT Value", CNodeSetNBTValue.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
