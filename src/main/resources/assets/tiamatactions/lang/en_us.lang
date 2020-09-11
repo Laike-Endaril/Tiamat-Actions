@@ -14,8 +14,6 @@ tiamatactions.config.serverSettings=Server Settings
 tiamatactions.config.clientSettings=Client Settings
 tiamatactions.config.modpackSettings=Modpack Settings
 
-tiamatactions.config.customAttributes=Custom Attributes
-tiamatactions.config.customAttributes.tooltip=FILLSCREEN FIXNEWLINES A list of custom attributes to add to living entities\nSyntax is...\nname, defaultValue, parentName, minValue, maxValue\nAll arguments except name are optional, but must include all preceding arguments\n \n
 tiamatactions.config.customDamageTypes=Custom Damage Types
 tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of custom damage types to add to the game\nSyntax is...\nName, translationKey, option1, option2, option3...\n\nAny number of optional arguments can be added to an entry.  Optional arguments are...\nbypassArmor\nabsolute\ncreative\ndifficultyScaled\nexplosion\nfire\nmagic\nprojectile"\n \n
 tiamatactions.config.actionQueues=Action Queues
@@ -30,5 +28,7 @@ tiamatactions.config.createEditNodeButton.tooltip=FILLSCREEN FIXNEWLINES Which m
 tiamatactions.config.createNodeConnectionButton=Create Node Connection (Mouse Button)
 tiamatactions.config.createNodeConnectionButton.tooltip=FILLSCREEN FIXNEWLINES Which mouse button creates connections between nodes in a node view (drag OR click one node, then next)\n \n
 
+tiamatactions.config.customAttributes=Custom Attributes
+tiamatactions.config.customAttributes.tooltip=FILLSCREEN FIXNEWLINES A list of custom attributes to add to living entities\nSyntax is...\nname, defaultValue, parentName, minValue, maxValue\nAll arguments except name are optional, but must include all preceding arguments\n \n
 tiamatactions.config.keyboundActions=Keybound Actions
 tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;actionName\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction\n \n
