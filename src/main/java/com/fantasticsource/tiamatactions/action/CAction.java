@@ -10,7 +10,7 @@ import com.fantasticsource.tools.component.Component;
 import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.*;
@@ -190,8 +190,9 @@ public class CAction extends Component
                 stream.close();
                 ALL_ACTIONS.put(action.name, action);
             }
-            catch (IOException e)
+            catch (Exception e)
             {
+                System.err.println(TextFormatting.RED + "Error loading action: " + file.getAbsolutePath());
                 e.printStackTrace();
             }
         }
