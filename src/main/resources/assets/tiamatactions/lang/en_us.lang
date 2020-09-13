@@ -15,13 +15,15 @@ tiamatactions.config.clientSettings=Client Settings
 tiamatactions.config.modpackSettings=Modpack Settings
 
 tiamatactions.config.customDamageTypes=Custom Damage Types
-tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of custom damage types to add to the game\nSyntax is...\nName, translationKey, option1, option2, option3...\n\nAny number of optional arguments can be added to an entry.  Optional arguments are...\nbypassArmor\nabsolute\ncreative\ndifficultyScaled\nexplosion\nfire\nmagic\nprojectile"\n \n
+tiamatactions.config.customDamageTypes.tooltip=FILLSCREEN FIXNEWLINES A list of custom damage types to add to the game\nSyntax is...\nName, translationKey, option1, option2, option3...\n\nAny number of optional arguments can be added to an entry.  Optional arguments are...\nbypassArmor\nabsolute\ncreative\ndifficultyScaled\nexplosion\nfire\nmagic\nprojectile\n \n
 tiamatactions.config.actionQueues=Action Queues
 tiamatactions.config.actionQueues.tooltip=FILLSCREEN FIXNEWLINES A list of action queues to add to entities.  Syntax is...\nName, size, replaceLastIfFull\nEg...\nMain, 2, true\n \n
 tiamatactions.config.spawnActions=Spawn Actions
 tiamatactions.config.spawnActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions to run when entities spawn.  Syntax is...\nQueueName, ActionName\n \n
 
 tiamatactions.config.guiSettings=GUI Settings
+tiamatactions.config.tooltipAction=Tooltip Action
+tiamatactions.config.tooltipAction.tooltip=FILLSCREEN FIXNEWLINES An action used to alter tooltips.  This action must not have tick nodes.\nThe following action vars will exist before the action executes:\nitemstack = the itemstack related to the tooltip (if any)\ntooltip - the original tooltip, as a list of strings (alter these to change the tooltip)"=\n \n
 
 tiamatactions.config.createEditNodeButton=Create / Edit Node (Mouse Button)
 tiamatactions.config.createEditNodeButton.tooltip=FILLSCREEN FIXNEWLINES Which mouse button creates, edits, and moves nodes in a node view (click for add/edit, drag for move)\n \n

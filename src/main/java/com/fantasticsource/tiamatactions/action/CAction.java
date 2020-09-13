@@ -49,7 +49,7 @@ public class CAction extends Component
             startNodes = new LinkedHashMap<>(),
             tickNodes = new LinkedHashMap<>(),
             endNodes = new LinkedHashMap<>();
-    public final LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
+    public LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
     public Object argument = null, result = null;
 
     public HashSet<StackTraceElement[]> loggedErrors = new HashSet<>();
@@ -95,6 +95,11 @@ public class CAction extends Component
 
     public Object queue(Entity source, String queueName, CAction mainAction, Object argument)
     {
+        return queue(source, queueName, mainAction, argument, null);
+    }
+
+    public Object queue(Entity source, String queueName, CAction mainAction, Object argument, LinkedHashMap<String, Object> actionVars)
+    {
         ActionQueue queue = queueName == null ? null : ActionQueue.get(source, queueName);
 
         CAction action = (CAction) copy();
@@ -102,6 +107,7 @@ public class CAction extends Component
         action.queue = queue;
         action.mainAction = mainAction == null ? action : mainAction;
         action.argument = argument;
+        if (actionVars != null) action.actionVars = actionVars;
 
         //"Execute immediate" style
         if ((queue == null || queue.queue.size() == 0) && action.tickEndpointNodes.size() == 0)

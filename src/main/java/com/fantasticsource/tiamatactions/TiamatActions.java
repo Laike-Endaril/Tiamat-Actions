@@ -47,6 +47,7 @@ public class TiamatActions
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             Keys.init(event);
+            MinecraftForge.EVENT_BUS.register(TooltipAlterer.class);
         }
     }
 

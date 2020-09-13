@@ -31,7 +31,7 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
-        //Static
+        //Strings
         NODE_CHOICES.put("Output String", CNodeString.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
@@ -84,10 +84,20 @@ public class GUINodeView extends GUIPanZoomView
         separator += "\r";
 
         //Array
+        NODE_CHOICES.put("Get Array Size", CNodeGetArraySize.class);
         NODE_CHOICES.put("Get From Array", CNodeGetFromArray.class);
         NODE_CHOICES.put("Add to Array", CNodeAddToArray.class);
         NODE_CHOICES.put("Remove from Array", CNodeRemoveFromArray.class);
-        NODE_CHOICES.put("Get Array Size", CNodeGetArraySize.class);
+        NODE_CHOICES.put("Remove Nth from Array", CNodeRemoveNthFromArray.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
+        //List
+        NODE_CHOICES.put("Get List Size", CNodeGetListSize.class);
+        NODE_CHOICES.put("Get From List", CNodeGetFromList.class);
+        NODE_CHOICES.put("Add to List", CNodeAddToList.class);
+        NODE_CHOICES.put("Remove from List", CNodeRemoveFromList.class);
+        NODE_CHOICES.put("Remove Nth from List", CNodeRemoveNthFromList.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
