@@ -1,5 +1,4 @@
 Add node types...
-string replacement (options for first, last, or all, and normal or regex)
 get tiamat items part
 
 Add copy/paste functionality
