@@ -88,17 +88,17 @@ public class CAction extends Component
         return queue(source, queueName, null, argument);
     }
 
-    public Object queue(Entity entity, String queueName, CAction mainAction)
+    public Object queue(Entity source, String queueName, CAction mainAction)
     {
-        return queue(entity, queueName, mainAction, null);
+        return queue(source, queueName, mainAction, null);
     }
 
-    public Object queue(Entity entity, String queueName, CAction mainAction, Object argument)
+    public Object queue(Entity source, String queueName, CAction mainAction, Object argument)
     {
-        ActionQueue queue = queueName == null ? null : ActionQueue.get(entity, queueName);
+        ActionQueue queue = queueName == null ? null : ActionQueue.get(source, queueName);
 
         CAction action = (CAction) copy();
-        action.source = entity;
+        action.source = source;
         action.queue = queue;
         action.mainAction = mainAction == null ? action : mainAction;
         action.argument = argument;
