@@ -144,11 +144,18 @@ public class GUINodeView extends GUIPanZoomView
 
         //API
         int apiCount = 0;
+
         if (Loader.isModLoaded("tiamathud"))
         {
             apiCount++;
             NODE_CHOICES.put("Set Custom HUD Data", CNodeSetCustomHUDData.class);
         }
+        if (Loader.isModLoaded("tiamatitems"))
+        {
+            apiCount++;
+            NODE_CHOICES.put("Get Tiamat Items Parts", CNodeGetTiamatItemsParts.class);
+        }
+
         if (apiCount > 0)
         {
             NODE_CHOICES.put(separator, null);

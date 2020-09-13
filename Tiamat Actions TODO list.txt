@@ -1,6 +1,3 @@
-Add node types...
-get tiamat items part
-
 Add copy/paste functionality
 
 Change list of actions to collapsed folders
