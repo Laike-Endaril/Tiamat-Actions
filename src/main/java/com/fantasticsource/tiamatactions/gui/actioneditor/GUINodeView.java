@@ -33,6 +33,8 @@ public class GUINodeView extends GUIPanZoomView
 
         //Strings
         NODE_CHOICES.put("Output String", CNodeString.class);
+        NODE_CHOICES.put("String Contains", CNodeStringContains.class);
+        NODE_CHOICES.put("String Replacement", CNodeStringReplace.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
@@ -98,6 +100,8 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Add to List", CNodeAddToList.class);
         NODE_CHOICES.put("Remove from List", CNodeRemoveFromList.class);
         NODE_CHOICES.put("Remove Nth from List", CNodeRemoveNthFromList.class);
+        NODE_CHOICES.put("Clear List", CNodeClearList.class);
+        NODE_CHOICES.put("Clone List", CNodeCloneList.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
