@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
@@ -80,8 +81,9 @@ public class CNodeSubAction extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        CAction newSubAction = CAction.ALL_ACTIONS.get(inputs[0]);
-        if (newSubAction == null || newSubAction.tickEndpointNodes.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
+        CAction newSubAction = CAction.ALL_ACTIONS.get(("" + inputs[0]).replaceAll(Pattern.quote("\\"), "/"));
+        if (newSubAction == null) throw new IllegalArgumentException("Could not find action with name: " + inputs[0]);
+        if (newSubAction.tickEndpointNodes.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
 
         if (inputs.length == 1)
         {

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
@@ -186,7 +187,7 @@ public class CAction extends Component
             {
                 FileInputStream stream = new FileInputStream(file);
                 CAction action = new CAction().load(stream);
-                action.name = filename.replace(".dat", "");
+                action.name = filename.replace(".dat", "").replaceAll(Pattern.quote("\\"), "/");
                 stream.close();
                 ALL_ACTIONS.put(action.name, action);
             }
