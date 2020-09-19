@@ -25,11 +25,11 @@ public class CNodeBoolean extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/boolean.png");
     protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("moreInputs", Boolean.class);
-    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS_TF = new LinkedHashMap<>(), REQUIRED_INPUTS_OTHER = new LinkedHashMap<>();
+    protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS_NONE = new LinkedHashMap<>(), REQUIRED_INPUTS_ONE_BOOLEAN = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS_OTHER.put("input1", Boolean.class);
+        REQUIRED_INPUTS_ONE_BOOLEAN.put("input1", Boolean.class);
     }
 
     public static final int
@@ -42,7 +42,7 @@ public class CNodeBoolean extends CNode
             TYPE_TRUE = 6,
             TYPE_FALSE = 7;
 
-    protected int type = TYPE_OR;
+    protected int type = TYPE_NOR;
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
@@ -102,7 +102,7 @@ public class CNodeBoolean extends CNode
     @Override
     public LinkedHashMap<String, Class> getRequiredInputs()
     {
-        return type == TYPE_TRUE || type == TYPE_FALSE ? REQUIRED_INPUTS_TF : REQUIRED_INPUTS_OTHER;
+        return type == TYPE_TRUE || type == TYPE_FALSE ? REQUIRED_INPUTS_NONE : REQUIRED_INPUTS_ONE_BOOLEAN;
     }
 
     @Override
