@@ -3,6 +3,7 @@ package com.fantasticsource.tiamatactions.action;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.Entity;
+import net.minecraft.profiler.Profiler;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -27,37 +28,54 @@ public class ActionQueue
         this.replaceLastIfFull = replaceLastIfFull;
     }
 
-    protected void tick(Entity entity)
+    protected void tick(Entity source)
     {
-        boolean entityDead = !entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead);
+        Profiler profiler = source.world.profiler;
+        profiler.startSection("Tiamat Action Queue: " + name);
+
+        boolean entityDead = !source.isEntityAlive() || (!source.isAddedToWorld() && source.isDead);
         boolean queueTicked = false;
         while (queue.size() > 0)
         {
             CAction action = queue.get(0);
             if (!action.started)
             {
-                if (entityDead) return;
+                if (entityDead)
+                {
+                    profiler.endSection();
+                    return;
+                }
 
-                action.execute("start");
+                action.execute(source, "start");
                 if (action.mainAction.active) action.started = true;
             }
 
             if (entityDead || action.tickEndpointNodes.size() == 0) action.mainAction.active = false;
             if (action.mainAction.active)
             {
-                if (queueTicked) return;
+                if (queueTicked)
+                {
+                    profiler.endSection();
+                    return;
+                }
 
                 queueTicked = true;
-                action.execute("tick");
+                action.execute(source, "tick");
             }
 
             if (!action.mainAction.active)
             {
-                if (action.mainAction.started) action.execute("end");
+                if (action.mainAction.started) action.execute(source, "end");
                 queue.remove(0);
             }
-            else return;
+            else
+            {
+                profiler.endSection();
+                return;
+            }
         }
+
+        profiler.endSection();
     }
 
     public static ActionQueue get(Entity entity, String queueName)

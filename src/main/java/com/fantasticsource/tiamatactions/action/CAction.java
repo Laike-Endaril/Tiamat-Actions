@@ -10,6 +10,7 @@ import com.fantasticsource.tools.component.Component;
 import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
@@ -107,9 +108,9 @@ public class CAction extends Component
         //"Execute immediate" style
         if ((queue == null || queue.queue.size() == 0) && action.tickEndpointNodes.size() == 0)
         {
-            action.execute("init");
-            action.execute("start");
-            action.execute("end");
+            action.execute(source, "init");
+            action.execute(source, "start");
+            action.execute(source, "end");
             return action.result;
         }
 
@@ -117,7 +118,7 @@ public class CAction extends Component
         if (queue.queue.size() >= queue.size && !queue.replaceLastIfFull) return action.result;
 
 
-        action.execute("init");
+        action.execute(source, "init");
         if (!action.mainAction.active) return action.result;
 
 
@@ -131,8 +132,12 @@ public class CAction extends Component
         return action.result;
     }
 
-    protected void execute(String event)
+    protected void execute(Entity source, String event)
     {
+        Profiler profiler = source.world.profiler;
+        profiler.startSection("Tiamat Action: " + name);
+        profiler.startSection(event);
+
         HashMap<Long, Object> results = new HashMap<>();
         switch (event)
         {
@@ -152,6 +157,9 @@ public class CAction extends Component
                 for (CNode endNode : endEndpointNodes.toArray(new CNode[0])) endNode.executeTree(mainAction, this, results, true);
                 break;
         }
+
+        profiler.endSection();
+        profiler.endSection();
     }
 
 
