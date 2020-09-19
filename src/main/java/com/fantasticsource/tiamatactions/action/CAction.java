@@ -83,11 +83,6 @@ public class CAction extends Component
         return queue(source, queueName, null);
     }
 
-    public Object queue(Entity source, String queueName, Object argument)
-    {
-        return queue(source, queueName, null, argument);
-    }
-
     public Object queue(Entity source, String queueName, CAction mainAction)
     {
         return queue(source, queueName, mainAction, null);

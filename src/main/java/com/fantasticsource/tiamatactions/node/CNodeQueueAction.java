@@ -72,7 +72,7 @@ public class CNodeQueueAction extends CNode
     {
         CAction action = CAction.ALL_ACTIONS.get("" + inputs[2]);
         Object argument = inputs.length > 3 ? inputs[3] : null;
-        action.queue((Entity) inputs[0], "" + inputs[1], argument);
+        action.queue((Entity) inputs[0], "" + inputs[1], null, argument);
         return null;
     }
 }
