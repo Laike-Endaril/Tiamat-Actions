@@ -1,3 +1,18 @@
+Add node types...
+periodic boolean (internal data, no inputs) (if set to "5", it will output true once every 5 ticks, via server tick timer)
+
+Add debugging; profiling and memory leak checks on data structures
+
+Make connection directions more noticeable
+
+Add highlights to labels when hovering connections
+
+Add keybind for connection label display (off, number only, full)
+
+Add tooltips for connections?
+
+Add display of execution order
+
 Add copy/paste functionality
 
 Change list of actions to collapsed folders
