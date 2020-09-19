@@ -71,7 +71,8 @@ public class CNodeQueueAction extends CNode
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         CAction action = CAction.ALL_ACTIONS.get("" + inputs[2]);
-        action.queue((Entity) inputs[0], "" + inputs[1]);
+        Object argument = inputs.length > 3 ? inputs[3] : null;
+        action.queue((Entity) inputs[0], "" + inputs[1], argument);
         return null;
     }
 }
