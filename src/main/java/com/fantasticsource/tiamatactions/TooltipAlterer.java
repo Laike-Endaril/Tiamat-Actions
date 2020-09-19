@@ -27,6 +27,6 @@ public class TooltipAlterer
         LinkedHashMap<String, Object> actionVars = new LinkedHashMap<>();
         actionVars.put("itemstack", event.getItemStack());
         actionVars.put("tooltip", event.getToolTip());
-        action.queue(player, "Main", null, null, actionVars);
+        action.queue(player, null, null, null, actionVars);
     }
 }
