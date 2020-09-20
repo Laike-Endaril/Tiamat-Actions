@@ -1,8 +1,9 @@
+Change list of actions to collapsed folders
+Add confirmation on action deletion
+
 Add display of execution order
 
 Add copy/paste functionality
-
-Change list of actions to collapsed folders
 
 
 
