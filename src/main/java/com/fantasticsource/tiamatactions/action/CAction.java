@@ -28,11 +28,6 @@ public class CAction extends Component
     public static final String DIR_PREFIX = MCTools.getConfigDir() + MODID + File.separator + "actions";
     public static final LinkedHashMap<String, CAction> ALL_ACTIONS = new LinkedHashMap<>();
 
-    static
-    {
-        ALL_ACTIONS.put("None", null);
-    }
-
     public String name;
     public Entity source;
     public ActionQueue queue;

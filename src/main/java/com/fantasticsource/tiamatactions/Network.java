@@ -141,16 +141,8 @@ public class Network
         @Override
         public void toBytes(ByteBuf buf)
         {
-            list = new String[CAction.ALL_ACTIONS.size() - 1];
-            int i = 0;
-            for (String name : CAction.ALL_ACTIONS.keySet())
-            {
-                if (name.equals("None")) continue;
-
-                list[i++] = name;
-            }
-            buf.writeInt(list.length);
-            for (String s : list) ByteBufUtils.writeUTF8String(buf, s);
+            buf.writeInt(CAction.ALL_ACTIONS.size());
+            for (String s : CAction.ALL_ACTIONS.keySet()) ByteBufUtils.writeUTF8String(buf, s);
         }
 
         @Override
