@@ -28,6 +28,7 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Test Condition", CNodeTestCondition.class);
         NODE_CHOICES.put("Boolean", CNodeBoolean.class);
         NODE_CHOICES.put("Comparison", CNodeComparison.class);
+        NODE_CHOICES.put("Periodic Boolean", CNodePeriodicBoolean.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
