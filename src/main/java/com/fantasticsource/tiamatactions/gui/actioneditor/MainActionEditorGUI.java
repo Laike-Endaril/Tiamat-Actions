@@ -10,12 +10,16 @@ import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
 import com.fantasticsource.tiamatactions.Network;
 import com.fantasticsource.tools.datastructures.Color;
+import scala.actors.threadpool.Arrays;
+
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class MainActionEditorGUI extends GUIScreen
 {
     protected GUIList actionList;
 
-    public MainActionEditorGUI(String... list)
+    public MainActionEditorGUI(String... actionNameArray)
     {
         showUnstacked();
 
@@ -57,7 +61,8 @@ public class MainActionEditorGUI extends GUIScreen
         root.addAll(actionList, scrollbar);
 
         //Add existing actions
-        for (String actionName : list)
+        TreeSet<String> treeSet = new TreeSet<>(Arrays.asList(actionNameArray));
+        for (String actionName : treeSet)
         {
             GUIList.Line line = actionList.addLine();
             ((GUIText) line.getLineElement(1)).setText(actionName);
