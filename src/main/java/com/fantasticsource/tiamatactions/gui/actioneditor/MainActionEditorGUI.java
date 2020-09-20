@@ -57,6 +57,7 @@ public class MainActionEditorGUI extends GUIScreen
                 };
             }
         };
+        actionList.setConfirmLineDeletion(true);
         GUIVerticalScrollbar scrollbar = new GUIVerticalScrollbar(this, 0.02, 1 - (navbar.y + navbar.height), Color.GRAY, Color.BLANK, Color.WHITE, Color.BLANK, actionList);
         root.addAll(actionList, scrollbar);
 
