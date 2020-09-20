@@ -1,4 +1,3 @@
-Change list of actions to collapsed folders
 Add confirmation on action deletion
 
 Add display of execution order
