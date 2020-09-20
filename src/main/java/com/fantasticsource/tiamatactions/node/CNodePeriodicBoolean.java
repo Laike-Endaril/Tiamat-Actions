@@ -167,7 +167,10 @@ public class CNodePeriodicBoolean extends CNode
 
             //Data
             GUILabeledTextInput delay = new GUILabeledTextInput(this, "Delay: ", "" + node.delay, FILTER_GREATER_THAN_0);
-            delay.addEditActions(() -> node.delay = FILTER_GREATER_THAN_0.parse(delay.getText()));
+            delay.addEditActions(() ->
+            {
+                if (delay.valid()) node.delay = FILTER_GREATER_THAN_0.parse(delay.getText());
+            });
             root.addAll(
                     new GUITextSpacer(this),
                     new GUITextSpacer(this, true),
