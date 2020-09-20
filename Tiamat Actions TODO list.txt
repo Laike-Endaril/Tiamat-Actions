@@ -1,5 +1,3 @@
-Make node connection directions more noticeable
-
 Add display of execution order
 
 Add copy/paste functionality
