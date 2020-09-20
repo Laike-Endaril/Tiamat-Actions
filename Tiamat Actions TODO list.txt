@@ -1,15 +1,11 @@
-Add memory leak checks on data structures
-
 Make node connection directions more noticeable
-
-Add highlights to labels when hovering connections
-
-Add keybind for connection label display (off, number only, full)
-
-Add tooltips for connections
 
 Add display of execution order
 
 Add copy/paste functionality
 
 Change list of actions to collapsed folders
+
+
+
+Add memory leak checks on data structures if omni is showing GC runs on Faerun

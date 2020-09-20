@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class EventEditorGUI extends GUIScreen
 {
+    protected static final Color[] WHITES = new Color[]{getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE};
+
     protected CAction action;
     protected String event;
     protected GUINodeView view;
@@ -97,11 +99,10 @@ public class EventEditorGUI extends GUIScreen
         view.add(0, connector2);
 
 
-        String s, s2;
+        String s;
         if (inputIsConditionNode)
         {
             s = TextFormatting.AQUA + "Condition #" + (i + 1);
-            s2 = s;
         }
         else
         {
@@ -114,8 +115,7 @@ public class EventEditorGUI extends GUIScreen
 
                 s += color + requiredInputs[i].getValue().getSimpleName() + " " + color2 + requiredInputs[i].getKey();
 
-                s2 = s;
-                if (color == TextFormatting.RED) s2 += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
+                if (color == TextFormatting.RED) s += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
             }
             else
             {
@@ -124,23 +124,33 @@ public class EventEditorGUI extends GUIScreen
 
                 s += color + node.getOptionalInputs().getValue().getSimpleName() + " " + color2 + "@" + (i + 1 - node.getRequiredInputs().size());
 
-                s2 = s;
-                if (color == TextFormatting.RED) s2 += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
+                if (color == TextFormatting.RED) s += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
             }
         }
+        connector.setTooltip(s);
 
 
-        GUIText connectorLabel = new GUIText(this, 0, 0, s);
-        view.add(connectorLabel);
-        connectorLabel.setAbsoluteX(connector.absoluteX() + (connector.absoluteWidth() - connectorLabel.absoluteWidth()) * 0.5);
-        connectorLabel.setAbsoluteY(connector.absoluteY() + (connector.absoluteHeight() - connectorLabel.absoluteHeight()) * 0.5);
-        connector.setTooltip(s2);
-
-        view.addRemoveChildActions(element ->
+        if (!inputIsConditionNode)
         {
-            if (element == connector) view.remove(connectorLabel);
-            return true;
-        });
+            GUIText connectorLabel = new GUIText(this, 0, 0, "" + (i + 1), WHITES[0], WHITES[1], WHITES[2]);
+
+            connectorLabel.linkMouseActivity(connector);
+            connector.linkMouseActivity(connectorLabel);
+
+            connectorLabel.linkMouseActivity(connector2);
+            connector2.linkMouseActivity(connectorLabel);
+
+            view.add(connectorLabel);
+            connectorLabel.setAbsoluteX(connector.absoluteX() + (connector.absoluteWidth() - connectorLabel.absoluteWidth()) * 0.5);
+            connectorLabel.setAbsoluteY(connector.absoluteY() + (connector.absoluteHeight() - connectorLabel.absoluteHeight()) * 0.5);
+
+
+            view.addRemoveChildActions(element ->
+            {
+                if (element == connector) view.remove(connectorLabel);
+                return true;
+            });
+        }
     }
 
 
