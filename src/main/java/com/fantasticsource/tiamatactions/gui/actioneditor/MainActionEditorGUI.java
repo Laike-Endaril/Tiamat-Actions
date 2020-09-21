@@ -10,9 +10,8 @@ import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIList;
 import com.fantasticsource.tiamatactions.Network;
 import com.fantasticsource.tools.datastructures.Color;
-import scala.actors.threadpool.Arrays;
 
-import java.util.SortedSet;
+import java.util.Arrays;
 import java.util.TreeSet;
 
 public class MainActionEditorGUI extends GUIScreen

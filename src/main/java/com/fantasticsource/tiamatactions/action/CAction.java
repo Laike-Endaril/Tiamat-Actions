@@ -187,6 +187,7 @@ public class CAction extends Component
         for (String filename : Tools.allRecursiveRelativeFilenames(dir.getAbsolutePath()))
         {
             File file = new File(dir.getAbsolutePath() + File.separator + filename);
+            System.out.println("Loading action: " + file.getAbsolutePath());
             try
             {
                 FileInputStream stream = new FileInputStream(file);
