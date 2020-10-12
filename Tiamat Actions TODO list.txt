@@ -1,1 +1,6 @@
+Fix node duplication issue...
+1. Start dragging node
+2. Release mouse button *on window border* (outside game render area, but inside game window)
+3. Click and drag inside valid area then release (press and release on any 2 valid empty areas)
+
 Add copy/paste functionality
