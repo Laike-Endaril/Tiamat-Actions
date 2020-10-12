@@ -116,17 +116,8 @@ public class EventEditorGUI extends GUIScreen
         {
             for (CNode node : action.EVENT_NODES.get(event).values())
             {
-                i = 0;
-                for (long position : node.conditionNodePositions)
-                {
-                    refreshNodeConnection(node, position, 0, i++);
-                }
-
-                i = 0;
-                for (long position : node.inputNodePositions)
-                {
-                    refreshNodeConnection(node, position, 0, i++);
-                }
+                for (long position : node.conditionNodePositions) refreshNodeConnection(node, position, 0);
+                for (long position : node.inputNodePositions) refreshNodeConnection(node, position, 0);
             }
         }
         else
@@ -137,7 +128,6 @@ public class EventEditorGUI extends GUIScreen
 
     protected int refreshNodeConnectionsGlobal(CNode outputNode, CNode[] nodes, int i)
     {
-        int ii = 0;
         for (CNode node : nodes)
         {
             CNode[] conditionNodes = new CNode[node.conditionNodePositions.size()];
@@ -159,7 +149,7 @@ public class EventEditorGUI extends GUIScreen
             long position = Tools.getLong(node.y, node.x);
             if (outputNode != null && !connectionExists(node, outputNode))
             {
-                refreshNodeConnection(outputNode, position, i++, ii);
+                refreshNodeConnection(outputNode, position, i++);
             }
         }
 
@@ -175,10 +165,31 @@ public class EventEditorGUI extends GUIScreen
         return false;
     }
 
-    protected void refreshNodeConnection(CNode node, long position, int i, int i2)
+    protected void refreshNodeConnection(CNode node, long position, int i)
     {
         CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
         boolean inputIsConditionNode = inputNode instanceof CNodeTestCondition;
+
+        int i2 = 0;
+        boolean found = false;
+        for (long p : node.conditionNodePositions)
+        {
+            if (p == position)
+            {
+                found = true;
+                break;
+            }
+            i2++;
+        }
+        if (!found)
+        {
+            i2 = 0;
+            for (long p : node.inputNodePositions)
+            {
+                if (p == position) break;
+                i2++;
+            }
+        }
 
         GUIConnector connector = new GUIConnector(this, view, inputNode, node, false);
         GUIConnector connector2 = new GUIConnector(this, view, inputNode, node, true);
