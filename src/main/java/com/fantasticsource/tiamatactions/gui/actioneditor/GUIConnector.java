@@ -17,7 +17,7 @@ public class GUIConnector extends GUILine
             AQUA = new Color[]{GUIScreen.getIdleColor(Color.AQUA), GUIScreen.getHoverColor(Color.AQUA), Color.AQUA};
 
     protected boolean halfPart;
-    protected CNode from, to;
+    public CNode from, to;
 
     public GUIConnector(GUIScreen screen, GUINodeView view, CNode from, CNode to, boolean halfPart)
     {

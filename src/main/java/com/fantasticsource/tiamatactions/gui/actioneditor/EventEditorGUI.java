@@ -7,14 +7,23 @@ import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tiamatactions.node.CNodeTestCondition;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.input.Keyboard;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class EventEditorGUI extends GUIScreen
 {
+    public static final int
+            VIEW_MODE_INPUT_ORDER_PER_NODE = 0,
+            VIEW_MODE_INPUT_ORDER_GLOBAL = 1;
+
+    public static int viewMode = VIEW_MODE_INPUT_ORDER_PER_NODE;
+
     protected static final Color[] WHITES = new Color[]{getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE};
 
     protected CAction action;
@@ -62,6 +71,39 @@ public class EventEditorGUI extends GUIScreen
     }
 
 
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
+        if (keyCode == Keyboard.KEY_1 || keyCode == Keyboard.KEY_NUMPAD1)
+        {
+            if (viewMode != 0 && !mouseIsWithinConnector())
+            {
+                viewMode = 0;
+                refreshNodeConnections();
+            }
+        }
+        else if (keyCode == Keyboard.KEY_2 || keyCode == Keyboard.KEY_NUMPAD2)
+        {
+            if (viewMode != 1 && !mouseIsWithinConnector())
+            {
+                viewMode = 1;
+                refreshNodeConnections();
+            }
+        }
+
+        super.keyTyped(typedChar, keyCode);
+    }
+
+    protected boolean mouseIsWithinConnector()
+    {
+        for (GUIElement element : view.children.toArray(new GUIElement[0]))
+        {
+            if (element instanceof GUIConnector && element.isMouseWithin()) return true;
+        }
+        return false;
+    }
+
+
     public void refreshNodeConnections()
     {
         for (GUIElement element : view.children.toArray(new GUIElement[0]))
@@ -70,25 +112,73 @@ public class EventEditorGUI extends GUIScreen
         }
 
         int i;
-        for (CNode node : action.EVENT_NODES.get(event).values())
+        if (viewMode == VIEW_MODE_INPUT_ORDER_PER_NODE)
         {
-            i = 0;
-            for (long position : node.conditionNodePositions)
+            for (CNode node : action.EVENT_NODES.get(event).values())
             {
-                refreshNodeConnection(node, position, i++, true);
-            }
+                i = 0;
+                for (long position : node.conditionNodePositions)
+                {
+                    refreshNodeConnection(node, position, 0, i++);
+                }
 
-            i = 0;
-            for (long position : node.inputNodePositions)
-            {
-                refreshNodeConnection(node, position, i++, false);
+                i = 0;
+                for (long position : node.inputNodePositions)
+                {
+                    refreshNodeConnection(node, position, 0, i++);
+                }
             }
+        }
+        else
+        {
+            refreshNodeConnectionsGlobal(null, action.EVENT_ENDPOINT_NODES.get(event).toArray(new CNode[0]), 0);
         }
     }
 
-    protected void refreshNodeConnection(CNode node, long position, int i, boolean inputIsConditionNode)
+    protected int refreshNodeConnectionsGlobal(CNode outputNode, CNode[] nodes, int i)
+    {
+        int ii = 0;
+        for (CNode node : nodes)
+        {
+            CNode[] conditionNodes = new CNode[node.conditionNodePositions.size()];
+            int i2 = 0;
+            for (long position : node.conditionNodePositions)
+            {
+                conditionNodes[i2++] = action.EVENT_NODES.get(node.eventName).get(position);
+            }
+            i = refreshNodeConnectionsGlobal(node, conditionNodes, i);
+
+            CNode[] inputNodes = new CNode[node.inputNodePositions.size()];
+            i2 = 0;
+            for (long position : node.inputNodePositions)
+            {
+                inputNodes[i2++] = action.EVENT_NODES.get(node.eventName).get(position);
+            }
+            i = refreshNodeConnectionsGlobal(node, inputNodes, i);
+
+            long position = Tools.getLong(node.y, node.x);
+            if (outputNode != null && !connectionExists(node, outputNode))
+            {
+                refreshNodeConnection(outputNode, position, i++, ii);
+            }
+        }
+
+        return i;
+    }
+
+    protected boolean connectionExists(CNode from, CNode to)
+    {
+        for (GUIElement element : view.children.toArray(new GUIElement[0]))
+        {
+            if (element instanceof GUIConnector && ((GUIConnector) element).from == from && ((GUIConnector) element).to == to) return true;
+        }
+        return false;
+    }
+
+    protected void refreshNodeConnection(CNode node, long position, int i, int i2)
     {
         CNode inputNode = action.EVENT_NODES.get(node.eventName).get(position);
+        boolean inputIsConditionNode = inputNode instanceof CNodeTestCondition;
 
         GUIConnector connector = new GUIConnector(this, view, inputNode, node, false);
         GUIConnector connector2 = new GUIConnector(this, view, inputNode, node, true);
@@ -102,18 +192,18 @@ public class EventEditorGUI extends GUIScreen
         String s;
         if (inputIsConditionNode)
         {
-            s = TextFormatting.AQUA + "Condition #" + (i + 1);
+            s = TextFormatting.AQUA + "Condition #" + (i2 + 1);
         }
         else
         {
-            s = TextFormatting.WHITE + "" + (i + 1) + ": ";
+            s = TextFormatting.WHITE + "" + (i2 + 1) + ": ";
             Map.Entry<String, Class>[] requiredInputs = node.getRequiredInputs().entrySet().toArray(new Map.Entry[0]);
-            if (i < node.getRequiredInputs().size())
+            if (i2 < node.getRequiredInputs().size())
             {
-                TextFormatting color = Tools.areRelated(inputNode.outputType(), requiredInputs[i].getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
+                TextFormatting color = Tools.areRelated(inputNode.outputType(), requiredInputs[i2].getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
                 TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
 
-                s += color + requiredInputs[i].getValue().getSimpleName() + " " + color2 + requiredInputs[i].getKey();
+                s += color + requiredInputs[i2].getValue().getSimpleName() + " " + color2 + requiredInputs[i2].getKey();
 
                 if (color == TextFormatting.RED) s += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
             }
@@ -122,7 +212,7 @@ public class EventEditorGUI extends GUIScreen
                 TextFormatting color = Tools.areRelated(inputNode.outputType(), node.getOptionalInputs().getValue()) ? TextFormatting.GREEN : TextFormatting.RED;
                 TextFormatting color2 = color == TextFormatting.RED ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA;
 
-                s += color + node.getOptionalInputs().getValue().getSimpleName() + " " + color2 + "@" + (i + 1 - node.getRequiredInputs().size());
+                s += color + node.getOptionalInputs().getValue().getSimpleName() + " " + color2 + "@" + (i2 + 1 - node.getRequiredInputs().size());
 
                 if (color == TextFormatting.RED) s += color + " (current input type is " + (inputNode.outputType() == null ? "null" : inputNode.outputType().getSimpleName()) + ")";
             }
@@ -130,9 +220,10 @@ public class EventEditorGUI extends GUIScreen
         connector.setTooltip(s);
 
 
-        if (!inputIsConditionNode)
+        if (!inputIsConditionNode || viewMode == VIEW_MODE_INPUT_ORDER_GLOBAL)
         {
-            GUIText connectorLabel = new GUIText(this, 0, 0, "" + (i + 1), WHITES[0], WHITES[1], WHITES[2]);
+            int ii = viewMode == VIEW_MODE_INPUT_ORDER_GLOBAL ? i : i2;
+            GUIText connectorLabel = new GUIText(this, 0, 0, "" + (ii + 1), WHITES[0], WHITES[1], WHITES[2]);
 
             connectorLabel.linkMouseActivity(connector);
             connector.linkMouseActivity(connectorLabel);
