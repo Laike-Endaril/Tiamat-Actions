@@ -1,7 +1,1 @@
-Add display of execution order
-
 Add copy/paste functionality
-
-
-
-Add memory leak checks on data structures if omni is showing GC runs on Faerun
