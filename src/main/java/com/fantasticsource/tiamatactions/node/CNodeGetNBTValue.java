@@ -65,7 +65,7 @@ public class CNodeGetNBTValue extends CNode
     @Override
     public Class outputType()
     {
-        return NBTBase.class;
+        return Object.class;
     }
 
 
