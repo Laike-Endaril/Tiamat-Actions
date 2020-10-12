@@ -111,7 +111,6 @@ public class EventEditorGUI extends GUIScreen
             if (element instanceof GUIConnector) view.remove(element);
         }
 
-        int i;
         if (viewMode == VIEW_MODE_INPUT_ORDER_PER_NODE)
         {
             for (CNode node : action.EVENT_NODES.get(event).values())
