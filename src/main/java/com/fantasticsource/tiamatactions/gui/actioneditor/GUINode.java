@@ -112,7 +112,7 @@ public class GUINode extends GUIImage
     {
         boolean result = super.mousePressed(button);
 
-        if (isMouseWithin())
+        if (!createEditDragging && isMouseWithin())
         {
             if (button == TiamatActionsConfig.clientSettings.guiSettings.createEditNodeButton)
             {
