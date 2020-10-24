@@ -77,7 +77,7 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
-        //Trig
+        //Trig / Geometry
         NODE_CHOICES.put("Output Vector", CNodeVector.class);
         NODE_CHOICES.put("Vector Sum", CNodeVectorSum.class);
         NODE_CHOICES.put("Vector Difference", CNodeVectorDifference.class);

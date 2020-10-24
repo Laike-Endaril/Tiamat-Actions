@@ -34,7 +34,7 @@ public class CNodeEntityFilterInSphere extends CNode
     static
     {
         REQUIRED_INPUTS.put("origin", Vec3d.class);
-        REQUIRED_INPUTS.put("radius", String.class);
+        REQUIRED_INPUTS.put("radius", Object.class);
         REQUIRED_INPUTS.put("entities", Entity[].class);
     }
 

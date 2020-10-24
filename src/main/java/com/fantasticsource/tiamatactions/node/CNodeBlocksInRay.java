@@ -21,7 +21,7 @@ public class CNodeBlocksInRay extends CNode
     {
         REQUIRED_INPUTS.put("world", World.class);
         REQUIRED_INPUTS.put("ray", Ray.class);
-        REQUIRED_INPUTS.put("maxDistance", String.class);
+        REQUIRED_INPUTS.put("maxDistance", Object.class);
         REQUIRED_INPUTS.put("collideOnAllSolids", Boolean.class);
     }
 

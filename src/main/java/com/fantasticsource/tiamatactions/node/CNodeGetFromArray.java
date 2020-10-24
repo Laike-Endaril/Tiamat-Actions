@@ -17,7 +17,7 @@ public class CNodeGetFromArray extends CNode
     static
     {
         REQUIRED_INPUTS.put("array", Object[].class);
-        REQUIRED_INPUTS.put("number", String.class);
+        REQUIRED_INPUTS.put("number", Object.class);
     }
 
     /**

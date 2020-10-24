@@ -36,7 +36,7 @@ public class CNodeRayCollisionVector extends CNode
     {
         REQUIRED_INPUTS.put("world", World.class);
         REQUIRED_INPUTS.put("ray", Ray.class);
-        REQUIRED_INPUTS.put("range", String.class);
+        REQUIRED_INPUTS.put("range", Object.class);
         REQUIRED_INPUTS.put("collideOnAllSolids", Boolean.class);
     }
 

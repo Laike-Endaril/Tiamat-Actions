@@ -24,7 +24,7 @@ public class CNodeDamageEntity extends CNode
         REQUIRED_INPUTS.put("damageType", String.class);
         REQUIRED_INPUTS.put("trueSource", Entity.class);
         REQUIRED_INPUTS.put("immediateSource", Entity.class);
-        REQUIRED_INPUTS.put("damageAmount", String.class);
+        REQUIRED_INPUTS.put("damageAmount", Object.class);
         REQUIRED_INPUTS.put("target", Entity.class);
     }
 

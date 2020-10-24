@@ -17,7 +17,7 @@ public class CNodeGetFromList extends CNode
     static
     {
         REQUIRED_INPUTS.put("list", List.class);
-        REQUIRED_INPUTS.put("number", String.class);
+        REQUIRED_INPUTS.put("number", Object.class);
     }
 
     /**

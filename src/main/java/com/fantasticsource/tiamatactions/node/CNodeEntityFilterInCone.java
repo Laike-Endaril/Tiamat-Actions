@@ -21,8 +21,8 @@ public class CNodeEntityFilterInCone extends CNode
     static
     {
         REQUIRED_INPUTS.put("coneAxis", Ray.class);
-        REQUIRED_INPUTS.put("range", String.class);
-        REQUIRED_INPUTS.put("angle", String.class);
+        REQUIRED_INPUTS.put("range", Object.class);
+        REQUIRED_INPUTS.put("angle", Object.class);
         REQUIRED_INPUTS.put("requireLOS", Boolean.class);
         REQUIRED_INPUTS.put("entities", Entity[].class);
     }
