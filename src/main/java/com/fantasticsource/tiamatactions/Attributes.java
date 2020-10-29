@@ -29,7 +29,7 @@ public class Attributes
 
             String name = tokens[0].trim();
             double defaultValue = tokens.length < 2 ? 0 : Double.parseDouble(tokens[1].trim());
-            RangedAttribute parent = tokens.length < 3 ? null : CUSTOM_ATTRIBUTES.get(tokens[2].trim());
+            RangedAttribute parent = tokens.length < 3 ? null : CUSTOM_ATTRIBUTES.get(MODID + "." + tokens[2].trim());
             double min = tokens.length < 4 ? -Double.MAX_VALUE : Double.parseDouble(tokens[3].trim());
             double max = tokens.length < 5 ? Double.MAX_VALUE : Double.parseDouble(tokens[4].trim());
 

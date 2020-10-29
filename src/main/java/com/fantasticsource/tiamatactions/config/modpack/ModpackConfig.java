@@ -13,7 +13,9 @@ public class ModpackConfig
                     "A list of custom attributes to add to living entities",
                     "Syntax is...",
                     "name, defaultValue, parentName, minValue, maxValue",
-                    "All arguments except name are optional, but must include all preceding arguments"
+                    "All arguments except name are optional, but must include all preceding arguments",
+                    "The full attribute name will end up as tiamatactions.<name>, eg 'strength' would end up as 'tiamatactions.strength'",
+                    "The parent name must be the (partial) name of another custom attribute (ie. 'strength', not 'tiamatactions.strength'"
             })
     @Config.RequiresMcRestart
     public String[] customAttributes = new String[0];
