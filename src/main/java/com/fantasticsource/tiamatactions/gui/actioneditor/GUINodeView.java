@@ -57,6 +57,13 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Itemstack", CNodeItemstack.class);
         NODE_CHOICES.put("Get Inventory Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Set Inventory Itemstack", CNodeSetItemstack.class);
+        if (Loader.isModLoaded("tiamatitems"))
+        {
+            NODE_CHOICES.put("Activate Itemstack", CNodeActivateItemstack.class);
+            NODE_CHOICES.put("Deactivate Itemstack", CNodeDeactivateItemstack.class);
+            NODE_CHOICES.put("Is Itemstack Active?", CNodeIsItemstackActive.class);
+            NODE_CHOICES.put("Get Tiamat Items Parts", CNodeGetTiamatItemsParts.class);
+        }
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
@@ -140,28 +147,9 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Null", CNodeNull.class);
         NODE_CHOICES.put("Evaluate", CNodeEval.class);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
+        if (Loader.isModLoaded("tiamathud")) NODE_CHOICES.put("Set Custom HUD Data", CNodeSetCustomHUDData.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
-
-        //API
-        int apiCount = 0;
-
-        if (Loader.isModLoaded("tiamathud"))
-        {
-            apiCount++;
-            NODE_CHOICES.put("Set Custom HUD Data", CNodeSetCustomHUDData.class);
-        }
-        if (Loader.isModLoaded("tiamatitems"))
-        {
-            apiCount++;
-            NODE_CHOICES.put("Get Tiamat Items Parts", CNodeGetTiamatItemsParts.class);
-        }
-
-        if (apiCount > 0)
-        {
-            NODE_CHOICES.put(separator, null);
-            separator += "\r";
-        }
 
         //Debug
         NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
