@@ -6,7 +6,6 @@ import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.nbt.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.LinkedHashMap;
 
@@ -76,7 +75,7 @@ public class CNodeGetNBTValue extends CNode
         for (String ref : Tools.fixedSplit("" + inputs[1], ":"))
         {
             if (nbt instanceof NBTTagCompound) nbt = ((NBTTagCompound) nbt).getTag(ref);
-            else throw new NotImplementedException("Have not yet added sub-accessors for " + nbt.getClass().getSimpleName());
+            else return null;
         }
 
         if (nbt == null) return null;
