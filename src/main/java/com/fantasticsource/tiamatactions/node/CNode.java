@@ -282,6 +282,7 @@ public abstract class CNode extends Component
                 if (mainAction.source instanceof EntityPlayerMP)
                 {
                     mainAction.source.sendMessage(new TextComponentString(TextFormatting.RED + "Exception caught in action: " + subAction.name + " (Main action: " + mainAction.name + ")"));
+                    mainAction.source.sendMessage(new TextComponentString(TextFormatting.RED + "" + e.toString()));
                     for (StackTraceElement stackTraceElement : stackTrace) mainAction.source.sendMessage(new TextComponentString(TextFormatting.RED + "" + stackTraceElement));
                 }
             }
