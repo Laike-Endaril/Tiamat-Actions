@@ -137,6 +137,11 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
+        //Animation
+        NODE_CHOICES.put("Swing Arm", CNodeSwingArm.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
         //Sound
         NODE_CHOICES.put("Play Sound at Position", CNodePlaySoundAtPosition.class);
         NODE_CHOICES.put("Play Sound at Entity Position", CNodePlaySoundAtEntityPosition.class);
