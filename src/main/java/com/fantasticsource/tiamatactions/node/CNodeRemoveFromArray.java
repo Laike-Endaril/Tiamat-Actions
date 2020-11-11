@@ -4,6 +4,7 @@ import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.util.ResourceLocation;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -70,8 +71,9 @@ public class CNodeRemoveFromArray extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
+        Class type = inputs[0].getClass().getComponentType();
         ArrayList<Object> objects = new ArrayList<>(Arrays.asList((Object[]) inputs[0]));
         for (int i = 1; i < inputs.length; i++) objects.remove(inputs[i]);
-        return objects.toArray(new Object[0]);
+        return objects.toArray((Object[]) Array.newInstance(type, objects.size()));
     }
 }
