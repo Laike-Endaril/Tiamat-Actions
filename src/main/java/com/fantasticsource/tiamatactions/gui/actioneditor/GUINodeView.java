@@ -39,13 +39,10 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
-        //Entities
+        //Entity getters and filters
         NODE_CHOICES.put("Source Entity", CNodeSourceEntity.class);
-        NODE_CHOICES.put("Get Entity HP", CNodeGetEntityHP.class);
-        NODE_CHOICES.put("Set Entity HP", CNodeSetEntityHP.class);
-        NODE_CHOICES.put("Get Entity Variable", CNodeGetEntityVar.class);
-        NODE_CHOICES.put("Set Entity Variable", CNodeSetEntityVar.class);
-        NODE_CHOICES.put("Get Entity Classname", CNodeGetEntityClassname.class);
+        NODE_CHOICES.put("Spawn Entity", CNodeSpawnEntity.class);
+        NODE_CHOICES.put("Spawn Entity With NBT", CNodeSpawnEntityWithNBT.class);
         NODE_CHOICES.put("World Entities", CNodeWorldEntities.class);
         NODE_CHOICES.put("Entity Filter: In Cube", CNodeEntityFilterInCube.class);
         NODE_CHOICES.put("Entity Filter: In Sphere", CNodeEntityFilterInSphere.class);
@@ -123,6 +120,11 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Set Entity Position Vector", CNodeSetPosition.class);
         NODE_CHOICES.put("Get Entity Look Vector", CNodeGetLookVector.class);
         NODE_CHOICES.put("Set Entity Look Vector", CNodeSetLookVector.class);
+        NODE_CHOICES.put("Get Entity HP", CNodeGetEntityHP.class);
+        NODE_CHOICES.put("Set Entity HP", CNodeSetEntityHP.class);
+        NODE_CHOICES.put("Get Entity Variable", CNodeGetEntityVar.class);
+        NODE_CHOICES.put("Set Entity Variable", CNodeSetEntityVar.class);
+        NODE_CHOICES.put("Get Entity Classname", CNodeGetEntityClassname.class);
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 

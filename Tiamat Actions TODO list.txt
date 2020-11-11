@@ -1,4 +1,5 @@
-Spawn entity + get entity ref
 Spawn particles
+
+Categorize node list GUI
 
 Add copy/paste functionality
