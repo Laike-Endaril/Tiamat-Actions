@@ -42,7 +42,7 @@ public class CNodeDebug extends CNode
     @Override
     public String getDescription()
     {
-        return "Display one or more values";
+        return "Display one or more values and output the first input";
     }
 
 
@@ -61,7 +61,7 @@ public class CNodeDebug extends CNode
     @Override
     public Class outputType()
     {
-        return null;
+        return Object.class;
     }
 
 
@@ -73,7 +73,7 @@ public class CNodeDebug extends CNode
         int i = 0;
         for (String s : expandArray(inputs)) mainAction.source.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE + "" + ++i + ". " + s));
 
-        return null;
+        return inputs[0];
     }
 
     protected ArrayList<String> expandArray(Object[] array)
