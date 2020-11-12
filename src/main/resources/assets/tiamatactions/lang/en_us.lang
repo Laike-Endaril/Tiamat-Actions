@@ -34,3 +34,7 @@ tiamatactions.config.customAttributes=Custom Attributes
 tiamatactions.config.customAttributes.tooltip=FILLSCREEN FIXNEWLINES A list of custom attributes to add to living entities\nSyntax is...\nname, defaultValue, parentName, minValue, maxValue\nAll arguments except name are optional, but must include all preceding arguments\nThe full attribute name will end up as tiamatactions.<name>, eg 'strength' would end up as 'tiamatactions.strength'\nThe parent name must be the (partial) name of another custom attribute (ie. 'strength', not 'tiamatactions.strength'\n \n
 tiamatactions.config.keyboundActions=Keybound Actions
 tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;actionName\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction\n \n
+
+
+
+tiamatactions.cmd.reload.comment=Reloads all actions from disk

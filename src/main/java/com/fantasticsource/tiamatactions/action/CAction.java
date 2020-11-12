@@ -15,10 +15,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
@@ -179,16 +176,20 @@ public class CAction extends Component
         }
     }
 
-    public static void reloadAll()
+    public static ArrayList<String> reloadAll()
     {
+        ArrayList<String> results = new ArrayList<>();
+
+        ALL_ACTIONS.clear();
+
         File dir = new File(DIR_PREFIX + File.separator);
         dir.mkdirs();
 
-        ALL_ACTIONS.clear();
         for (String filename : Tools.allRecursiveRelativeFilenames(dir.getAbsolutePath()))
         {
+            if (!filename.contains(".dat")) continue;
+
             File file = new File(dir.getAbsolutePath() + File.separator + filename);
-            System.out.println("Loading action: " + file.getAbsolutePath());
             try
             {
                 FileInputStream stream = new FileInputStream(file);
@@ -196,13 +197,18 @@ public class CAction extends Component
                 action.name = filename.replace(".dat", "").replaceAll(Pattern.quote("\\"), "/");
                 stream.close();
                 ALL_ACTIONS.put(action.name, action);
+                System.out.println(TextFormatting.GREEN + "Loaded action: " + filename);
+                results.add(TextFormatting.GREEN + "Loaded action: " + filename);
             }
             catch (Exception e)
             {
-                System.err.println(TextFormatting.RED + "Error loading action: " + file.getAbsolutePath());
+                System.err.println(TextFormatting.RED + "Error loading action: " + filename);
+                results.add(TextFormatting.RED + "Error loading action: " + filename);
                 e.printStackTrace();
             }
         }
+
+        return results;
     }
 
     public void delete()
