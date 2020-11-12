@@ -1,3 +1,5 @@
+Namespace actions in action list and add duplicate action buttons
+
 Nodes...
 Check action queue
 Spawn particles

@@ -179,11 +179,12 @@ public class CAction extends Component
         }
     }
 
-    public static void loadAll()
+    public static void reloadAll()
     {
         File dir = new File(DIR_PREFIX + File.separator);
         dir.mkdirs();
 
+        ALL_ACTIONS.clear();
         for (String filename : Tools.allRecursiveRelativeFilenames(dir.getAbsolutePath()))
         {
             File file = new File(dir.getAbsolutePath() + File.separator + filename);

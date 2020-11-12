@@ -42,7 +42,7 @@ public class TiamatActions
         MinecraftForge.EVENT_BUS.register(ActionQueue.class);
         MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
 
-        CAction.loadAll();
+        CAction.reloadAll();
 
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
