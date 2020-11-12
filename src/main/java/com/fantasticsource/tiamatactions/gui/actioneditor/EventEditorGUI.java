@@ -22,7 +22,7 @@ public class EventEditorGUI extends GUIScreen
             VIEW_MODE_INPUT_ORDER_PER_NODE = 0,
             VIEW_MODE_INPUT_ORDER_GLOBAL = 1;
 
-    public static int viewMode = VIEW_MODE_INPUT_ORDER_PER_NODE;
+    public static int viewMode = VIEW_MODE_INPUT_ORDER_GLOBAL;
 
     protected static final Color[] WHITES = new Color[]{getIdleColor(Color.WHITE), getHoverColor(Color.WHITE), Color.WHITE};
 

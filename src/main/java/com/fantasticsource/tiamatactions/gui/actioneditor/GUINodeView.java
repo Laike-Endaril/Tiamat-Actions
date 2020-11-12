@@ -50,6 +50,24 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
+        //Entities
+        NODE_CHOICES.put("Damage Entity", CNodeDamageEntity.class);
+        NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
+        NODE_CHOICES.put("Get Entity World", CNodeGetWorld.class);
+        NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
+        NODE_CHOICES.put("Get Entity Eye Position Vector", CNodeGetEyePosition.class);
+        NODE_CHOICES.put("Get Entity Position Vector", CNodeGetPosition.class);
+        NODE_CHOICES.put("Set Entity Position Vector", CNodeSetPosition.class);
+        NODE_CHOICES.put("Get Entity Look Vector", CNodeGetLookVector.class);
+        NODE_CHOICES.put("Set Entity Look Vector", CNodeSetLookVector.class);
+        NODE_CHOICES.put("Get Entity HP", CNodeGetEntityHP.class);
+        NODE_CHOICES.put("Set Entity HP", CNodeSetEntityHP.class);
+        NODE_CHOICES.put("Get Entity Variable", CNodeGetEntityVar.class);
+        NODE_CHOICES.put("Set Entity Variable", CNodeSetEntityVar.class);
+        NODE_CHOICES.put("Get Entity Classname", CNodeGetEntityClassname.class);
+        NODE_CHOICES.put(separator, null);
+        separator += "\r";
+
         //Itemstacks
         NODE_CHOICES.put("Itemstack", CNodeItemstack.class);
         NODE_CHOICES.put("Get Inventory Itemstack", CNodeGetItemstack.class);
@@ -110,30 +128,12 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put(separator, null);
         separator += "\r";
 
-        //Entity
-        NODE_CHOICES.put("Damage Entity", CNodeDamageEntity.class);
-        NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
-        NODE_CHOICES.put("Get Entity World", CNodeGetWorld.class);
-        NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
-        NODE_CHOICES.put("Get Entity Eye Position Vector", CNodeGetEyePosition.class);
-        NODE_CHOICES.put("Get Entity Position Vector", CNodeGetPosition.class);
-        NODE_CHOICES.put("Set Entity Position Vector", CNodeSetPosition.class);
-        NODE_CHOICES.put("Get Entity Look Vector", CNodeGetLookVector.class);
-        NODE_CHOICES.put("Set Entity Look Vector", CNodeSetLookVector.class);
-        NODE_CHOICES.put("Get Entity HP", CNodeGetEntityHP.class);
-        NODE_CHOICES.put("Set Entity HP", CNodeSetEntityHP.class);
-        NODE_CHOICES.put("Get Entity Variable", CNodeGetEntityVar.class);
-        NODE_CHOICES.put("Set Entity Variable", CNodeSetEntityVar.class);
-        NODE_CHOICES.put("Get Entity Classname", CNodeGetEntityClassname.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
-
         //Actions
         NODE_CHOICES.put("End Action", CNodeEndAction.class);
+        NODE_CHOICES.put("Queue Action", CNodeQueueAction.class);
         NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
         NODE_CHOICES.put("Get Action Argument", CNodeGetActionArgument.class);
         NODE_CHOICES.put("Set Action Result", CNodeSetActionResult.class);
-        NODE_CHOICES.put("Queue Action", CNodeQueueAction.class);
         NODE_CHOICES.put("Get Action Variable", CNodeGetActionVar.class);
         NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);
         NODE_CHOICES.put(separator, null);
