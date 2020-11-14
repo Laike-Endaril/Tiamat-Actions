@@ -33,7 +33,7 @@ public class Attributes
             double min = tokens.length < 4 ? -Double.MAX_VALUE : Double.parseDouble(tokens[3].trim());
             double max = tokens.length < 5 ? Double.MAX_VALUE : Double.parseDouble(tokens[4].trim());
 
-            CUSTOM_ATTRIBUTES.put(name, new RangedAttribute(parent, MODID + "." + name, defaultValue, min, max));
+            CUSTOM_ATTRIBUTES.put(name, (RangedAttribute) new RangedAttribute(parent, MODID + "." + name, defaultValue, min, max).setShouldWatch(true));
         }
     }
 
