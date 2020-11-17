@@ -11,14 +11,16 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeQueueAction extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/set_action_var.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/queue_action.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("argument", Object.class);
 
     static
     {
         REQUIRED_INPUTS.put("entity", Entity.class);
         REQUIRED_INPUTS.put("queueName", Object.class);
         REQUIRED_INPUTS.put("actionName", Object.class);
+        REQUIRED_INPUTS.put("inheritActionVars", Boolean.class);
     }
 
     /**
@@ -57,7 +59,7 @@ public class CNodeQueueAction extends CNode
     @Override
     public Pair<String, Class> getOptionalInputs()
     {
-        return null;
+        return OPTIONAL_INPUTS;
     }
 
     @Override
@@ -71,8 +73,8 @@ public class CNodeQueueAction extends CNode
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         CAction action = CAction.ALL_ACTIONS.get("" + inputs[2]);
-        Object argument = inputs.length > 3 ? inputs[3] : null;
-        action.queue((Entity) inputs[0], "" + inputs[1], null, argument);
+        Object argument = inputs.length > 4 ? inputs[4] : null;
+        action.queue((Entity) inputs[0], "" + inputs[1], null, argument, (boolean) inputs[3] ? mainAction.actionVars : null);
         return null;
     }
 }
