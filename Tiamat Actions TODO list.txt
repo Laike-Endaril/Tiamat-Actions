@@ -1,4 +1,4 @@
-Namespace actions in action list and add duplicate action buttons
+Categorize node list GUI
 
 Nodes...
 Set entity position
@@ -8,6 +8,6 @@ Set entity no-clip
 Destroy entity
 Spawn particles
 
-Categorize node list GUI
+
 
 Add copy/paste functionality

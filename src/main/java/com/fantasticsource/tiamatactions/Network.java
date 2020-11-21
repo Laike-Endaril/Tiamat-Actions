@@ -44,7 +44,6 @@ public class Network
         WRAPPER.registerMessage(DeleteActionPacketHandler.class, DeleteActionPacket.class, discriminator++, Side.SERVER);
 
         WRAPPER.registerMessage(ExecuteKeyboundActionPacketHandler.class, ExecuteKeyboundActionPacket.class, discriminator++, Side.SERVER);
-
         for (String s : TiamatActionsConfig.modpackSettings.keyboundActions)
         {
             String[] tokens = Tools.fixedSplit(s, ";");
@@ -53,6 +52,8 @@ public class Network
 
             KEYBOUND_ACTION_NAMES.put(tokens[0].trim(), tokens[1].trim());
         }
+
+        WRAPPER.registerMessage(DuplicateActionPacketHandler.class, DuplicateActionPacket.class, discriminator++, Side.SERVER);
     }
 
 
@@ -403,6 +404,62 @@ public class Network
 
             EntityPlayerMP player = ctx.getServerHandler().player;
             action.queue(player, "Main", null);
+            return null;
+        }
+    }
+
+
+    public static class DuplicateActionPacket implements IMessage
+    {
+        String name;
+
+        public DuplicateActionPacket()
+        {
+            //Required
+        }
+
+        public DuplicateActionPacket(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            ByteBufUtils.writeUTF8String(buf, name);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            name = ByteBufUtils.readUTF8String(buf);
+        }
+    }
+
+    public static class DuplicateActionPacketHandler implements IMessageHandler<DuplicateActionPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(DuplicateActionPacket packet, MessageContext ctx)
+        {
+            EntityPlayerMP player = ctx.getServerHandler().player;
+            if (player.isCreative())
+            {
+                CAction action = CAction.ALL_ACTIONS.get(packet.name);
+                if (action != null)
+                {
+                    action = (CAction) action.copy();
+                    action.name += " Copy";
+                    if (CAction.ALL_ACTIONS.containsKey(action.name))
+                    {
+                        int i = 2;
+                        while (CAction.ALL_ACTIONS.containsKey(action.name + i)) i++;
+                        action.name += i;
+                    }
+                    CAction.ALL_ACTIONS.put(action.name, action);
+                }
+
+                WRAPPER.sendTo(new OpenMainActionEditorPacket(), player);
+            }
             return null;
         }
     }

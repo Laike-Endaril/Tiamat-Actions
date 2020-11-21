@@ -51,6 +51,7 @@ public class MainActionEditorGUI extends GUIScreen
 
 
                 return new GUIElement[]{
+                        GUIButton.newDuplicateButton(screen).addClickActions(() -> Network.WRAPPER.sendToServer(new Network.DuplicateActionPacket(name.getText()))),
                         GUIButton.newEditButton(screen).addClickActions(() -> Network.WRAPPER.sendToServer(new Network.RequestOpenActionEditorPacket(name.getText()))),
                         name
                 };
@@ -65,7 +66,7 @@ public class MainActionEditorGUI extends GUIScreen
         for (String actionName : treeSet)
         {
             GUIList.Line line = actionList.addLine();
-            ((GUIText) line.getLineElement(1)).setText(actionName);
+            ((GUIText) line.getLineElement(2)).setText(actionName);
         }
 
         //Add GUI actions
@@ -78,7 +79,7 @@ public class MainActionEditorGUI extends GUIScreen
         {
             if (element instanceof GUIList.Line)
             {
-                GUIText name = (GUIText) ((GUIList.Line) element).getLineElement(1);
+                GUIText name = (GUIText) ((GUIList.Line) element).getLineElement(2);
                 Network.WRAPPER.sendToServer(new Network.DeleteActionPacket(name.getText()));
             }
             return true;
@@ -89,7 +90,7 @@ public class MainActionEditorGUI extends GUIScreen
     {
         for (GUIList.Line line : actionList.getLines())
         {
-            if (((GUIText) line.getLineElement(1)).getText().equals(name)) return true;
+            if (((GUIText) line.getLineElement(2)).getText().equals(name)) return true;
         }
         return false;
     }
