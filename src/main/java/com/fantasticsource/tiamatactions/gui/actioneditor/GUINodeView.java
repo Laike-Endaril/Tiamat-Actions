@@ -34,28 +34,29 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Strings", "String Contains", CNodeStringContains.class);
         addOption("Strings", "String Replacement", CNodeStringReplace.class);
 
-        addOption("Entity Getters and Filters", "Source Entity", CNodeSourceEntity.class);
-        addOption("Entity Getters and Filters", "Spawn Entity", CNodeSpawnEntity.class);
-        addOption("Entity Getters and Filters", "Spawn Entity With NBT", CNodeSpawnEntityWithNBT.class);
-        addOption("Entity Getters and Filters", "World Entities", CNodeWorldEntities.class);
-        addOption("Entity Getters and Filters", "Entity Filter: In Cube", CNodeEntityFilterInCube.class);
-        addOption("Entity Getters and Filters", "Entity Filter: In Sphere", CNodeEntityFilterInSphere.class);
-        addOption("Entity Getters and Filters", "Entity Filter: In Cone", CNodeEntityFilterInCone.class);
+        addOption("Entities and Entity Filters", "Source Entity", CNodeSourceEntity.class);
+        addOption("Entities and Entity Filters", "Spawn Entity", CNodeSpawnEntity.class);
+        addOption("Entities and Entity Filters", "Spawn Entity With NBT", CNodeSpawnEntityWithNBT.class);
+        addOption("Entities and Entity Filters", "World Entities", CNodeWorldEntities.class);
+        addOption("Entities and Entity Filters", "Entity Filter: In Cube", CNodeEntityFilterInCube.class);
+        addOption("Entities and Entity Filters", "Entity Filter: In Sphere", CNodeEntityFilterInSphere.class);
+        addOption("Entities and Entity Filters", "Entity Filter: In Cone", CNodeEntityFilterInCone.class);
 
-        addOption("Entities", "Damage Entity", CNodeDamageEntity.class);
-        addOption("Entities", "Get Entity Attribute Total", CNodeGetAttribute.class);
-        addOption("Entities", "Get Entity World", CNodeGetWorld.class);
-        addOption("Entities", "Get Entity Dimension", CNodeGetDimension.class);
-        addOption("Entities", "Get Entity Eye Position Vector", CNodeGetEyePosition.class);
-        addOption("Entities", "Get Entity Position Vector", CNodeGetPosition.class);
-        addOption("Entities", "Set Entity Position Vector", CNodeSetEntityPosition.class);
-        addOption("Entities", "Get Entity Look Vector", CNodeGetLookVector.class);
-        addOption("Entities", "Set Entity Look Vector", CNodeSetLookVector.class);
-        addOption("Entities", "Get Entity HP", CNodeGetEntityHP.class);
-        addOption("Entities", "Set Entity HP", CNodeSetEntityHP.class);
-        addOption("Entities", "Get Entity Variable", CNodeGetEntityVar.class);
-        addOption("Entities", "Set Entity Variable", CNodeSetEntityVar.class);
-        addOption("Entities", "Get Entity Classname", CNodeGetEntityClassname.class);
+        addOption("Entity Getters", "Get Entity Attribute Total", CNodeGetAttribute.class);
+        addOption("Entity Getters", "Get Entity World", CNodeGetWorld.class);
+        addOption("Entity Getters", "Get Entity Dimension", CNodeGetDimension.class);
+        addOption("Entity Getters", "Get Entity Eye Position Vector", CNodeGetEyePosition.class);
+        addOption("Entity Getters", "Get Entity Position Vector", CNodeGetPosition.class);
+        addOption("Entity Getters", "Get Entity Look Vector", CNodeGetLookVector.class);
+        addOption("Entity Getters", "Get Entity HP", CNodeGetEntityHP.class);
+        addOption("Entity Getters", "Get Entity Variable", CNodeGetEntityVar.class);
+        addOption("Entity Getters", "Get Entity Classname", CNodeGetEntityClassname.class);
+
+        addOption("Entity Setters and Functions", "Damage Entity", CNodeDamageEntity.class);
+        addOption("Entity Setters and Functions", "Set Entity Position Vector", CNodeSetEntityPosition.class);
+        addOption("Entity Setters and Functions", "Set Entity Look Vector", CNodeSetLookVector.class);
+        addOption("Entity Setters and Functions", "Set Entity HP", CNodeSetEntityHP.class);
+        addOption("Entity Setters and Functions", "Set Entity Variable", CNodeSetEntityVar.class);
 
         addOption("Itemstacks", "Itemstack", CNodeItemstack.class);
         addOption("Itemstacks", "Get Inventory Itemstack", CNodeGetItemstack.class);
