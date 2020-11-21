@@ -197,8 +197,6 @@ public class CAction extends Component
                 action.name = filename.replace(".dat", "").replaceAll(Pattern.quote("\\"), "/");
                 stream.close();
                 ALL_ACTIONS.put(action.name, action);
-                System.out.println(TextFormatting.GREEN + "Loaded action: " + filename);
-                results.add(TextFormatting.GREEN + "Loaded action: " + filename);
             }
             catch (Exception e)
             {
@@ -207,6 +205,9 @@ public class CAction extends Component
                 e.printStackTrace();
             }
         }
+
+        System.out.println(TextFormatting.GREEN + "Loaded " + CAction.ALL_ACTIONS.size() + " actions");
+        results.add(TextFormatting.GREEN + "Loaded " + CAction.ALL_ACTIONS.size() + " actions");
 
         return results;
     }
