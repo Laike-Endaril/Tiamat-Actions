@@ -53,6 +53,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Entity Getters", "Get Entity Classname", CNodeGetEntityClassname.class);
         addOption("Entity Getters", "Get Entity Motion Vector", CNodeGetEntityMotion.class);
         addOption("Entity Getters", "Get Entity Gravity", CNodeGetEntityGravity.class);
+        addOption("Entity Getters", "Get Entity Clip", CNodeGetEntityClip.class);
 
         addOption("Entity Setters and Functions", "Damage Entity", CNodeDamageEntity.class);
         addOption("Entity Setters and Functions", "Set Entity Position Vector", CNodeSetEntityPosition.class);
@@ -61,6 +62,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Entity Setters and Functions", "Set Entity Variable", CNodeSetEntityVar.class);
         addOption("Entity Setters and Functions", "Set Entity Motion Vector", CNodeSetEntityMotion.class);
         addOption("Entity Setters and Functions", "Set Entity Gravity", CNodeSetEntityGravity.class);
+        addOption("Entity Setters and Functions", "Set Entity Clip", CNodeSetEntityClip.class);
 
         addOption("Itemstacks", "Itemstack", CNodeItemstack.class);
         addOption("Itemstacks", "Get Inventory Itemstack", CNodeGetItemstack.class);

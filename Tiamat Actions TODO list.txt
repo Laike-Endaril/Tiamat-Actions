@@ -1,8 +1,6 @@
 Change rendering of nodes
 
 Nodes...
-Get entity no-clip
-Set entity no-clip
 Destroy entity
 Spawn particles
 
