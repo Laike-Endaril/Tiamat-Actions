@@ -13,234 +13,115 @@ import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class GUINodeView extends GUIPanZoomView
 {
-    protected static final LinkedHashMap<String, String[]> NODE_CHOICES_CATEGORIZED = new LinkedHashMap<>();
-    protected static final LinkedHashMap<String, Class<? extends CNode>> NODE_CHOICES = new LinkedHashMap<>();
+    protected static final LinkedHashMap<String, HashSet<String>> NODE_CHOICES_CATEGORIZED = new LinkedHashMap<>();
+    protected static final LinkedHashMap<String, Class<? extends CNode>> NODE_CHOICE_CLASSES = new LinkedHashMap<>();
     protected boolean createEditDragging = false;
 
     static
     {
-        NODE_CHOICES_CATEGORIZED.put("Booleans and Conditions", new String[]
-                {
-                        "Test Condition",
-                        "Boolean",
-                        "Comparison",
-                        "Periodic Boolean",
-                });
-        NODE_CHOICES.put("Test Condition", CNodeTestCondition.class);
-        NODE_CHOICES.put("Boolean", CNodeBoolean.class);
-        NODE_CHOICES.put("Comparison", CNodeComparison.class);
-        NODE_CHOICES.put("Periodic Boolean", CNodePeriodicBoolean.class);
+        addOption("Booleans and Conditions", "Test Condition", CNodeTestCondition.class);
+        addOption("Booleans and Conditions", "Boolean", CNodeBoolean.class);
+        addOption("Booleans and Conditions", "Comparison", CNodeComparison.class);
+        addOption("Booleans and Conditions", "Periodic Boolean", CNodePeriodicBoolean.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Strings", new String[]
-                {
-                        "Output String",
-                        "String Contains",
-                        "String Replacement",
-                });
-        NODE_CHOICES.put("Output String", CNodeString.class);
-        NODE_CHOICES.put("String Contains", CNodeStringContains.class);
-        NODE_CHOICES.put("String Replacement", CNodeStringReplace.class);
+        addOption("Strings", "Output String", CNodeString.class);
+        addOption("Strings", "String Contains", CNodeStringContains.class);
+        addOption("Strings", "String Replacement", CNodeStringReplace.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Entity Getters and Filters", new String[]
-                {
-                        "Source Entity",
-                        "Spawn Entity",
-                        "Spawn Entity With NBT",
-                        "World Entities",
-                        "Entity Filter: In Cube",
-                        "Entity Filter: In Sphere",
-                        "Entity Filter: In Cone",
-                });
-        NODE_CHOICES.put("Source Entity", CNodeSourceEntity.class);
-        NODE_CHOICES.put("Spawn Entity", CNodeSpawnEntity.class);
-        NODE_CHOICES.put("Spawn Entity With NBT", CNodeSpawnEntityWithNBT.class);
-        NODE_CHOICES.put("World Entities", CNodeWorldEntities.class);
-        NODE_CHOICES.put("Entity Filter: In Cube", CNodeEntityFilterInCube.class);
-        NODE_CHOICES.put("Entity Filter: In Sphere", CNodeEntityFilterInSphere.class);
-        NODE_CHOICES.put("Entity Filter: In Cone", CNodeEntityFilterInCone.class);
+        addOption("Entity Getters and Filters", "Source Entity", CNodeSourceEntity.class);
+        addOption("Entity Getters and Filters", "Spawn Entity", CNodeSpawnEntity.class);
+        addOption("Entity Getters and Filters", "Spawn Entity With NBT", CNodeSpawnEntityWithNBT.class);
+        addOption("Entity Getters and Filters", "World Entities", CNodeWorldEntities.class);
+        addOption("Entity Getters and Filters", "Entity Filter: In Cube", CNodeEntityFilterInCube.class);
+        addOption("Entity Getters and Filters", "Entity Filter: In Sphere", CNodeEntityFilterInSphere.class);
+        addOption("Entity Getters and Filters", "Entity Filter: In Cone", CNodeEntityFilterInCone.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Entities", new String[]
-                {
-                        "Damage Entity",
-                        "Get Entity Attribute Total",
-                        "Get Entity World",
-                        "Get Entity Dimension",
-                        "Get Entity Eye Position Vector",
-                        "Get Entity Position Vector",
-                        "Set Entity Position Vector",
-                        "Get Entity Look Vector",
-                        "Set Entity Look Vector",
-                        "Get Entity HP",
-                        "Set Entity HP",
-                        "Get Entity Variable",
-                        "Set Entity Variable",
-                        "Get Entity Classname",
-                });
-        NODE_CHOICES.put("Damage Entity", CNodeDamageEntity.class);
-        NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
-        NODE_CHOICES.put("Get Entity World", CNodeGetWorld.class);
-        NODE_CHOICES.put("Get Entity Dimension", CNodeGetDimension.class);
-        NODE_CHOICES.put("Get Entity Eye Position Vector", CNodeGetEyePosition.class);
-        NODE_CHOICES.put("Get Entity Position Vector", CNodeGetPosition.class);
-        NODE_CHOICES.put("Set Entity Position Vector", CNodeSetEntityPosition.class);
-        NODE_CHOICES.put("Get Entity Look Vector", CNodeGetLookVector.class);
-        NODE_CHOICES.put("Set Entity Look Vector", CNodeSetLookVector.class);
-        NODE_CHOICES.put("Get Entity HP", CNodeGetEntityHP.class);
-        NODE_CHOICES.put("Set Entity HP", CNodeSetEntityHP.class);
-        NODE_CHOICES.put("Get Entity Variable", CNodeGetEntityVar.class);
-        NODE_CHOICES.put("Set Entity Variable", CNodeSetEntityVar.class);
-        NODE_CHOICES.put("Get Entity Classname", CNodeGetEntityClassname.class);
+        addOption("Entities", "Damage Entity", CNodeDamageEntity.class);
+        addOption("Entities", "Get Entity Attribute Total", CNodeGetAttribute.class);
+        addOption("Entities", "Get Entity World", CNodeGetWorld.class);
+        addOption("Entities", "Get Entity Dimension", CNodeGetDimension.class);
+        addOption("Entities", "Get Entity Eye Position Vector", CNodeGetEyePosition.class);
+        addOption("Entities", "Get Entity Position Vector", CNodeGetPosition.class);
+        addOption("Entities", "Set Entity Position Vector", CNodeSetEntityPosition.class);
+        addOption("Entities", "Get Entity Look Vector", CNodeGetLookVector.class);
+        addOption("Entities", "Set Entity Look Vector", CNodeSetLookVector.class);
+        addOption("Entities", "Get Entity HP", CNodeGetEntityHP.class);
+        addOption("Entities", "Set Entity HP", CNodeSetEntityHP.class);
+        addOption("Entities", "Get Entity Variable", CNodeGetEntityVar.class);
+        addOption("Entities", "Set Entity Variable", CNodeSetEntityVar.class);
+        addOption("Entities", "Get Entity Classname", CNodeGetEntityClassname.class);
 
-        ArrayList<String> options = new ArrayList<>();
-        options.add("Itemstack");
-        options.add("Get Inventory Itemstack");
-        options.add("Set Inventory Itemstack");
-        NODE_CHOICES.put("Itemstack", CNodeItemstack.class);
-        NODE_CHOICES.put("Get Inventory Itemstack", CNodeGetItemstack.class);
-        NODE_CHOICES.put("Set Inventory Itemstack", CNodeSetItemstack.class);
+        addOption("Itemstacks", "Itemstack", CNodeItemstack.class);
+        addOption("Itemstacks", "Get Inventory Itemstack", CNodeGetItemstack.class);
+        addOption("Itemstacks", "Set Inventory Itemstack", CNodeSetItemstack.class);
         if (Loader.isModLoaded("tiamatitems"))
         {
-            options.add("Activate Itemstack");
-            options.add("Deactivate Itemstack");
-            options.add("Is Itemstack Active?");
-            options.add("Get Tiamat Items Parts");
-            NODE_CHOICES.put("Activate Itemstack", CNodeActivateItemstack.class);
-            NODE_CHOICES.put("Deactivate Itemstack", CNodeDeactivateItemstack.class);
-            NODE_CHOICES.put("Is Itemstack Active?", CNodeIsItemstackActive.class);
-            NODE_CHOICES.put("Get Tiamat Items Parts", CNodeGetTiamatItemsParts.class);
+            addOption("Itemstacks", "Activate Itemstack", CNodeActivateItemstack.class);
+            addOption("Itemstacks", "Deactivate Itemstack", CNodeDeactivateItemstack.class);
+            addOption("Itemstacks", "Is Itemstack Active?", CNodeIsItemstackActive.class);
+            addOption("Itemstacks", "Get Tiamat Items Parts", CNodeGetTiamatItemsParts.class);
         }
-        NODE_CHOICES_CATEGORIZED.put("Itemstacks", options.toArray(new String[0]));
 
-        NODE_CHOICES_CATEGORIZED.put("NBT", new String[]
-                {
-                        "Get Itemstack NBT",
-                        "Get Entity NBTCap NBT",
-                        "Get NBT Value",
-                        "Set NBT Value",
-                });
-        NODE_CHOICES.put("Get Itemstack NBT", CNodeGetItemstackNBT.class);
-        NODE_CHOICES.put("Get Entity NBTCap NBT", CNodeGetEntityNBTCapNBT.class);
-        NODE_CHOICES.put("Get NBT Value", CNodeGetNBTValue.class);
-        NODE_CHOICES.put("Set NBT Value", CNodeSetNBTValue.class);
+        addOption("NBT", "Get Itemstack NBT", CNodeGetItemstackNBT.class);
+        addOption("NBT", "Get Entity NBTCap NBT", CNodeGetEntityNBTCapNBT.class);
+        addOption("NBT", "Get NBT Value", CNodeGetNBTValue.class);
+        addOption("NBT", "Set NBT Value", CNodeSetNBTValue.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Blocks", new String[]
-                {
-                        "Blockstate",
-                        "Get Blockstate",
-                        "Set Blockstate",
-                        "Vector to Block Position",
-                        "Blocks in Ray",
-                });
-        NODE_CHOICES.put("Blockstate", CNodeBlockstate.class);
-        NODE_CHOICES.put("Get Blockstate", CNodeGetBlockstate.class);
-        NODE_CHOICES.put("Set Blockstate", CNodeSetBlockstate.class);
-        NODE_CHOICES.put("Vector to Block Position", CNodeVectorToBlockPos.class);
-        NODE_CHOICES.put("Blocks in Ray", CNodeBlocksInRay.class);
+        addOption("Blocks", "Blockstate", CNodeBlockstate.class);
+        addOption("Blocks", "Get Blockstate", CNodeGetBlockstate.class);
+        addOption("Blocks", "Set Blockstate", CNodeSetBlockstate.class);
+        addOption("Blocks", "Vector to Block Position", CNodeVectorToBlockPos.class);
+        addOption("Blocks", "Blocks in Ray", CNodeBlocksInRay.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Trig / Geometry", new String[]
-                {
-                        "Output Vector",
-                        "Vector Sum",
-                        "Vector Difference",
-                        "Ray",
-                        "Ray Collision Vector",
-                });
-        NODE_CHOICES.put("Output Vector", CNodeVector.class);
-        NODE_CHOICES.put("Vector Sum", CNodeVectorSum.class);
-        NODE_CHOICES.put("Vector Difference", CNodeVectorDifference.class);
-        NODE_CHOICES.put("Ray", CNodeRay.class);
-        NODE_CHOICES.put("Ray Collision Vector", CNodeRayCollisionVector.class);
+        addOption("Math", "Output Vector", CNodeVector.class);
+        addOption("Math", "Vector Sum", CNodeVectorSum.class);
+        addOption("Math", "Vector Difference", CNodeVectorDifference.class);
+        addOption("Math", "Ray", CNodeRay.class);
+        addOption("Math", "Ray Collision Vector", CNodeRayCollisionVector.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Array", new String[]
-                {
-                        "Get Array Size",
-                        "Get From Array",
-                        "Add to Array",
-                        "Remove from Array",
-                        "Remove Nth from Array",
-                });
-        NODE_CHOICES.put("Get Array Size", CNodeGetArraySize.class);
-        NODE_CHOICES.put("Get From Array", CNodeGetFromArray.class);
-        NODE_CHOICES.put("Add to Array", CNodeAddToArray.class);
-        NODE_CHOICES.put("Remove from Array", CNodeRemoveFromArray.class);
-        NODE_CHOICES.put("Remove Nth from Array", CNodeRemoveNthFromArray.class);
+        addOption("Arrays", "Get Array Size", CNodeGetArraySize.class);
+        addOption("Arrays", "Get From Array", CNodeGetFromArray.class);
+        addOption("Arrays", "Add to Array", CNodeAddToArray.class);
+        addOption("Arrays", "Remove from Array", CNodeRemoveFromArray.class);
+        addOption("Arrays", "Remove Nth from Array", CNodeRemoveNthFromArray.class);
 
-        NODE_CHOICES_CATEGORIZED.put("List", new String[]
-                {
-                        "Get List Size",
-                        "Get From List",
-                        "Add to List",
-                        "Remove from List",
-                        "Remove Nth from List",
-                        "Clear List",
-                        "Clone List",
-                });
-        NODE_CHOICES.put("Get List Size", CNodeGetListSize.class);
-        NODE_CHOICES.put("Get From List", CNodeGetFromList.class);
-        NODE_CHOICES.put("Add to List", CNodeAddToList.class);
-        NODE_CHOICES.put("Remove from List", CNodeRemoveFromList.class);
-        NODE_CHOICES.put("Remove Nth from List", CNodeRemoveNthFromList.class);
-        NODE_CHOICES.put("Clear List", CNodeClearList.class);
-        NODE_CHOICES.put("Clone List", CNodeCloneList.class);
+        addOption("Lists", "Get List Size", CNodeGetListSize.class);
+        addOption("Lists", "Get From List", CNodeGetFromList.class);
+        addOption("Lists", "Add to List", CNodeAddToList.class);
+        addOption("Lists", "Remove from List", CNodeRemoveFromList.class);
+        addOption("Lists", "Remove Nth from List", CNodeRemoveNthFromList.class);
+        addOption("Lists", "Clear List", CNodeClearList.class);
+        addOption("Lists", "Clone List", CNodeCloneList.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Actions", new String[]
-                {
-                        "End Action",
-                        "Queue Action",
-                        "Run Sub-Action",
-                        "Get Action Argument",
-                        "Set Action Result",
-                        "Get Action Variable",
-                        "Set Action Variable",
-                        "Get Actions In Queue",
-                });
-        NODE_CHOICES.put("End Action", CNodeEndAction.class);
-        NODE_CHOICES.put("Queue Action", CNodeQueueAction.class);
-        NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
-        NODE_CHOICES.put("Get Action Argument", CNodeGetActionArgument.class);
-        NODE_CHOICES.put("Set Action Result", CNodeSetActionResult.class);
-        NODE_CHOICES.put("Get Action Variable", CNodeGetActionVar.class);
-        NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);
-        NODE_CHOICES.put("Get Actions In Queue", CNodeGetActionsInQueue.class);
+        addOption("Actions", "End Action", CNodeEndAction.class);
+        addOption("Actions", "Queue Action", CNodeQueueAction.class);
+        addOption("Actions", "Run Sub-Action", CNodeSubAction.class);
+        addOption("Actions", "Get Action Argument", CNodeGetActionArgument.class);
+        addOption("Actions", "Set Action Result", CNodeSetActionResult.class);
+        addOption("Actions", "Get Action Variable", CNodeGetActionVar.class);
+        addOption("Actions", "Set Action Variable", CNodeSetActionVar.class);
+        addOption("Actions", "Get Actions In Queue", CNodeGetActionsInQueue.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Animation", new String[]
-                {
-                        "Swing Arm",
-                });
-        NODE_CHOICES.put("Swing Arm", CNodeSwingArm.class);
+        addOption("Animation", "Swing Arm", CNodeSwingArm.class);
 
-        NODE_CHOICES_CATEGORIZED.put("Sound", new String[]
-                {
-                        "Play Sound at Position",
-                        "Play Sound at Entity Position",
-                });
-        NODE_CHOICES.put("Play Sound at Position", CNodePlaySoundAtPosition.class);
-        NODE_CHOICES.put("Play Sound at Entity Position", CNodePlaySoundAtEntityPosition.class);
+        addOption("Sounds", "Play Sound at Position", CNodePlaySoundAtPosition.class);
+        addOption("Sounds", "Play Sound at Entity Position", CNodePlaySoundAtEntityPosition.class);
 
-        options.clear();
-        options.add("Null");
-        options.add("Evaluate");
-        options.add("Run Command");
-        NODE_CHOICES.put("Null", CNodeNull.class);
-        NODE_CHOICES.put("Evaluate", CNodeEval.class);
-        NODE_CHOICES.put("Run Command", CNodeCommand.class);
+        addOption("Misc.", "Null", CNodeNull.class);
+        addOption("Misc.", "Evaluate", CNodeEval.class);
+        addOption("Misc.", "Run Command", CNodeCommand.class);
         if (Loader.isModLoaded("tiamathud"))
         {
-            options.add("Set Custom HUD Data");
-            NODE_CHOICES.put("Set Custom HUD Data", CNodeSetCustomHUDData.class);
+            addOption("Misc.", "Set Custom HUD Data", CNodeSetCustomHUDData.class);
         }
-        NODE_CHOICES_CATEGORIZED.put("Misc.", options.toArray(new String[0]));
 
-        NODE_CHOICES_CATEGORIZED.put("Debug", new String[]
-                {
-                        "Show Debug Message",
-                });
-        NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
+        addOption("Debug", "Show Debug Message", CNodeDebug.class);
     }
 
     public GUINode tempNode = null;
@@ -256,6 +137,22 @@ public class GUINodeView extends GUIPanZoomView
         super(screen, x, y, width, height, subElements);
     }
 
+
+    protected static void addOption(String category, String name, Class<? extends CNode> nodeClass)
+    {
+        NODE_CHOICES_CATEGORIZED.computeIfAbsent(category, o -> new HashSet<>()).add(name);
+        NODE_CHOICE_CLASSES.put(name, nodeClass);
+    }
+
+    protected static LinkedHashMap<String, String[]> getNodeChoicesCategorized()
+    {
+        LinkedHashMap<String, String[]> result = new LinkedHashMap<>();
+        for (Map.Entry<String, HashSet<String>> entry : NODE_CHOICES_CATEGORIZED.entrySet())
+        {
+            result.put(entry.getKey(), entry.getValue().toArray(new String[0]));
+        }
+        return result;
+    }
 
     @Override
     public void mouseDrag(int button)
@@ -298,13 +195,13 @@ public class GUINodeView extends GUIPanZoomView
                     else
                     {
                         GUIText textElement = new GUIText(screen, "");
-                        new CategorizedTextSelectionGUI(textElement, "Select Node Type...", NODE_CHOICES_CATEGORIZED).addOnClosedActions(() ->
+                        new CategorizedTextSelectionGUI(textElement, "Select Node Type...", getNodeChoicesCategorized()).addOnClosedActions(() ->
                         {
                             EventEditorGUI gui = (EventEditorGUI) screen;
                             CAction action = gui.action;
                             CNode node = null;
 
-                            Class c = NODE_CHOICES.get(textElement.getText());
+                            Class c = NODE_CHOICE_CLASSES.get(textElement.getText());
                             if (c != null)
                             {
                                 try
