@@ -1,7 +1,6 @@
 Change rendering of nodes
 
 Nodes...
-Destroy entity
 Spawn particles
 
 

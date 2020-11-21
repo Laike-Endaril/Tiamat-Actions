@@ -63,6 +63,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Entity Setters and Functions", "Set Entity Motion Vector", CNodeSetEntityMotion.class);
         addOption("Entity Setters and Functions", "Set Entity Gravity", CNodeSetEntityGravity.class);
         addOption("Entity Setters and Functions", "Set Entity Clip", CNodeSetEntityClip.class);
+        addOption("Entity Setters and Functions", "Destroy Entity", CNodeDestroyEntity.class);
 
         addOption("Itemstacks", "Itemstack", CNodeItemstack.class);
         addOption("Itemstacks", "Get Inventory Itemstack", CNodeGetItemstack.class);
