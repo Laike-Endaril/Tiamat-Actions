@@ -1,6 +1,11 @@
 Namespace actions in action list and add duplicate action buttons
 
 Nodes...
+Set entity position
+Set entity rotation
+Set entity gravity
+Set entity no-clip
+Destroy entity
 Spawn particles
 
 Categorize node list GUI

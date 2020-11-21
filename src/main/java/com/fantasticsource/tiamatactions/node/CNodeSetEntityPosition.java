@@ -10,9 +10,9 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeSetPosition extends CNode
+public class CNodeSetEntityPosition extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/set_position.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/set_entity_position.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
@@ -24,12 +24,12 @@ public class CNodeSetPosition extends CNode
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeSetPosition()
+    public CNodeSetEntityPosition()
     {
         super();
     }
 
-    public CNodeSetPosition(String actionName, String event, int x, int y)
+    public CNodeSetEntityPosition(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
