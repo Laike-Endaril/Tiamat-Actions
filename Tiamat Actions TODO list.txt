@@ -1,5 +1,3 @@
-Categorize node list GUI
-
 Nodes...
 Set entity position
 Set entity rotation
@@ -7,6 +5,8 @@ Set entity gravity
 Set entity no-clip
 Destroy entity
 Spawn particles
+Clear array
+Clone array
 
 
 

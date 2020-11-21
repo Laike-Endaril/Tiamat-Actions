@@ -5,7 +5,7 @@ import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.text.GUIFadingText;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
-import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
+import com.fantasticsource.mctools.gui.screen.CategorizedTextSelectionGUI;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
@@ -13,33 +13,49 @@ import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraftforge.fml.common.Loader;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class GUINodeView extends GUIPanZoomView
 {
+    protected static final LinkedHashMap<String, String[]> NODE_CHOICES_CATEGORIZED = new LinkedHashMap<>();
     protected static final LinkedHashMap<String, Class<? extends CNode>> NODE_CHOICES = new LinkedHashMap<>();
     protected boolean createEditDragging = false;
 
     static
     {
-        String separator = "";
-
-        //Booleans and Conditions
+        NODE_CHOICES_CATEGORIZED.put("Booleans and Conditions", new String[]
+                {
+                        "Test Condition",
+                        "Boolean",
+                        "Comparison",
+                        "Periodic Boolean",
+                });
         NODE_CHOICES.put("Test Condition", CNodeTestCondition.class);
         NODE_CHOICES.put("Boolean", CNodeBoolean.class);
         NODE_CHOICES.put("Comparison", CNodeComparison.class);
         NODE_CHOICES.put("Periodic Boolean", CNodePeriodicBoolean.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Strings
+        NODE_CHOICES_CATEGORIZED.put("Strings", new String[]
+                {
+                        "Output String",
+                        "String Contains",
+                        "String Replacement",
+                });
         NODE_CHOICES.put("Output String", CNodeString.class);
         NODE_CHOICES.put("String Contains", CNodeStringContains.class);
         NODE_CHOICES.put("String Replacement", CNodeStringReplace.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Entity getters and filters
+        NODE_CHOICES_CATEGORIZED.put("Entity Getters and Filters", new String[]
+                {
+                        "Source Entity",
+                        "Spawn Entity",
+                        "Spawn Entity With NBT",
+                        "World Entities",
+                        "Entity Filter: In Cube",
+                        "Entity Filter: In Sphere",
+                        "Entity Filter: In Cone",
+                });
         NODE_CHOICES.put("Source Entity", CNodeSourceEntity.class);
         NODE_CHOICES.put("Spawn Entity", CNodeSpawnEntity.class);
         NODE_CHOICES.put("Spawn Entity With NBT", CNodeSpawnEntityWithNBT.class);
@@ -47,10 +63,24 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Entity Filter: In Cube", CNodeEntityFilterInCube.class);
         NODE_CHOICES.put("Entity Filter: In Sphere", CNodeEntityFilterInSphere.class);
         NODE_CHOICES.put("Entity Filter: In Cone", CNodeEntityFilterInCone.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Entities
+        NODE_CHOICES_CATEGORIZED.put("Entities", new String[]
+                {
+                        "Damage Entity",
+                        "Get Entity Attribute Total",
+                        "Get Entity World",
+                        "Get Entity Dimension",
+                        "Get Entity Eye Position Vector",
+                        "Get Entity Position Vector",
+                        "Set Entity Position Vector",
+                        "Get Entity Look Vector",
+                        "Set Entity Look Vector",
+                        "Get Entity HP",
+                        "Set Entity HP",
+                        "Get Entity Variable",
+                        "Set Entity Variable",
+                        "Get Entity Classname",
+                });
         NODE_CHOICES.put("Damage Entity", CNodeDamageEntity.class);
         NODE_CHOICES.put("Get Entity Attribute Total", CNodeGetAttribute.class);
         NODE_CHOICES.put("Get Entity World", CNodeGetWorld.class);
@@ -65,59 +95,91 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Get Entity Variable", CNodeGetEntityVar.class);
         NODE_CHOICES.put("Set Entity Variable", CNodeSetEntityVar.class);
         NODE_CHOICES.put("Get Entity Classname", CNodeGetEntityClassname.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Itemstacks
+        ArrayList<String> options = new ArrayList<>();
+        options.add("Itemstack");
+        options.add("Get Inventory Itemstack");
+        options.add("Set Inventory Itemstack");
         NODE_CHOICES.put("Itemstack", CNodeItemstack.class);
         NODE_CHOICES.put("Get Inventory Itemstack", CNodeGetItemstack.class);
         NODE_CHOICES.put("Set Inventory Itemstack", CNodeSetItemstack.class);
         if (Loader.isModLoaded("tiamatitems"))
         {
+            options.add("Activate Itemstack");
+            options.add("Deactivate Itemstack");
+            options.add("Is Itemstack Active?");
+            options.add("Get Tiamat Items Parts");
             NODE_CHOICES.put("Activate Itemstack", CNodeActivateItemstack.class);
             NODE_CHOICES.put("Deactivate Itemstack", CNodeDeactivateItemstack.class);
             NODE_CHOICES.put("Is Itemstack Active?", CNodeIsItemstackActive.class);
             NODE_CHOICES.put("Get Tiamat Items Parts", CNodeGetTiamatItemsParts.class);
         }
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
+        NODE_CHOICES_CATEGORIZED.put("Itemstacks", options.toArray(new String[0]));
 
-        //NBT
+        NODE_CHOICES_CATEGORIZED.put("NBT", new String[]
+                {
+                        "Get Itemstack NBT",
+                        "Get Entity NBTCap NBT",
+                        "Get NBT Value",
+                        "Set NBT Value",
+                });
         NODE_CHOICES.put("Get Itemstack NBT", CNodeGetItemstackNBT.class);
         NODE_CHOICES.put("Get Entity NBTCap NBT", CNodeGetEntityNBTCapNBT.class);
         NODE_CHOICES.put("Get NBT Value", CNodeGetNBTValue.class);
         NODE_CHOICES.put("Set NBT Value", CNodeSetNBTValue.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Blocks
+        NODE_CHOICES_CATEGORIZED.put("Blocks", new String[]
+                {
+                        "Blockstate",
+                        "Get Blockstate",
+                        "Set Blockstate",
+                        "Vector to Block Position",
+                        "Blocks in Ray",
+                });
         NODE_CHOICES.put("Blockstate", CNodeBlockstate.class);
         NODE_CHOICES.put("Get Blockstate", CNodeGetBlockstate.class);
         NODE_CHOICES.put("Set Blockstate", CNodeSetBlockstate.class);
         NODE_CHOICES.put("Vector to Block Position", CNodeVectorToBlockPos.class);
         NODE_CHOICES.put("Blocks in Ray", CNodeBlocksInRay.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Trig / Geometry
+        NODE_CHOICES_CATEGORIZED.put("Trig / Geometry", new String[]
+                {
+                        "Output Vector",
+                        "Vector Sum",
+                        "Vector Difference",
+                        "Ray",
+                        "Ray Collision Vector",
+                });
         NODE_CHOICES.put("Output Vector", CNodeVector.class);
         NODE_CHOICES.put("Vector Sum", CNodeVectorSum.class);
         NODE_CHOICES.put("Vector Difference", CNodeVectorDifference.class);
         NODE_CHOICES.put("Ray", CNodeRay.class);
         NODE_CHOICES.put("Ray Collision Vector", CNodeRayCollisionVector.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Array
+        NODE_CHOICES_CATEGORIZED.put("Array", new String[]
+                {
+                        "Get Array Size",
+                        "Get From Array",
+                        "Add to Array",
+                        "Remove from Array",
+                        "Remove Nth from Array",
+                });
         NODE_CHOICES.put("Get Array Size", CNodeGetArraySize.class);
         NODE_CHOICES.put("Get From Array", CNodeGetFromArray.class);
         NODE_CHOICES.put("Add to Array", CNodeAddToArray.class);
         NODE_CHOICES.put("Remove from Array", CNodeRemoveFromArray.class);
         NODE_CHOICES.put("Remove Nth from Array", CNodeRemoveNthFromArray.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //List
+        NODE_CHOICES_CATEGORIZED.put("List", new String[]
+                {
+                        "Get List Size",
+                        "Get From List",
+                        "Add to List",
+                        "Remove from List",
+                        "Remove Nth from List",
+                        "Clear List",
+                        "Clone List",
+                });
         NODE_CHOICES.put("Get List Size", CNodeGetListSize.class);
         NODE_CHOICES.put("Get From List", CNodeGetFromList.class);
         NODE_CHOICES.put("Add to List", CNodeAddToList.class);
@@ -125,10 +187,18 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Remove Nth from List", CNodeRemoveNthFromList.class);
         NODE_CHOICES.put("Clear List", CNodeClearList.class);
         NODE_CHOICES.put("Clone List", CNodeCloneList.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Actions
+        NODE_CHOICES_CATEGORIZED.put("Actions", new String[]
+                {
+                        "End Action",
+                        "Queue Action",
+                        "Run Sub-Action",
+                        "Get Action Argument",
+                        "Set Action Result",
+                        "Get Action Variable",
+                        "Set Action Variable",
+                        "Get Actions In Queue",
+                });
         NODE_CHOICES.put("End Action", CNodeEndAction.class);
         NODE_CHOICES.put("Queue Action", CNodeQueueAction.class);
         NODE_CHOICES.put("Run Sub-Action", CNodeSubAction.class);
@@ -137,29 +207,39 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICES.put("Get Action Variable", CNodeGetActionVar.class);
         NODE_CHOICES.put("Set Action Variable", CNodeSetActionVar.class);
         NODE_CHOICES.put("Get Actions In Queue", CNodeGetActionsInQueue.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Animation
+        NODE_CHOICES_CATEGORIZED.put("Animation", new String[]
+                {
+                        "Swing Arm",
+                });
         NODE_CHOICES.put("Swing Arm", CNodeSwingArm.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Sound
+        NODE_CHOICES_CATEGORIZED.put("Sound", new String[]
+                {
+                        "Play Sound at Position",
+                        "Play Sound at Entity Position",
+                });
         NODE_CHOICES.put("Play Sound at Position", CNodePlaySoundAtPosition.class);
         NODE_CHOICES.put("Play Sound at Entity Position", CNodePlaySoundAtEntityPosition.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
 
-        //Misc.
+        options.clear();
+        options.add("Null");
+        options.add("Evaluate");
+        options.add("Run Command");
         NODE_CHOICES.put("Null", CNodeNull.class);
         NODE_CHOICES.put("Evaluate", CNodeEval.class);
         NODE_CHOICES.put("Run Command", CNodeCommand.class);
-        if (Loader.isModLoaded("tiamathud")) NODE_CHOICES.put("Set Custom HUD Data", CNodeSetCustomHUDData.class);
-        NODE_CHOICES.put(separator, null);
-        separator += "\r";
+        if (Loader.isModLoaded("tiamathud"))
+        {
+            options.add("Set Custom HUD Data");
+            NODE_CHOICES.put("Set Custom HUD Data", CNodeSetCustomHUDData.class);
+        }
+        NODE_CHOICES_CATEGORIZED.put("Misc.", options.toArray(new String[0]));
 
-        //Debug
+        NODE_CHOICES_CATEGORIZED.put("Debug", new String[]
+                {
+                        "Show Debug Message",
+                });
         NODE_CHOICES.put("Show Debug Message", CNodeDebug.class);
     }
 
@@ -218,7 +298,7 @@ public class GUINodeView extends GUIPanZoomView
                     else
                     {
                         GUIText textElement = new GUIText(screen, "");
-                        new TextSelectionGUI(textElement, "Select Node Type...", NODE_CHOICES.keySet().toArray(new String[0])).addOnClosedActions(() ->
+                        new CategorizedTextSelectionGUI(textElement, "Select Node Type...", NODE_CHOICES_CATEGORIZED).addOnClosedActions(() ->
                         {
                             EventEditorGUI gui = (EventEditorGUI) screen;
                             CAction action = gui.action;

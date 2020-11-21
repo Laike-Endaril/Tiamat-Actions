@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.039b,);after:tiamathud")
+@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.041a,);after:tiamathud")
 public class TiamatActions
 {
     public static final String MODID = "tiamatactions";
