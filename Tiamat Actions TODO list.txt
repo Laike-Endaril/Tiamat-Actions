@@ -1,10 +1,6 @@
 Change rendering of nodes
 
 Nodes...
-Get entity rotation
-Set entity rotation
-Get entity motion
-Set entity motion
 Get entity gravity
 Set entity gravity
 Get entity no-clip
