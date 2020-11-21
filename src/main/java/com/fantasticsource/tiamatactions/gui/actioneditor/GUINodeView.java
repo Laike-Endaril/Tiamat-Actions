@@ -91,14 +91,16 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Arrays", "Add to Array", CNodeAddToArray.class);
         addOption("Arrays", "Remove from Array", CNodeRemoveFromArray.class);
         addOption("Arrays", "Remove Nth from Array", CNodeRemoveNthFromArray.class);
+        addOption("Arrays", "Clone Array", CNodeCloneArray.class);
+        addOption("Arrays", "Fill Array", CNodeFillArray.class);
 
         addOption("Lists", "Get List Size", CNodeGetListSize.class);
         addOption("Lists", "Get From List", CNodeGetFromList.class);
         addOption("Lists", "Add to List", CNodeAddToList.class);
         addOption("Lists", "Remove from List", CNodeRemoveFromList.class);
         addOption("Lists", "Remove Nth from List", CNodeRemoveNthFromList.class);
-        addOption("Lists", "Clear List", CNodeClearList.class);
         addOption("Lists", "Clone List", CNodeCloneList.class);
+        addOption("Lists", "Clear List", CNodeClearList.class);
 
         addOption("Actions", "End Action", CNodeEndAction.class);
         addOption("Actions", "Queue Action", CNodeQueueAction.class);

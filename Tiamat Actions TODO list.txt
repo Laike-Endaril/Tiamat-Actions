@@ -11,8 +11,6 @@ Get entity no-clip
 Set entity no-clip
 Destroy entity
 Spawn particles
-Clear array
-Clone array
 
 
 
