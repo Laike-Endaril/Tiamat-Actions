@@ -1,7 +1,12 @@
 Change rendering of nodes
 
 Nodes...
+Path (pattern: linear, circular, spiral, etc ... speed: constant, accelerating, etc)
+Combine paths (eg. linear y positive + spiral x/z out = spiraling upwards and outwards)
+Apply path to entity (Tick path on server tick and apply motion to entity)
+Apply path to particle (Tick path on client tick and apply motion to particle)
 Spawn particles
+Set AW skin
 
 
 
