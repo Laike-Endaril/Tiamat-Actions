@@ -126,6 +126,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Misc.", "Null", CNodeNull.class);
         addOption("Misc.", "Evaluate", CNodeEval.class);
         addOption("Misc.", "Run Command", CNodeCommand.class);
+        addOption("Misc.", "Server Tick", CNodeServerTick.class);
         if (Loader.isModLoaded("tiamathud"))
         {
             addOption("Misc.", "Set Custom HUD Data", CNodeSetCustomHUDData.class);
