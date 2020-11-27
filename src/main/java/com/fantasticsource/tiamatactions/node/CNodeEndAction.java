@@ -12,6 +12,7 @@ public class CNodeEndAction extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/end_action.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("action", CAction.class);
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
@@ -26,7 +27,6 @@ public class CNodeEndAction extends CNode
         super(actionName, event, x, y);
     }
 
-
     @Override
     public ResourceLocation getTexture()
     {
@@ -36,7 +36,7 @@ public class CNodeEndAction extends CNode
     @Override
     public String getDescription()
     {
-        return "End this action (and run action end tasks if the action has finished all initialization and start tasks)";
+        return "End an action (and run action end tasks if the action has finished all initialization and start tasks)";
     }
 
 
@@ -49,7 +49,7 @@ public class CNodeEndAction extends CNode
     @Override
     public Pair<String, Class> getOptionalInputs()
     {
-        return null;
+        return OPTIONAL_INPUTS;
     }
 
     @Override
@@ -62,7 +62,8 @@ public class CNodeEndAction extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        mainAction.active = false;
+        if (inputs.length == 0) mainAction.active = false;
+        else ((CAction) inputs[0]).mainAction.active = false;
 
         return null;
     }

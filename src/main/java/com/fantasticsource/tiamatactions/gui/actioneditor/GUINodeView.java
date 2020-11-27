@@ -117,6 +117,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Actions", "Get Action Variable", CNodeGetActionVar.class);
         addOption("Actions", "Set Action Variable", CNodeSetActionVar.class);
         addOption("Actions", "Get Actions In Queue", CNodeGetActionsInQueue.class);
+        addOption("Actions", "Get Action Name", CNodeGetMainActionName.class);
 
         addOption("Animation", "Swing Arm", CNodeSwingArm.class);
 

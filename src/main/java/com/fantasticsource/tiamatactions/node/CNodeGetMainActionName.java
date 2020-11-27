@@ -8,29 +8,24 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeGetActionName extends CNode
+public class CNodeGetMainActionName extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_action_name.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
-
-    static
-    {
-        REQUIRED_INPUTS.put("action", CAction.class);
-    }
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("action", CAction.class);
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeGetActionName()
+    public CNodeGetMainActionName()
     {
         super();
     }
 
-    public CNodeGetActionName(String actionName, String event, int x, int y)
+    public CNodeGetMainActionName(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
-
 
     @Override
     public ResourceLocation getTexture()
@@ -41,7 +36,7 @@ public class CNodeGetActionName extends CNode
     @Override
     public String getDescription()
     {
-        return "Output the name of a given action";
+        return "Output the name of an action's main action (the action that appears in an action queue, ie. not a subaction name)";
     }
 
 
@@ -54,7 +49,7 @@ public class CNodeGetActionName extends CNode
     @Override
     public Pair<String, Class> getOptionalInputs()
     {
-        return null;
+        return OPTIONAL_INPUTS;
     }
 
     @Override
@@ -67,6 +62,6 @@ public class CNodeGetActionName extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        return inputs[0] instanceof CAction ? ((CAction) inputs[0]).name : null;
+        return inputs.length == 0 ? mainAction.name : ((CAction) inputs[0]).mainAction.name;
     }
 }
