@@ -64,7 +64,9 @@ public class GUINode extends GUIImage
 
             String s = TextFormatting.WHITE + node.getDescription();
 
-            s += "\n" + TextFormatting.LIGHT_PURPLE + "Output type: " + TextFormatting.GREEN + (node.outputType() == null ? "(None)" : node.outputType().getSimpleName());
+            s += "\n" + TextFormatting.DARK_GRAY + GUINodeView.getNodeCategoryAndName(node.getClass());
+
+            s += "\n\n" + TextFormatting.LIGHT_PURPLE + "Output type: " + TextFormatting.GREEN + (node.outputType() == null ? "(None)" : node.outputType().getSimpleName());
 
             if (node.getRequiredInputs().size() > 0) s += "\n\n" + TextFormatting.WHITE + "Required inputs...";
             int i = 0;

@@ -156,6 +156,22 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICE_CLASSES.put(name, nodeClass);
     }
 
+    public static String getNodeCategoryAndName(Class<? extends CNode> cls)
+    {
+        for (Map.Entry<String, Class<? extends CNode>> entry : NODE_CHOICE_CLASSES.entrySet())
+        {
+            if (entry.getValue() == cls)
+            {
+                String name = entry.getKey();
+                for (Map.Entry<String, HashSet<String>> entry2 : NODE_CHOICES_CATEGORIZED.entrySet())
+                {
+                    if (entry2.getValue().contains(name)) return entry2.getKey() + " -> " + name;
+                }
+            }
+        }
+        return null;
+    }
+
     protected static LinkedHashMap<String, String[]> getNodeChoicesCategorized()
     {
         LinkedHashMap<String, String[]> result = new LinkedHashMap<>();
