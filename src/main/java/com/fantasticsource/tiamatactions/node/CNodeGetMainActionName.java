@@ -10,7 +10,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeGetMainActionName extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_action_name.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_main_action_name.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
     protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("action", CAction.class);
 
