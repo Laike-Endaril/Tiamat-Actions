@@ -156,6 +156,11 @@ public class GUINodeView extends GUIPanZoomView
         NODE_CHOICE_CLASSES.put(name, nodeClass);
     }
 
+    public static Class<? extends CNode>[] getNodeClasses()
+    {
+        return NODE_CHOICE_CLASSES.values().toArray(new Class[0]);
+    }
+
     public static String getNodeCategoryAndName(Class<? extends CNode> cls)
     {
         for (Map.Entry<String, Class<? extends CNode>> entry : NODE_CHOICE_CLASSES.entrySet())
