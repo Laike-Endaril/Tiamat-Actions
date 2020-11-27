@@ -17,8 +17,8 @@ public class ActionQueue
     protected static final LinkedHashMap<Entity, LinkedHashMap<String, ActionQueue>> ENTITY_ACTION_QUEUES = new LinkedHashMap<>();
 
     public String name;
-    int size;
-    boolean replaceLastIfFull;
+    public int size;
+    public boolean replaceLastIfFull;
     public ArrayList<CAction> queue = new ArrayList<>();
 
     public ActionQueue(String name, int size, boolean replaceLastIfFull)

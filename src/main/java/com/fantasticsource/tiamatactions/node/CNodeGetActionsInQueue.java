@@ -6,7 +6,6 @@ import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
@@ -45,7 +44,7 @@ public class CNodeGetActionsInQueue extends CNode
     @Override
     public String getDescription()
     {
-        return "Output a list representing the actions in a queue (empty slots will contain null)";
+        return "Output an array representing the actions in a queue (empty slots will contain null)";
     }
 
 
@@ -71,14 +70,9 @@ public class CNodeGetActionsInQueue extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        ArrayList<CAction> actionList = ActionQueue.get((Entity) inputs[0], "" + inputs[1]).queue;
-        if (actionList == null) return null;
-
-        String[] result = new String[actionList.size()];
-        for (int i = 0; i < result.length; i++)
-        {
-            result[i] = actionList.get(i).name;
-        }
-        return result;
+        ActionQueue actionQueue = ActionQueue.get((Entity) inputs[0], "" + inputs[1]);
+        CAction[] actions = new CAction[actionQueue.size];
+        for (int i = 0; i < actionQueue.queue.size(); i++) actions[i] = actionQueue.queue.get(i);
+        return actions;
     }
 }
