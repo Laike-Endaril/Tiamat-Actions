@@ -26,11 +26,12 @@ public class ModpackConfig
             {
                     "A list of actions that can be run by a player via keybind",
                     "Syntax is...",
-                    "keybindName;actionName",
+                    "keybindName;ActionName;QueueName",
+                    "QueueName is optional (uses a null queue if empty, uses Main if the 2nd semicolon is omitted)",
                     "",
                     "Eg...",
                     "test;TestAction",
-                    "...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction"
+                    "...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction in an action queue named Main"
             })
     @Config.RequiresMcRestart
     public String[] keyboundActions = new String[0];

@@ -28,7 +28,7 @@ public class Keys
         for (String s : TiamatActionsConfig.modpackSettings.keyboundActions)
         {
             String[] tokens = Tools.fixedSplit(s, ";");
-            if (tokens.length != 2) continue;
+            if (tokens.length < 2) continue;
 
 
             KeyBinding keyBinding = new KeyBinding(PREFIX + tokens[0].trim(), KeyConflictContext.UNIVERSAL, Keyboard.KEY_NONE, MODID + ".keyCategory");

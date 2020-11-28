@@ -6,6 +6,7 @@ import com.fantasticsource.tiamatactions.gui.ActionSelectionGUI;
 import com.fantasticsource.tiamatactions.gui.actioneditor.ActionEditorGUI;
 import com.fantasticsource.tiamatactions.gui.actioneditor.MainActionEditorGUI;
 import com.fantasticsource.tools.Tools;
+import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -25,7 +26,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class Network
 {
-    protected static final LinkedHashMap<String, String> KEYBOUND_ACTION_NAMES = new LinkedHashMap<>();
+    protected static final LinkedHashMap<String, Pair<String, String>> KEYBOUND_ACTION_NAMES = new LinkedHashMap<>();
 
     public static final SimpleNetworkWrapper WRAPPER = new SimpleNetworkWrapper(MODID);
     private static int discriminator = 0;
@@ -47,10 +48,12 @@ public class Network
         for (String s : TiamatActionsConfig.modpackSettings.keyboundActions)
         {
             String[] tokens = Tools.fixedSplit(s, ";");
-            if (tokens.length != 2) continue;
+            if (tokens.length < 2) continue;
 
 
-            KEYBOUND_ACTION_NAMES.put(tokens[0].trim(), tokens[1].trim());
+            String queueName = tokens.length > 2 ? tokens[2].trim() : "Main";
+            if (queueName.equals("")) queueName = null;
+            KEYBOUND_ACTION_NAMES.put(tokens[0].trim(), new Pair<>(tokens[1].trim(), queueName));
         }
 
         WRAPPER.registerMessage(DuplicateActionPacketHandler.class, DuplicateActionPacket.class, discriminator++, Side.SERVER);
@@ -396,14 +399,17 @@ public class Network
         @Override
         public IMessage onMessage(ExecuteKeyboundActionPacket packet, MessageContext ctx)
         {
-            String actionName = KEYBOUND_ACTION_NAMES.get(packet.key);
+            Pair<String, String> pair = KEYBOUND_ACTION_NAMES.get(packet.key);
+            String actionName = pair.getKey();
             if (actionName == null) return null;
+
+            String queueName = pair.getValue();
 
             CAction action = CAction.ALL_ACTIONS.get(actionName);
             if (action == null) return null;
 
             EntityPlayerMP player = ctx.getServerHandler().player;
-            action.queue(player, "Main", null);
+            action.queue(player, queueName, null);
             return null;
         }
     }
