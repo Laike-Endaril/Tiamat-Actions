@@ -13,13 +13,14 @@ import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraftforge.fml.common.Loader;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class GUINodeView extends GUIPanZoomView
 {
-    protected static final LinkedHashMap<String, HashSet<String>> NODE_CHOICES_CATEGORIZED = new LinkedHashMap<>();
+    protected static final LinkedHashMap<String, ArrayList<String>> NODE_CHOICES_CATEGORIZED = new LinkedHashMap<>();
     protected static final LinkedHashMap<String, Class<? extends CNode>> NODE_CHOICE_CLASSES = new LinkedHashMap<>();
     protected boolean createEditDragging = false;
 
@@ -124,16 +125,16 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Sounds", "Play Sound at Position", CNodePlaySoundAtPosition.class);
         addOption("Sounds", "Play Sound at Entity Position", CNodePlaySoundAtEntityPosition.class);
 
+        addOption("Misc.", "Comment", CNodeComment.class);
         addOption("Misc.", "Null", CNodeNull.class);
         addOption("Misc.", "Evaluate", CNodeEval.class);
         addOption("Misc.", "Run Command", CNodeCommand.class);
         addOption("Misc.", "Server Tick", CNodeServerTick.class);
+        addOption("Misc.", "Show Debug Message", CNodeDebug.class);
         if (Loader.isModLoaded("tiamathud"))
         {
             addOption("Misc.", "Set Custom HUD Data", CNodeSetCustomHUDData.class);
         }
-
-        addOption("Debug", "Show Debug Message", CNodeDebug.class);
     }
 
     public GUINode tempNode = null;
@@ -152,7 +153,7 @@ public class GUINodeView extends GUIPanZoomView
 
     protected static void addOption(String category, String name, Class<? extends CNode> nodeClass)
     {
-        NODE_CHOICES_CATEGORIZED.computeIfAbsent(category, o -> new HashSet<>()).add(name);
+        NODE_CHOICES_CATEGORIZED.computeIfAbsent(category, o -> new ArrayList<>()).add(name);
         NODE_CHOICE_CLASSES.put(name, nodeClass);
     }
 
@@ -168,7 +169,7 @@ public class GUINodeView extends GUIPanZoomView
             if (entry.getValue() == cls)
             {
                 String name = entry.getKey();
-                for (Map.Entry<String, HashSet<String>> entry2 : NODE_CHOICES_CATEGORIZED.entrySet())
+                for (Map.Entry<String, ArrayList<String>> entry2 : NODE_CHOICES_CATEGORIZED.entrySet())
                 {
                     if (entry2.getValue().contains(name)) return entry2.getKey() + " -> " + name;
                 }
@@ -180,7 +181,7 @@ public class GUINodeView extends GUIPanZoomView
     protected static LinkedHashMap<String, String[]> getNodeChoicesCategorized()
     {
         LinkedHashMap<String, String[]> result = new LinkedHashMap<>();
-        for (Map.Entry<String, HashSet<String>> entry : NODE_CHOICES_CATEGORIZED.entrySet())
+        for (Map.Entry<String, ArrayList<String>> entry : NODE_CHOICES_CATEGORIZED.entrySet())
         {
             result.put(entry.getKey(), entry.getValue().toArray(new String[0]));
         }

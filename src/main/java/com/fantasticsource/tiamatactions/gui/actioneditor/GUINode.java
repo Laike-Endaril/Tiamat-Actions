@@ -7,6 +7,7 @@ import com.fantasticsource.mctools.gui.element.textured.GUIImage;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tiamatactions.node.CNodeComment;
 import com.fantasticsource.tools.Collision;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.TrigLookupTable;
@@ -57,6 +58,10 @@ public class GUINode extends GUIImage
         if (view == null) return;
 
         if (this == view.tempNode) setTooltip(null);
+        else if (node instanceof CNodeComment)
+        {
+            setTooltip(node.getDescription().replaceAll("\\\\n", "\n"));
+        }
         else
         {
             EventEditorGUI gui = (EventEditorGUI) screen;
