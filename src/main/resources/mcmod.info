@@ -5,12 +5,7 @@
   "description": "A dynamic action and animation API",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
   "authorList": ["Laike_Endaril"],
-  "credits": "\nLordPhrozen (art)",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+  "credits": "\nLordPhrozen (art)"
 }
 ]
