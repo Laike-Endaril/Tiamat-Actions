@@ -63,7 +63,7 @@ public class CNodeGetActionsInQueue extends CNode
     @Override
     public Class outputType()
     {
-        return String[].class;
+        return CAction[].class;
     }
 
 
