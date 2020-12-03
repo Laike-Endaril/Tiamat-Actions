@@ -1,5 +1,6 @@
 package com.fantasticsource.tiamatactions.block;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.Network;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -36,7 +37,7 @@ public class BlockActionEditor extends Block
     {
         if (worldIn.isRemote) return true;
 
-        if (player.isCreative()) Network.WRAPPER.sendTo(new Network.OpenMainActionEditorPacket(), (EntityPlayerMP) player);
+        if (MCTools.isOP((EntityPlayerMP) player)) Network.WRAPPER.sendTo(new Network.OpenMainActionEditorPacket(), (EntityPlayerMP) player);
         return true;
     }
 }

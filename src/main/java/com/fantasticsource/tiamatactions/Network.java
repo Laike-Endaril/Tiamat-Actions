@@ -1,5 +1,6 @@
 package com.fantasticsource.tiamatactions;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.gui.ActionSelectionGUI;
@@ -84,7 +85,7 @@ public class Network
         public IMessage onMessage(RequestOpenActionSelectorPacket packet, MessageContext ctx)
         {
             EntityPlayerMP player = ctx.getServerHandler().player;
-            if (player.isCreative())
+            if (MCTools.isOP(player))
             {
                 FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> WRAPPER.sendTo(new OpenActionSelectorPacket(), player));
             }
@@ -208,7 +209,7 @@ public class Network
         public IMessage onMessage(RequestOpenActionEditorPacket packet, MessageContext ctx)
         {
             EntityPlayerMP player = ctx.getServerHandler().player;
-            if (player.isCreative())
+            if (MCTools.isOP(player))
             {
                 if (!CAction.ALL_ACTIONS.containsKey(packet.actionName)) new CAction(packet.actionName).save();
                 CAction action = CAction.ALL_ACTIONS.get(packet.actionName);
@@ -311,7 +312,7 @@ public class Network
         public IMessage onMessage(SaveActionPacket packet, MessageContext ctx)
         {
             EntityPlayerMP player = ctx.getServerHandler().player;
-            if (player.isCreative())
+            if (MCTools.isOP(player))
             {
                 CAction oldAction = CAction.ALL_ACTIONS.get(packet.oldName);
                 if (oldAction != null) oldAction.delete();
@@ -357,7 +358,7 @@ public class Network
         public IMessage onMessage(DeleteActionPacket packet, MessageContext ctx)
         {
             EntityPlayerMP player = ctx.getServerHandler().player;
-            if (player.isCreative())
+            if (MCTools.isOP(player))
             {
                 CAction action = CAction.ALL_ACTIONS.get(packet.name);
                 if (action != null) action.delete();
@@ -448,7 +449,7 @@ public class Network
         public IMessage onMessage(DuplicateActionPacket packet, MessageContext ctx)
         {
             EntityPlayerMP player = ctx.getServerHandler().player;
-            if (player.isCreative())
+            if (MCTools.isOP(player))
             {
                 CAction action = CAction.ALL_ACTIONS.get(packet.name);
                 if (action != null)
