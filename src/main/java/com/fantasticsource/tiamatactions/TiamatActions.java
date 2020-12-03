@@ -5,8 +5,10 @@ import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.action.ActionQueue;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.block.BlocksAndItems;
+import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.gui.actioneditor.GUINodeView;
 import com.fantasticsource.tiamatactions.node.CNode;
+import com.fantasticsource.tiamatactions.trigger.PlayerEventActionTrigger;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -25,7 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.041a,);after:tiamathud")
+@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.043b,);after:tiamathud")
 public class TiamatActions
 {
     public static final String MODID = "tiamatactions";
@@ -54,6 +56,8 @@ public class TiamatActions
         MinecraftForge.EVENT_BUS.register(BlocksAndItems.class);
 
         CAction.reloadAll();
+
+        if (TiamatActionsConfig.serverSettings.forgePlayerEventActions.length > 0) MinecraftForge.EVENT_BUS.register(PlayerEventActionTrigger.class);
 
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)

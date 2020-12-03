@@ -20,6 +20,8 @@ tiamatactions.config.actionQueues=Action Queues
 tiamatactions.config.actionQueues.tooltip=FILLSCREEN FIXNEWLINES A list of action queues to add to entities.  Syntax is...\nName, size, replaceLastIfFull\nEg...\nMain, 2, true\n \n
 tiamatactions.config.spawnActions=Spawn Actions
 tiamatactions.config.spawnActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions to run when entities spawn.  Syntax is...\nQueueName, ActionName\n \n
+tiamatactions.config.forgePlayerEventActions=Forge PlayerEvent Actions
+tiamatactions.config.forgePlayerEventActions.tooltip=FILLSCREEN FIXNEWLINES This lets you trigger server-side actions when a Forge PlayerEvent occurs.  Syntax is...\nfull.package.and.ClassNameOfPlayerEvent, ActionName, QueueName\n\nThe player involved in the PlayerEvent is the one who will execute the action\nThe action argument will be the PlayerEvent that triggered the action\n \n
 
 tiamatactions.config.guiSettings=GUI Settings
 tiamatactions.config.tooltipAction=Tooltip Action

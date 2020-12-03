@@ -108,7 +108,7 @@ public class CNodePlaySoundAtPosition extends CNode
                 attenuation ? 2 : 0,
                 Float.parseFloat("" + inputs[6]),
                 Float.parseFloat("" + inputs[7]),
-                SoundCategory.getByName(soundCategoryName)
+                SoundCategory.getByName(soundCategoryName.toLowerCase())
         );
 
         return null;

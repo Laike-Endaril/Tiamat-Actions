@@ -78,6 +78,30 @@ public class ActionQueue
         profiler.endSection();
     }
 
+    public static boolean queueExists(String queueName)
+    {
+        for (String line : TiamatActionsConfig.serverSettings.actionQueues)
+        {
+            String[] tokens = Tools.fixedSplit(line, ",");
+            if (tokens.length != 3)
+            {
+                throw new IllegalArgumentException("Bad syntax in queue config: " + line);
+            }
+
+            try
+            {
+                Integer.parseInt(tokens[1].trim());
+            }
+            catch (NumberFormatException e)
+            {
+                throw new IllegalArgumentException("Bad syntax in queue config: " + line);
+            }
+
+            if (tokens[0].trim().equals(queueName)) return true;
+        }
+        return false;
+    }
+
     public static ActionQueue get(Entity entity, String queueName)
     {
         for (String line : TiamatActionsConfig.serverSettings.actionQueues)

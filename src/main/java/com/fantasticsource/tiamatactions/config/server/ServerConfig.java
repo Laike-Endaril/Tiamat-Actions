@@ -51,4 +51,17 @@ public class ServerConfig
             })
     @Config.RequiresMcRestart
     public String[] spawnActions = new String[0];
+
+    @Config.Name("Forge PlayerEvent Actions")
+    @Config.LangKey(MODID + ".config.forgePlayerEventActions")
+    @Config.Comment(
+            {
+                    "This lets you trigger server-side actions when a Forge PlayerEvent occurs.  Syntax is...",
+                    "full.package.and.ClassNameOfPlayerEvent, ActionName, QueueName",
+                    "",
+                    "The player involved in the PlayerEvent is the one who will execute the action",
+                    "The action argument will be the PlayerEvent that triggered the action"
+            })
+    @Config.RequiresMcRestart
+    public String[] forgePlayerEventActions = new String[0];
 }
