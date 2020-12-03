@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.text.GUILabeledBoolean;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
@@ -14,6 +15,7 @@ import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,9 +36,7 @@ public class CNodePlaySoundAtPosition extends CNode
     {
         REQUIRED_INPUTS.put("sound", Object.class);
         REQUIRED_INPUTS.put("dimension", Object.class);
-        REQUIRED_INPUTS.put("x", Object.class);
-        REQUIRED_INPUTS.put("y", Object.class);
-        REQUIRED_INPUTS.put("z", Object.class);
+        REQUIRED_INPUTS.put("position", Vec3d.class);
         REQUIRED_INPUTS.put("maxDistance", Object.class);
         REQUIRED_INPUTS.put("volume", Object.class);
         REQUIRED_INPUTS.put("pitch", Object.class);
@@ -98,12 +98,13 @@ public class CNodePlaySoundAtPosition extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
+        Vec3d position = (Vec3d) inputs[2];
         MCTools.playSimpleSoundAtPosition(
                 new ResourceLocation("" + inputs[0]),
                 Integer.parseInt("" + inputs[1]),
-                Double.parseDouble("" + inputs[2]),
-                Double.parseDouble("" + inputs[3]),
-                Double.parseDouble("" + inputs[4]),
+                position.x,
+                position.y,
+                position.z,
                 Double.parseDouble("" + inputs[5]),
                 attenuation ? 2 : 0,
                 Float.parseFloat("" + inputs[6]),
@@ -212,8 +213,11 @@ public class CNodePlaySoundAtPosition extends CNode
                     })
             );
 
+            root.add(new GUIElement(this, 1, 0));
+
             GUILabeledBoolean attenuation = new GUILabeledBoolean(this, "Attenuation: ", node.attenuation);
-            root.add(attenuation.addClickActions(() -> node.attenuation = attenuation.getValue()));
+            attenuation.input.addClickActions(() -> node.attenuation = attenuation.getValue());
+            root.add(attenuation);
         }
     }
 }

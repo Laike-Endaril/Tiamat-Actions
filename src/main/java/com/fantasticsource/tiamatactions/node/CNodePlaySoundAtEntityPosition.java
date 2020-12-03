@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.text.GUILabeledBoolean;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
@@ -207,8 +208,11 @@ public class CNodePlaySoundAtEntityPosition extends CNode
                     })
             );
 
+            root.add(new GUIElement(this, 1, 0));
+
             GUILabeledBoolean attenuation = new GUILabeledBoolean(this, "Attenuation: ", node.attenuation);
-            root.add(attenuation.addClickActions(() -> node.attenuation = attenuation.getValue()));
+            attenuation.input.addClickActions(() -> node.attenuation = attenuation.getValue());
+            root.add(attenuation);
         }
     }
 }
