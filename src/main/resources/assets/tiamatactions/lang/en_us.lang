@@ -35,7 +35,7 @@ tiamatactions.config.createNodeConnectionButton.tooltip=FILLSCREEN FIXNEWLINES W
 tiamatactions.config.customAttributes=Custom Attributes
 tiamatactions.config.customAttributes.tooltip=FILLSCREEN FIXNEWLINES A list of custom attributes to add to living entities\nSyntax is...\nname, defaultValue, parentName, minValue, maxValue\nAll arguments except name are optional, but must include all preceding arguments\nThe full attribute name will end up as tiamatactions.<name>, eg 'strength' would end up as 'tiamatactions.strength'\nThe parent name must be the (partial) name of another custom attribute (ie. 'strength', not 'tiamatactions.strength'\n \n
 tiamatactions.config.keyboundActions=Keybound Actions
-tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;ActionName;QueueName\nQueueName is optional (uses a null queue if empty, uses Main if the 2nd semicolon is omitted)\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction in an action queue named Main\n \n
+tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;ActionName;QueueName\nQueueName is optional.  Uses 'Main' queue if omitted or empty.  Uses a null queue ('execute immediate' style) if you enter the word 'null'\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction in an action queue named Main\n \n
 
 
 

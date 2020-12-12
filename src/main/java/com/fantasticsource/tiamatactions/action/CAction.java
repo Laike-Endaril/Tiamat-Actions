@@ -88,6 +88,7 @@ public class CAction extends Component
 
     public Object queue(Entity source, String queueName, CAction mainAction, Object argument, LinkedHashMap<String, Object> actionVars)
     {
+        if (queueName.equals("") || queueName.toLowerCase().equals("null")) queueName = null;
         ActionQueue queue = queueName == null ? null : ActionQueue.get(source, queueName);
 
         CAction action = (CAction) copy();

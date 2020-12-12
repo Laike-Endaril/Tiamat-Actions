@@ -53,7 +53,7 @@ public class Network
 
 
             String queueName = tokens.length > 2 ? tokens[2].trim() : "Main";
-            if (queueName.equals("")) queueName = null;
+            if (queueName.equals("")) queueName = "Main";
             KEYBOUND_ACTION_NAMES.put(tokens[0].trim(), new Pair<>(tokens[1].trim(), queueName));
         }
 

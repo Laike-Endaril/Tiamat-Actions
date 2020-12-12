@@ -27,7 +27,7 @@ public class ModpackConfig
                     "A list of actions that can be run by a player via keybind",
                     "Syntax is...",
                     "keybindName;ActionName;QueueName",
-                    "QueueName is optional (uses a null queue if empty, uses Main if the 2nd semicolon is omitted)",
+                    "QueueName is optional.  Uses 'Main' queue if omitted or empty.  Uses a null queue ('execute immediate' style) if you enter the word 'null'",
                     "",
                     "Eg...",
                     "test;TestAction",
