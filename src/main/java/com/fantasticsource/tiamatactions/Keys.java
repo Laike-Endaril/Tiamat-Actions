@@ -44,7 +44,7 @@ public class Keys
     {
         for (KeyBinding keyBinding : KEY_BINDINGS)
         {
-            if (keyBinding.isKeyDown())
+            if (keyBinding.isPressed())
             {
                 Network.WRAPPER.sendToServer(new Network.ExecuteKeyboundActionPacket(keyBinding.getKeyDescription().replace(PREFIX, "")));
                 break;
