@@ -32,7 +32,7 @@ public class TiamatActions
 {
     public static final String MODID = "tiamatactions";
     public static final String NAME = "Tiamat Actions";
-    public static final String VERSION = "1.12.2.000zzd";
+    public static final String VERSION = "1.12.2.000zze";
     public static final String DOMAIN = "tiamatrpg";
 
     protected static final String IN_JAR_PATH = "assets/" + MODID + "/";
