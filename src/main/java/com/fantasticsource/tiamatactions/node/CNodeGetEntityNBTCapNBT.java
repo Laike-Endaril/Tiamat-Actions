@@ -15,6 +15,7 @@ public class CNodeGetEntityNBTCapNBT extends CNode
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_entity_nbtcap_nbt.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
+    protected static final Pair<String, Class> OPTIONAL_INPUTS = new Pair<>("Mod ID", Object.class);
 
     static
     {
@@ -44,7 +45,7 @@ public class CNodeGetEntityNBTCapNBT extends CNode
     @Override
     public String getDescription()
     {
-        return "Get the Tiamat Actions NBTCap NBT of an entity";
+        return "Get an NBTCap NBT compound from an entity";
     }
 
 
@@ -57,7 +58,7 @@ public class CNodeGetEntityNBTCapNBT extends CNode
     @Override
     public Pair<String, Class> getOptionalInputs()
     {
-        return null;
+        return OPTIONAL_INPUTS;
     }
 
     @Override
@@ -70,6 +71,7 @@ public class CNodeGetEntityNBTCapNBT extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        return FLibAPI.getNBTCap((Entity) inputs[0]).getCompound(MODID);
+        String modid = inputs.length > 1 ? "" + inputs[1] : MODID;
+        return FLibAPI.getNBTCap((Entity) inputs[0]).getCompound(modid);
     }
 }
