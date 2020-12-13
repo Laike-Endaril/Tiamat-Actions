@@ -97,7 +97,7 @@ public class CNodePlaySoundAtEntityPosition extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        MCTools.playSimpleSoundAtEntityPosition(
+        MCTools.playSimpleSoundForAll(
                 new ResourceLocation("" + inputs[0]),
                 (Entity) inputs[1],
                 Double.parseDouble("" + inputs[2]),

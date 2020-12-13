@@ -99,7 +99,7 @@ public class CNodePlaySoundAtPosition extends CNode
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         Vec3d position = (Vec3d) inputs[2];
-        MCTools.playSimpleSoundAtPosition(
+        MCTools.playSimpleSoundForAll(
                 new ResourceLocation("" + inputs[0]),
                 Integer.parseInt("" + inputs[1]),
                 position.x,
