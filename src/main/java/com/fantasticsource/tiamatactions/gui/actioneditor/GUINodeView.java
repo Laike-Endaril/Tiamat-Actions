@@ -99,6 +99,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Arrays", "Remove from Array", CNodeRemoveFromArray.class);
         addOption("Arrays", "Remove Nth from Array", CNodeRemoveNthFromArray.class);
         addOption("Arrays", "Clone Array", CNodeCloneArray.class);
+        addOption("Arrays", "Trim Array", CNodeTrimArray.class);
         addOption("Arrays", "Fill Array", CNodeFillArray.class);
 
         addOption("Lists", "Get List Size", CNodeGetListSize.class);
@@ -107,6 +108,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Lists", "Remove from List", CNodeRemoveFromList.class);
         addOption("Lists", "Remove Nth from List", CNodeRemoveNthFromList.class);
         addOption("Lists", "Clone List", CNodeCloneList.class);
+        addOption("Lists", "Trim List", CNodeTrimList.class);
         addOption("Lists", "Clear List", CNodeClearList.class);
 
         addOption("Actions", "End Action", CNodeEndAction.class);
