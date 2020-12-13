@@ -14,7 +14,6 @@ import com.fantasticsource.tools.datastructures.Color;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -124,6 +123,10 @@ public class GUINodeView extends GUIPanZoomView
 
         addOption("Sounds", "Play Sound at Position", CNodePlaySoundAtPosition.class);
         addOption("Sounds", "Play Sound at Entity Position", CNodePlaySoundAtEntityPosition.class);
+        if (Loader.isModLoaded("faeruncharacters"))
+        {
+            addOption("Sounds", "Get Voice Sound", CNodeGetVoiceSound.class);
+        }
 
         addOption("Misc.", "Comment", CNodeComment.class);
         addOption("Misc.", "Null", CNodeNull.class);
