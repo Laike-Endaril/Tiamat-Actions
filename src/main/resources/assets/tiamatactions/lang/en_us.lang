@@ -25,7 +25,7 @@ tiamatactions.config.forgePlayerEventActions.tooltip=FILLSCREEN FIXNEWLINES This
 
 tiamatactions.config.guiSettings=GUI Settings
 tiamatactions.config.tooltipAction=Tooltip Action
-tiamatactions.config.tooltipAction.tooltip=FILLSCREEN FIXNEWLINES An action used to alter tooltips.  This action must not have tick nodes.\nThe following action vars will exist before the action executes:\nitemstack = the itemstack related to the tooltip (if any)\ntooltip - the original tooltip, as a list of strings (alter these to change the tooltip)"=\n \n
+tiamatactions.config.tooltipAction.tooltip=FILLSCREEN FIXNEWLINES An action used to alter tooltips.  This action must not have tick nodes.\nThe following action vars will exist before the action executes:\nitemstack = the itemstack related to the tooltip (if any)\ntooltip = the original tooltip, as a list of strings (alter these to change the tooltip)"\n \n
 
 tiamatactions.config.createEditNodeButton=Create / Edit Node (Mouse Button)
 tiamatactions.config.createEditNodeButton.tooltip=FILLSCREEN FIXNEWLINES Which mouse button creates, edits, and moves nodes in a node view (click for add/edit, drag for move)\n \n

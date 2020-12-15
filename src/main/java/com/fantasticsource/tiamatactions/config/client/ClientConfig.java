@@ -17,7 +17,7 @@ public class ClientConfig
                     "An action used to alter tooltips.  This action must not have tick nodes.",
                     "The following action vars will exist before the action executes:",
                     "itemstack = the itemstack related to the tooltip (if any)",
-                    "tooltip - the original tooltip, as a list of strings (alter these to change the tooltip)"
+                    "tooltip = the original tooltip, as a list of strings (alter these to change the tooltip)"
             })
     public String tooltipAction = "";
 }
