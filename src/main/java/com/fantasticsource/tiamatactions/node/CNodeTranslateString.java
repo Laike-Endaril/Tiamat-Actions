@@ -77,7 +77,7 @@ public class CNodeTranslateString extends CNode
         {
             try
             {
-                args[i] = Integer.parseInt("" + args[i]);
+                args[i] = Double.parseDouble("" + args[i]);
             }
             catch (NumberFormatException e)
             {
@@ -86,7 +86,7 @@ public class CNodeTranslateString extends CNode
 
             try
             {
-                args[i] = Double.parseDouble("" + args[i]);
+                args[i] = Integer.parseInt("" + args[i]);
             }
             catch (NumberFormatException e)
             {
