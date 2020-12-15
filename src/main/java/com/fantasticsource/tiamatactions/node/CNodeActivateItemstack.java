@@ -13,7 +13,7 @@ import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class CNodeActivateItemstack extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/is_itemstack_active.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/activate_itemstack.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
@@ -44,7 +44,7 @@ public class CNodeActivateItemstack extends CNode
     @Override
     public String getDescription()
     {
-        return "Check whether an itemstack is active";
+        return "Activate an itemstack";
     }
 
 
@@ -63,7 +63,7 @@ public class CNodeActivateItemstack extends CNode
     @Override
     public Class outputType()
     {
-        return Boolean.class;
+        return null;
     }
 
 
@@ -71,16 +71,16 @@ public class CNodeActivateItemstack extends CNode
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         ItemStack stack = (ItemStack) inputs[0];
-        if (stack == null) return false;
+        if (stack == null) return null;
 
-        if (!stack.hasTagCompound()) return false;
-
+        if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
         NBTTagCompound compound = stack.getTagCompound();
-        if (!compound.hasKey(DOMAIN)) return false;
 
+        if (!compound.hasKey(DOMAIN)) compound.setTag(DOMAIN, new NBTTagCompound());
         compound = compound.getCompoundTag(DOMAIN);
-        if (!compound.hasKey("active")) return false;
 
-        return compound.getBoolean("active");
+        compound.setBoolean("active", true);
+
+        return null;
     }
 }
