@@ -17,7 +17,7 @@ public class CNodeTranslateString extends CNode
 
     static
     {
-        REQUIRED_INPUTS.put("langKey", Object.class);
+        REQUIRED_INPUTS.put("langKeyOrFormat", Object.class);
     }
 
     /**
@@ -43,7 +43,7 @@ public class CNodeTranslateString extends CNode
     @Override
     public String getDescription()
     {
-        return "Translate a lang key and its arguments to a localized string";
+        return "Format a string and/or translate a lang key and its arguments to a localized string";
     }
 
 
@@ -72,6 +72,26 @@ public class CNodeTranslateString extends CNode
         String key = "" + inputs[0];
         Object[] args = new Object[inputs.length - 1];
         System.arraycopy(inputs, 1, args, 0, args.length);
+
+        for (int i = 0; i < args.length; i++)
+        {
+            try
+            {
+                args[i] = Integer.parseInt("" + args[i]);
+            }
+            catch (NumberFormatException e)
+            {
+                continue;
+            }
+
+            try
+            {
+                args[i] = Double.parseDouble("" + args[i]);
+            }
+            catch (NumberFormatException e)
+            {
+            }
+        }
 
         StringBuilder s = new StringBuilder(I18n.translateToLocalFormatted(key, args));
         if (args.length > 0 && s.toString().equals(key))
