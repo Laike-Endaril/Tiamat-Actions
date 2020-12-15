@@ -70,7 +70,12 @@ public class CNodeAddToList extends CNode
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         List list = (List) inputs[0];
-        for (int i = 1; i < inputs.length; i++) list.add(inputs[i]);
+        boolean isStrings = list.size() > 0 && list.get(0).getClass() == String.class;
+        for (int i = 1; i < inputs.length; i++)
+        {
+            if (isStrings) list.add("" + inputs[i]);
+            else list.add(inputs[i]);
+        }
         return list;
     }
 }

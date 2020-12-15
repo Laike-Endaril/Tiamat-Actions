@@ -73,7 +73,7 @@ public class CNodeAddToArray extends CNode
     {
         Class type = inputs[0].getClass().getComponentType();
         ArrayList<Object> objects = new ArrayList<>(Arrays.asList((Object[]) inputs[0]));
-        for (int i = 1; i < inputs.length; i++) objects.add(inputs[i]);
+        for (int i = 1; i < inputs.length; i++) objects.add(type == String.class ? "" + inputs[i] : inputs[i]);
         return objects.toArray((Object[]) Array.newInstance(type, objects.size()));
     }
 }

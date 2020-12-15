@@ -69,6 +69,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Itemstacks", "Itemstack", CNodeItemstack.class);
         addOption("Itemstacks", "Get Inventory Itemstack", CNodeGetItemstack.class);
         addOption("Itemstacks", "Set Inventory Itemstack", CNodeSetItemstack.class);
+        addOption("Itemstacks", "Get Itemstack Attribute Mod Total", CNodeGetItemstackAttributeModTotal.class);
         if (Loader.isModLoaded("tiamatitems"))
         {
             addOption("Itemstacks", "Activate Itemstack", CNodeActivateItemstack.class);
