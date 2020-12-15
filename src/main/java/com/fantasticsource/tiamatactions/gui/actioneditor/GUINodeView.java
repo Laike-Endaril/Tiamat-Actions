@@ -31,6 +31,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Booleans and Conditions", "Periodic Boolean", CNodePeriodicBoolean.class);
 
         addOption("Strings", "Output String", CNodeString.class);
+        addOption("Strings", "Translate String", CNodeTranslateString.class);
         addOption("Strings", "String Contains", CNodeStringContains.class);
         addOption("Strings", "String Replacement", CNodeStringReplace.class);
 
@@ -130,16 +131,16 @@ public class GUINodeView extends GUIPanZoomView
             addOption("Sounds", "Get Voice Sound", CNodeGetVoiceSound.class);
         }
 
+        addOption("Misc.", "Debug", CNodeDebug.class);
         addOption("Misc.", "Comment", CNodeComment.class);
-        addOption("Misc.", "Null", CNodeNull.class);
         addOption("Misc.", "Evaluate", CNodeEval.class);
         addOption("Misc.", "Run Command", CNodeCommand.class);
         addOption("Misc.", "Server Tick", CNodeServerTick.class);
-        addOption("Misc.", "Show Debug Message", CNodeDebug.class);
         if (Loader.isModLoaded("tiamathud"))
         {
             addOption("Misc.", "Set Custom HUD Data", CNodeSetCustomHUDData.class);
         }
+        addOption("Misc.", "Null", CNodeNull.class);
     }
 
     public GUINode tempNode = null;
