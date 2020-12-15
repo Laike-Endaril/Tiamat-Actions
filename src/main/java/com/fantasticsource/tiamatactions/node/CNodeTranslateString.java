@@ -72,6 +72,15 @@ public class CNodeTranslateString extends CNode
         String key = "" + inputs[0];
         Object[] args = new Object[inputs.length - 1];
         System.arraycopy(inputs, 1, args, 0, args.length);
-        return I18n.translateToLocalFormatted(key, args);
+
+        StringBuilder s = new StringBuilder(I18n.translateToLocalFormatted(key, args));
+        if (args.length > 0 && s.toString().equals(key))
+        {
+            s.append("(").append(args[0]);
+            for (int i = 1; i < args.length; i++) s.append(", ").append(args[i]);
+            s.append(")");
+        }
+
+        return s.toString();
     }
 }
