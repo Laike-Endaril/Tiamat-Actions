@@ -11,6 +11,7 @@ import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
@@ -64,6 +65,8 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Entity Setters and Functions", "Set Entity Motion Vector", CNodeSetEntityMotion.class);
         addOption("Entity Setters and Functions", "Set Entity Gravity", CNodeSetEntityGravity.class);
         addOption("Entity Setters and Functions", "Set Entity Clip", CNodeSetEntityClip.class);
+        addOption("Entity Setters and Functions", "Apply Potion Effect", CNodeApplyPotionEffect.class);
+        addOption("Entity Setters and Functions", "Remove Potion Effect", CNodeRemovePotionEffect.class);
         addOption("Entity Setters and Functions", "Destroy Entity", CNodeDestroyEntity.class);
 
         addOption("Itemstacks", "Itemstack", CNodeItemstack.class);
