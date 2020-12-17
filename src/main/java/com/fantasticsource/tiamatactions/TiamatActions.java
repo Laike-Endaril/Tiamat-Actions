@@ -8,7 +8,7 @@ import com.fantasticsource.tiamatactions.block.BlocksAndItems;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.gui.actioneditor.GUINodeView;
 import com.fantasticsource.tiamatactions.node.CNode;
-import com.fantasticsource.tiamatactions.trigger.PlayerEventActionTrigger;
+import com.fantasticsource.tiamatactions.trigger.EntityEventActionTrigger;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -57,7 +57,7 @@ public class TiamatActions
 
         CAction.reloadAll();
 
-        if (TiamatActionsConfig.serverSettings.forgePlayerEventActions.length > 0) MinecraftForge.EVENT_BUS.register(PlayerEventActionTrigger.class);
+        if (TiamatActionsConfig.serverSettings.forgeEntityEventActions.length > 0) MinecraftForge.EVENT_BUS.register(EntityEventActionTrigger.class);
 
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)

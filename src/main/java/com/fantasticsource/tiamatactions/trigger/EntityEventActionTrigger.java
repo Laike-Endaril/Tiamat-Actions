@@ -6,34 +6,34 @@ import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tools.ReflectionTool;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Pair;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PlayerEventActionTrigger
+public class EntityEventActionTrigger
 {
-    public static final HashMap<Class<? extends PlayerEvent>, ArrayList<Pair<String, String>>> PLAYER_EVENT_ACTIONS = new HashMap<>();
+    public static final HashMap<Class<? extends EntityEvent>, ArrayList<Pair<String, String>>> ENTITY_EVENT_ACTIONS = new HashMap<>();
 
     static
     {
-        for (String s : TiamatActionsConfig.serverSettings.forgePlayerEventActions)
+        for (String s : TiamatActionsConfig.serverSettings.forgeEntityEventActions)
         {
             String[] tokens = Tools.fixedSplit(s, ",");
             if (tokens.length < 3)
             {
-                System.err.println(TextFormatting.RED + "Invalid Forge PlayerEvent action trigger: " + s);
+                System.err.println(TextFormatting.RED + "Invalid Forge EntityEvent action trigger: " + s);
                 continue;
             }
 
             Class cls = ReflectionTool.getClassByName(tokens[0].trim());
-            if (!PlayerEvent.class.isAssignableFrom(cls))
+            if (!EntityEvent.class.isAssignableFrom(cls))
             {
-                System.err.println(TextFormatting.RED + "Class for Forge PlayerEvent action trigger is not a subclass of PlayerEvent: " + s);
+                System.err.println(TextFormatting.RED + "Class for Forge EntityEvent action trigger is not a subclass of PlayerEvent: " + s);
                 continue;
             }
 
@@ -41,22 +41,22 @@ public class PlayerEventActionTrigger
             if (queueName.equals("") || queueName.equalsIgnoreCase("null")) queueName = null;
             else if (!ActionQueue.queueExists(queueName))
             {
-                System.err.println(TextFormatting.RED + "Queue for Forge PlayerEvent action trigger does not exist: " + s);
+                System.err.println(TextFormatting.RED + "Queue for Forge EntityEvent action trigger does not exist: " + s);
                 continue;
             }
 
-            PLAYER_EVENT_ACTIONS.computeIfAbsent(cls, o -> new ArrayList<>()).add(new Pair<>(actionName, queueName));
+            ENTITY_EVENT_ACTIONS.computeIfAbsent(cls, o -> new ArrayList<>()).add(new Pair<>(actionName, queueName));
         }
     }
 
     @SubscribeEvent
-    public static void playerEvent(PlayerEvent playerEvent)
+    public static void entityEvent(EntityEvent entityEvent)
     {
-        EntityPlayer player = playerEvent.getEntityPlayer();
-        if (!(player instanceof EntityPlayerMP)) return;
+        Entity entity = entityEvent.getEntity();
+        if (!(entity instanceof EntityPlayerMP)) return;
 
-        Class<? extends PlayerEvent> eventClass = playerEvent.getClass();
-        ArrayList<Pair<String, String>> pairs = PLAYER_EVENT_ACTIONS.get(eventClass);
+        Class<? extends EntityEvent> eventClass = entityEvent.getClass();
+        ArrayList<Pair<String, String>> pairs = ENTITY_EVENT_ACTIONS.get(eventClass);
         if (pairs == null) return;
 
 
@@ -65,7 +65,7 @@ public class PlayerEventActionTrigger
             CAction action = CAction.ALL_ACTIONS.get(pair.getKey());
             if (action == null) continue;
 
-            action.queue(player, pair.getValue(), null, eventClass);
+            action.queue(entity, pair.getValue(), null, eventClass);
         }
     }
 }
