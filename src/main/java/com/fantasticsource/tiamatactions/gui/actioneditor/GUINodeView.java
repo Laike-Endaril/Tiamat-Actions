@@ -79,6 +79,7 @@ public class GUINodeView extends GUIPanZoomView
         }
 
         addOption("NBT", "Get Itemstack NBT", CNodeGetItemstackNBT.class);
+        addOption("NBT", "Get Full Entity NBT", CNodeGetFullEntityNBT.class);
         addOption("NBT", "Get Entity NBTCap NBT", CNodeGetEntityNBTCapNBT.class);
         addOption("NBT", "Get NBT Value", CNodeGetNBTValue.class);
         addOption("NBT", "Set NBT Value", CNodeSetNBTValue.class);
