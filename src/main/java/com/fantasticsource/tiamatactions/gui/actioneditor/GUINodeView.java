@@ -133,6 +133,12 @@ public class GUINodeView extends GUIPanZoomView
             addOption("Sounds", "Get Voice Sound", CNodeGetVoiceSound.class);
         }
 
+        addOption("Java", "Get Class from Object", CNodeGetClassFromObject.class);
+        addOption("Java", "Get Class by Name", CNodeGetClassByName.class);
+        addOption("Java", "Get Field Value", CNodeGetFieldValue.class);
+        addOption("Java", "Set Field Value", CNodeSetFieldValue.class);
+        addOption("Java", "Invoke Method", CNodeInvokeMethod.class);
+
         addOption("Misc.", "Debug", CNodeDebug.class);
         addOption("Misc.", "Comment", CNodeComment.class);
         addOption("Misc.", "Evaluate", CNodeEval.class);
