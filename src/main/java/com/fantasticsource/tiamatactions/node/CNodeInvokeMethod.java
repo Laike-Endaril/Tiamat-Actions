@@ -18,7 +18,7 @@ public class CNodeInvokeMethod extends CNode
     static
     {
         REQUIRED_INPUTS.put("class", Class.class);
-        REQUIRED_INPUTS.put("fieldName", Object.class);
+        REQUIRED_INPUTS.put("methodName", Object.class);
         REQUIRED_INPUTS.put("object", Object.class);
     }
 
