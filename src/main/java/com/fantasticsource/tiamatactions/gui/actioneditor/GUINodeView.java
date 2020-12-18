@@ -11,7 +11,6 @@ import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
@@ -100,6 +99,8 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Math", "Ray Collision Vector", CNodeRayCollisionVector.class);
 
         addOption("Arrays", "Get Array Size", CNodeGetArraySize.class);
+        addOption("Arrays", "Array Contains", CNodeArrayContains.class);
+        addOption("Arrays", "Index in Array", CNodePositionInArray.class);
         addOption("Arrays", "Get From Array", CNodeGetFromArray.class);
         addOption("Arrays", "Add to Array", CNodeAddToArray.class);
         addOption("Arrays", "Remove from Array", CNodeRemoveFromArray.class);
@@ -109,6 +110,8 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Arrays", "Fill Array", CNodeFillArray.class);
 
         addOption("Lists", "Get List Size", CNodeGetListSize.class);
+        addOption("Lists", "List Contains", CNodeListContains.class);
+        addOption("Lists", "Index in List", CNodePositionInList.class);
         addOption("Lists", "Get From List", CNodeGetFromList.class);
         addOption("Lists", "Add to List", CNodeAddToList.class);
         addOption("Lists", "Remove from List", CNodeRemoveFromList.class);
