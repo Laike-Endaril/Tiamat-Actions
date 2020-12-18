@@ -279,7 +279,7 @@ public class CNodeGetItemstack extends CNode
                 throw new IllegalStateException("Invalid item slot type: " + type);
         }
 
-        return items.size() > index ? items.get(index) : null;
+        return items.size() > index ? items.get(index) : ItemStack.EMPTY;
     }
 
 
