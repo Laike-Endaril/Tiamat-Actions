@@ -73,6 +73,9 @@ public class CNodeTranslateString extends CNode
         Object[] args = new Object[inputs.length - 1];
         System.arraycopy(inputs, 1, args, 0, args.length);
 
+        if (I18n.canTranslate(key)) return I18n.translateToLocalFormatted(key, args); //Lang translation
+
+
         for (int i = 0; i < args.length; i++)
         {
             try
@@ -93,8 +96,8 @@ public class CNodeTranslateString extends CNode
             }
         }
 
-        StringBuilder s = new StringBuilder(I18n.translateToLocalFormatted(key, args));
-        if (args.length > 0 && s.toString().equals(key))
+        StringBuilder s = new StringBuilder(I18n.translateToLocalFormatted(key, args)); //String.format() if applicable
+        if (args.length > 0 && s.toString().equals(key)) //Untranslated key (append args in parens)
         {
             s.append("(").append(args[0]);
             for (int i = 1; i < args.length; i++) s.append(", ").append(args[i]);
