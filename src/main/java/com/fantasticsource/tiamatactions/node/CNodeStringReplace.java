@@ -221,9 +221,10 @@ public class CNodeStringReplace extends CNode
             );
 
             GUILabeledBoolean all = new GUILabeledBoolean(this, "Replace all: ", node.all);
+            all.input.addClickActions(() -> node.all = all.getValue());
             root.addAll(
                     new GUIElement(this, 1, 0),
-                    all.addClickActions(() -> node.all = all.getValue())
+                    all
             );
         }
     }
