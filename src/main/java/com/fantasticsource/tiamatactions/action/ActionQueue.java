@@ -78,8 +78,9 @@ public class ActionQueue
         profiler.endSection();
     }
 
-    public static boolean queueExists(String queueName)
+    public static ArrayList<String> existingQueues()
     {
+        ArrayList<String> queueNames = new ArrayList<>();
         for (String line : TiamatActionsConfig.serverSettings.actionQueues)
         {
             String[] tokens = Tools.fixedSplit(line, ",");
@@ -97,9 +98,14 @@ public class ActionQueue
                 throw new IllegalArgumentException("Bad syntax in queue config: " + line);
             }
 
-            if (tokens[0].trim().equals(queueName)) return true;
+            queueNames.add(tokens[0].trim());
         }
-        return false;
+        return queueNames;
+    }
+
+    public static boolean queueExists(String queueName)
+    {
+        return existingQueues().contains(queueName);
     }
 
     public static ActionQueue get(Entity entity, String queueName)

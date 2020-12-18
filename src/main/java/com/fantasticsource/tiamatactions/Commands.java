@@ -1,12 +1,14 @@
 package com.fantasticsource.tiamatactions;
 
+import com.fantasticsource.mctools.PlayerData;
+import com.fantasticsource.tiamatactions.action.ActionQueue;
 import com.fantasticsource.tiamatactions.action.CAction;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -15,7 +17,6 @@ import java.util.List;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 import static net.minecraft.util.text.TextFormatting.AQUA;
-import static net.minecraft.util.text.TextFormatting.WHITE;
 
 public class Commands extends CommandBase
 {
@@ -24,6 +25,7 @@ public class Commands extends CommandBase
     static
     {
         subcommands.addAll(Arrays.asList("reload"));
+        subcommands.addAll(Arrays.asList("execute"));
     }
 
 
@@ -64,7 +66,7 @@ public class Commands extends CommandBase
             return s.toString();
         }
 
-        return AQUA + "/" + getName() + " " + subcommand + WHITE + " - " + I18n.translateToLocalFormatted(MODID + ".cmd." + subcommand + ".comment");
+        return MODID + ".cmd." + subcommand + ".usage";
     }
 
     public void execute(MinecraftServer server, ICommandSender sender, String[] args)
@@ -83,7 +85,35 @@ public class Commands extends CommandBase
             case 1:
                 result.addAll(subcommands);
                 break;
+
+            case 2:
+                switch (args[0])
+                {
+                    case "execute":
+                        result.addAll(CAction.ALL_ACTIONS.keySet());
+                        break;
+                }
+                break;
+
+            case 3:
+                switch (args[0])
+                {
+                    case "execute":
+                        result.addAll(ActionQueue.existingQueues());
+                        break;
+                }
+                break;
+
+            case 4:
+                switch (args[0])
+                {
+                    case "execute":
+                        result.addAll(Arrays.asList(server.getOnlinePlayerNames()));
+                        break;
+                }
+                break;
         }
+
         if (partial.length() != 0) result.removeIf(k -> partial.length() > k.length() || !k.substring(0, partial.length()).equalsIgnoreCase(partial));
         return result;
     }
@@ -98,6 +128,31 @@ public class Commands extends CommandBase
                 {
                     notifyCommandListener(sender, this, s);
                 }
+                break;
+
+            case "execute":
+                CAction action = CAction.ALL_ACTIONS.get(args[1]);
+                if (action == null)
+                {
+                    notifyCommandListener(sender, this, subUsage(cmd));
+                    return;
+                }
+
+                String queue = args.length > 2 ? args[2] : "Main";
+                if (!ActionQueue.queueExists(queue))
+                {
+                    notifyCommandListener(sender, this, subUsage(cmd));
+                    return;
+                }
+
+                EntityPlayerMP player = args.length > 3 ? (EntityPlayerMP) PlayerData.getEntity(args[3]) : sender instanceof EntityPlayerMP ? (EntityPlayerMP) sender : null;
+                if (player == null)
+                {
+                    notifyCommandListener(sender, this, subUsage(cmd));
+                    return;
+                }
+
+                action.queue(player, queue);
                 break;
 
             default:
