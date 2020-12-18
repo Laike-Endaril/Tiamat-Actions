@@ -22,6 +22,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -282,8 +284,13 @@ public abstract class CNode extends Component
                 if (mainAction.source instanceof EntityPlayerMP)
                 {
                     mainAction.source.sendMessage(new TextComponentString(TextFormatting.RED + "Exception caught in action: " + subAction.name + " (Main action: " + mainAction.name + ")"));
-                    mainAction.source.sendMessage(new TextComponentString(TextFormatting.RED + "" + e.toString()));
-                    for (StackTraceElement stackTraceElement : stackTrace) mainAction.source.sendMessage(new TextComponentString(TextFormatting.RED + "" + stackTraceElement));
+
+                    StringWriter errors = new StringWriter();
+                    e.printStackTrace(new PrintWriter(errors));
+                    for (String line : Tools.fixedSplit(errors.toString(), "\n"))
+                    {
+                        mainAction.source.sendMessage(new TextComponentString(TextFormatting.RED + line.replaceAll("\r", "")));
+                    }
                 }
             }
         }
