@@ -55,6 +55,8 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Entity Getters", "Get Entity Motion Vector", CNodeGetEntityMotion.class);
         addOption("Entity Getters", "Get Entity Gravity", CNodeGetEntityGravity.class);
         addOption("Entity Getters", "Get Entity Clip", CNodeGetEntityClip.class);
+        addOption("Entity Getters", "Get Potion Effect Level", CNodeGetPotionEffectLevel.class);
+        addOption("Entity Getters", "Get Potion Effect Duration", CNodeGetPotionEffectDuration.class);
 
         addOption("Entity Setters and Functions", "Damage Entity", CNodeDamageEntity.class);
         addOption("Entity Setters and Functions", "Set Entity Position Vector", CNodeSetEntityPosition.class);
