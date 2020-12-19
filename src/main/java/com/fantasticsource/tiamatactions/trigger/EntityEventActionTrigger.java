@@ -33,7 +33,7 @@ public class EntityEventActionTrigger
             Class cls = ReflectionTool.getClassByName(tokens[0].trim());
             if (!EntityEvent.class.isAssignableFrom(cls))
             {
-                System.err.println(TextFormatting.RED + "Class for Forge EntityEvent action trigger is not a subclass of PlayerEvent: " + s);
+                System.err.println(TextFormatting.RED + "Class for Forge EntityEvent action trigger is not a subclass of EntityEvent: " + s);
                 continue;
             }
 
@@ -65,7 +65,7 @@ public class EntityEventActionTrigger
             CAction action = CAction.ALL_ACTIONS.get(pair.getKey());
             if (action == null) continue;
 
-            action.queue(entity, pair.getValue(), null, eventClass);
+            action.queue(entity, pair.getValue(), null, entityEvent);
         }
     }
 }

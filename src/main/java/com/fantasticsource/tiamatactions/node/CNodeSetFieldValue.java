@@ -5,6 +5,7 @@ import com.fantasticsource.tools.ReflectionTool;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.util.ResourceLocation;
 
+import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
@@ -45,7 +46,7 @@ public class CNodeSetFieldValue extends CNode
     @Override
     public String getDescription()
     {
-        return "Get the value of a field";
+        return "Set the value of a field";
     }
 
 
@@ -71,7 +72,19 @@ public class CNodeSetFieldValue extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        ReflectionTool.set((Class) inputs[0], "" + inputs[1], inputs[2], inputs[3]);
+        Class cls = (Class) inputs[0];
+        String fieldName = "" + inputs[1];
+        Field field = ReflectionTool.getField(cls, fieldName);
+        Class fieldClass = field.getType();
+
+        if (fieldClass == double.class || fieldClass == Double.class) ReflectionTool.set(cls, fieldName, inputs[2], Double.parseDouble("" + inputs[3]));
+        else if (fieldClass == float.class || fieldClass == Float.class) ReflectionTool.set(cls, fieldName, inputs[2], Float.parseFloat("" + inputs[3]));
+        else if (fieldClass == int.class || fieldClass == Integer.class) ReflectionTool.set(cls, fieldName, inputs[2], Integer.parseInt("" + inputs[3]));
+        else if (fieldClass == long.class || fieldClass == Long.class) ReflectionTool.set(cls, fieldName, inputs[2], Long.parseLong("" + inputs[3]));
+        else if (fieldClass == short.class || fieldClass == Short.class) ReflectionTool.set(cls, fieldName, inputs[2], Short.parseShort("" + inputs[3]));
+        else if (fieldClass == byte.class || fieldClass == Byte.class) ReflectionTool.set(cls, fieldName, inputs[2], Byte.parseByte("" + inputs[3]));
+        else ReflectionTool.set(cls, fieldName, inputs[2], inputs[3]);
+
         return null;
     }
 }
