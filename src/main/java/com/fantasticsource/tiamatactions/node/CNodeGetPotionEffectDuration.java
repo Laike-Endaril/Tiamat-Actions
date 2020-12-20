@@ -5,6 +5,7 @@ import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -75,7 +76,9 @@ public class CNodeGetPotionEffectDuration extends CNode
         String potionName = "" + inputs[1];
         if (!potionName.contains(":")) potionName = "minecraft:" + potionName;
         Potion potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(potionName));
+        PotionEffect potionEffect = ((EntityLivingBase) inputs[0]).getActivePotionEffect(potion);
+        if (potionEffect == null) return 0;
 
-        return ((EntityLivingBase) inputs[0]).getActivePotionEffect(potion).getDuration();
+        return potionEffect.getDuration();
     }
 }
