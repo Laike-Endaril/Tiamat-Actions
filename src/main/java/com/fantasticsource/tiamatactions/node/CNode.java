@@ -30,6 +30,8 @@ import java.util.LinkedHashMap;
 
 public abstract class CNode extends Component
 {
+    public static CNode lastRunningNode = null;
+
     public String actionName, eventName;
     public int x, y;
 
@@ -278,12 +280,13 @@ public abstract class CNode extends Component
             StackTraceElement[] stackTrace = e.getStackTrace();
             if (mainAction.loggedErrors.add(stackTrace))
             {
-                System.err.println(TextFormatting.RED + "Exception caught in action: " + subAction.name + " (Main action: " + mainAction.name + ")");
+                String header = TextFormatting.RED + "Exception caught in action: " + subAction.name + ", " + eventName + ", " + lastRunningNode.getClass().getSimpleName() + " @(" + lastRunningNode.x + ", " + lastRunningNode.y + ") (Main action: " + mainAction.name + ")";
+                System.err.println(header);
                 e.printStackTrace();
 
                 if (mainAction.source instanceof EntityPlayerMP)
                 {
-                    mainAction.source.sendMessage(new TextComponentString(TextFormatting.RED + "Exception caught in action: " + subAction.name + " (Main action: " + mainAction.name + ")"));
+                    mainAction.source.sendMessage(new TextComponentString(header));
 
                     StringWriter errors = new StringWriter();
                     e.printStackTrace(new PrintWriter(errors));
@@ -319,6 +322,7 @@ public abstract class CNode extends Component
             if (inputResults[i++] == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
         }
 
+        lastRunningNode = this;
         return execute(mainAction, subAction, inputResults);
     }
 
