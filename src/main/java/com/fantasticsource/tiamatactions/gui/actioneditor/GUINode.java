@@ -70,6 +70,7 @@ public class GUINode extends GUIImage
             String s = TextFormatting.WHITE + node.getDescription();
 
             s += "\n" + TextFormatting.DARK_GRAY + GUINodeView.getNodeCategoryAndName(node.getClass());
+            s += "\n" + TextFormatting.DARK_GRAY + "(" + node.x + ", " + node.y + ")";
 
             s += "\n\n" + TextFormatting.LIGHT_PURPLE + "Output type: " + TextFormatting.GREEN + (node.outputType() == null ? "(None)" : node.outputType().getSimpleName());
 
