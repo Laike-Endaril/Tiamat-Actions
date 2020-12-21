@@ -192,6 +192,7 @@ public class CNodeStringReplace extends CNode
             //Data
             GUILabeledTextInput string = new GUILabeledTextInput(this, "Find: ", node.find, FilterNone.INSTANCE);
             string.addEditActions(() -> node.find = string.getText());
+            string.input.setActive(true);
             root.addAll(
                     new GUITextSpacer(this),
                     string

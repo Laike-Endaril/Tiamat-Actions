@@ -162,6 +162,7 @@ public class CNodeComment extends CNode
             //Data
             GUILabeledTextInput string = new GUILabeledTextInput(this, "Comment: ", node.comment, FilterNone.INSTANCE);
             string.addEditActions(() -> node.comment = string.getText());
+            string.input.setActive(true);
             root.addAll(
                     new GUITextSpacer(this),
                     new GUITextSpacer(this, true),

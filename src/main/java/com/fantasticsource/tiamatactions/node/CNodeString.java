@@ -170,6 +170,7 @@ public class CNodeString extends CNode
             //Data
             GUILabeledTextInput string = new GUILabeledTextInput(this, "String: ", node.string, FilterNone.INSTANCE);
             string.addEditActions(() -> node.string = string.getText());
+            string.input.setActive(true);
             root.addAll(
                     new GUITextSpacer(this),
                     new GUITextSpacer(this, true),

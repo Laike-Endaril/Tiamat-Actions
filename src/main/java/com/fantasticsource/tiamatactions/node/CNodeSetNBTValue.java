@@ -148,7 +148,7 @@ public class CNodeSetNBTValue extends CNode
             }
         }, type);
 
-        TextSelectionGUI gui = new TextSelectionGUI(guiText, "Set NBT Value Node", new String[]{"Integer", "Double", "Float", "String", "Boolean", "Short", "Byte", "Long"});
+        TextSelectionGUI gui = new TextSelectionGUI(guiText, "Set NBT Value Node", "Integer", "Double", "Float", "String", "Boolean", "Short", "Byte", "Long");
         gui.addOnClosedActions(() -> type = guiText.getText());
         return gui;
     }

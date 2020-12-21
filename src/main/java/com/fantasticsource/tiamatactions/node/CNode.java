@@ -325,13 +325,6 @@ public abstract class CNode extends Component
     protected abstract Object execute(CAction mainAction, CAction subAction, Object... inputs);
 
 
-    @SideOnly(Side.CLIENT)
-    public GUIScreen showNodeEditGUI()
-    {
-        return null;
-    }
-
-
     @Override
     public CNode write(ByteBuf buf)
     {
@@ -427,5 +420,12 @@ public abstract class CNode extends Component
         for (int i = ci.load(stream).value; i > 0; i--) outputNodePositions.add(cl.load(stream).value);
 
         return this;
+    }
+
+
+    @SideOnly(Side.CLIENT)
+    public GUIScreen showNodeEditGUI()
+    {
+        return null;
     }
 }

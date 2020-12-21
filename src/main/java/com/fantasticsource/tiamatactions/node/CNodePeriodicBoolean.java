@@ -171,6 +171,7 @@ public class CNodePeriodicBoolean extends CNode
             {
                 if (delay.valid()) node.delay = FILTER_GREATER_THAN_0.parse(delay.getText());
             });
+            delay.input.setActive(true);
             root.addAll(
                     new GUITextSpacer(this),
                     new GUITextSpacer(this, true),

@@ -184,6 +184,7 @@ public class CNodeStringContains extends CNode
             //Data
             GUILabeledTextInput string = new GUILabeledTextInput(this, "String: ", node.find, FilterNone.INSTANCE);
             string.addEditActions(() -> node.find = string.getText());
+            string.input.setActive(true);
             root.addAll(
                     new GUITextSpacer(this),
                     string

@@ -168,6 +168,7 @@ public class CNodeVector extends CNode
             {
                 if (x.valid()) node.vector = new Vec3d(Double.parseDouble(x.getText()), node.vector.y, node.vector.z);
             });
+            x.input.setActive(true);
             GUILabeledTextInput y = new GUILabeledTextInput(this, "Y: ", "" + node.vector.y, FilterFloat.INSTANCE);
             y.addEditActions(() ->
             {
