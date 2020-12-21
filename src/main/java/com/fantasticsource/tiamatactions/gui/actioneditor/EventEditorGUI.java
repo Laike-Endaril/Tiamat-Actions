@@ -68,6 +68,7 @@ public class EventEditorGUI extends GUIScreen
         //GUI Actions
         navbar.addRecalcActions(() -> view.height = 1 - navbar.height);
         recalc();
+        view.focus(null);
     }
 
 
