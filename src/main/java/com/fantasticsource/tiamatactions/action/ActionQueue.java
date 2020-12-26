@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ActionQueue
 {
@@ -145,12 +146,18 @@ public class ActionQueue
     {
         if (event.phase != TickEvent.Phase.END || ENTITY_ACTION_QUEUES == null) return;
 
-        ENTITY_ACTION_QUEUES.entrySet().removeIf(entry ->
+        for (Map.Entry<Entity, LinkedHashMap<String, ActionQueue>> entry : ENTITY_ACTION_QUEUES.entrySet().toArray(new Map.Entry[0]))
         {
             Entity entity = entry.getKey();
+            if (!entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead))
+            {
+                ENTITY_ACTION_QUEUES.remove(entity);
+                continue;
+            }
+
             for (ActionQueue queue : entry.getValue().values()) queue.tick(entity);
-            return !entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead);
-        });
+            if (!entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead)) ENTITY_ACTION_QUEUES.remove(entity);
+        }
     }
 
     @SubscribeEvent
