@@ -12,6 +12,7 @@ import com.fantasticsource.tiamatactions.node.*;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraftforge.fml.common.Loader;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,6 +20,9 @@ import java.util.Map;
 
 public class GUINodeView extends GUIPanZoomView
 {
+    protected static CNode[] copiedNodes = new CNode[0];
+    protected static int copiedNodesXOffset = 0, copiedNodesYOffset = 0;
+
     protected static final LinkedHashMap<String, ArrayList<String>> NODE_CHOICES_CATEGORIZED = new LinkedHashMap<>();
     protected static final LinkedHashMap<String, Class<? extends CNode>> NODE_CHOICE_CLASSES = new LinkedHashMap<>();
     protected boolean createEditDragging = false;
@@ -162,12 +166,12 @@ public class GUINodeView extends GUIPanZoomView
     public GUINode tempNode = null;
     public GUITempConnector longConnector = null, shortConnector = null;
 
-    public GUINodeView(GUIScreen screen, double width, double height, GUIElement... subElements)
+    public GUINodeView(EventEditorGUI screen, double width, double height, GUIElement... subElements)
     {
         super(screen, width, height, subElements);
     }
 
-    public GUINodeView(GUIScreen screen, double x, double y, double width, double height, GUIElement... subElements)
+    public GUINodeView(EventEditorGUI screen, double x, double y, double width, double height, GUIElement... subElements)
     {
         super(screen, x, y, width, height, subElements);
     }
@@ -292,6 +296,95 @@ public class GUINodeView extends GUIPanZoomView
         }
 
         return result;
+    }
+
+    @Override
+    public void keyTyped(char typedChar, int keyCode)
+    {
+        super.keyTyped(typedChar, keyCode);
+        if (GUIScreen.isCtrlKeyDown())
+        {
+            EventEditorGUI gui = (EventEditorGUI) screen;
+
+            if (keyCode == Keyboard.KEY_C)
+            {
+                copiedNodes = gui.action.EVENT_NODES.get(gui.event).values().toArray(new CNode[0]);
+
+                copiedNodesXOffset = Integer.MAX_VALUE;
+                copiedNodesYOffset = Integer.MAX_VALUE;
+                for (CNode node : copiedNodes)
+                {
+                    if (node.x < copiedNodesXOffset) copiedNodesXOffset = node.x;
+                    if (node.y < copiedNodesYOffset) copiedNodesYOffset = node.y;
+                }
+            }
+            else if (keyCode == Keyboard.KEY_X)
+            {
+                copiedNodes = gui.action.EVENT_NODES.get(gui.event).values().toArray(new CNode[0]);
+
+                copiedNodesXOffset = Integer.MAX_VALUE;
+                copiedNodesYOffset = Integer.MAX_VALUE;
+                for (CNode node : copiedNodes)
+                {
+                    if (node.x < copiedNodesXOffset) copiedNodesXOffset = node.x;
+                    if (node.y < copiedNodesYOffset) copiedNodesYOffset = node.y;
+                }
+
+                for (GUIElement element : children.toArray(new GUIElement[0]))
+                {
+                    remove(element);
+                    if (element instanceof GUINode)
+                    {
+                        ((GUINode) element).node.delete(gui.action);
+                    }
+                }
+            }
+            else if (keyCode == Keyboard.KEY_V)
+            {
+                int xx = (int) (viewPxX() + (mouseX() - absoluteX()) / absoluteWidth() * viewPxW()), yy = (int) (viewPxY() + (mouseY() - absoluteY()) / absoluteHeight() * viewPxH());
+                int xOffset = xx - copiedNodesXOffset, yOffset = yy - copiedNodesYOffset;
+
+                for (CNode nodeToCopy : copiedNodes)
+                {
+                    CNode node = (CNode) nodeToCopy.copy();
+
+                    node.actionName = gui.action.name;
+                    node.eventName = gui.event;
+                    node.x += xOffset;
+                    node.y += yOffset;
+
+                    for (int i = 0; i < node.conditionNodePositions.size(); i++)
+                    {
+                        long l = node.conditionNodePositions.get(i);
+                        int x = (int) (l & 0xffffffffL);
+                        int y = (int) ((l >>> 32) & 0xffffffffL);
+                        node.conditionNodePositions.set(i, Tools.getLong(y + yOffset, x + xOffset));
+                    }
+                    for (int i = 0; i < node.inputNodePositions.size(); i++)
+                    {
+                        long l = node.inputNodePositions.get(i);
+                        int x = (int) (l & 0xffffffffL);
+                        int y = (int) ((l >>> 32) & 0xffffffffL);
+                        node.inputNodePositions.set(i, Tools.getLong(y + yOffset, x + xOffset));
+                    }
+                    for (int i = 0; i < node.outputNodePositions.size(); i++)
+                    {
+                        long l = node.outputNodePositions.get(i);
+                        int x = (int) (l & 0xffffffffL);
+                        int y = (int) ((l >>> 32) & 0xffffffffL);
+                        node.outputNodePositions.set(i, Tools.getLong(y + yOffset, x + xOffset));
+                    }
+
+                    gui.action.EVENT_NODES.get(gui.event).put(Tools.getLong(node.y, node.x), node);
+                    gui.action.EVENT_ENDPOINT_NODES.get(gui.event).add(node, Tools.getLong(node.y, node.x));
+
+                    double wConversion = 1d / absolutePxWidth(), hConversion = 1d / absolutePxHeight();
+                    add(new GUINode(screen, (node.x - GUINode.HALF_SIZE) * wConversion, (node.y - GUINode.HALF_SIZE) * hConversion, node));
+                }
+
+                gui.refreshNodeConnections();
+            }
+        }
     }
 
     protected boolean wellSpaced(int xx, int yy)

@@ -75,20 +75,23 @@ public class EventEditorGUI extends GUIScreen
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (keyCode == Keyboard.KEY_1 || keyCode == Keyboard.KEY_NUMPAD1)
+        if (!GUIScreen.isCtrlKeyDown())
         {
-            if (viewMode != 0 && !mouseIsWithinConnector())
+            if (keyCode == Keyboard.KEY_1 || keyCode == Keyboard.KEY_NUMPAD1)
             {
-                viewMode = 0;
-                refreshNodeConnections();
+                if (viewMode != 0 && !mouseIsWithinConnector())
+                {
+                    viewMode = 0;
+                    refreshNodeConnections();
+                }
             }
-        }
-        else if (keyCode == Keyboard.KEY_2 || keyCode == Keyboard.KEY_NUMPAD2)
-        {
-            if (viewMode != 1 && !mouseIsWithinConnector())
+            else if (keyCode == Keyboard.KEY_2 || keyCode == Keyboard.KEY_NUMPAD2)
             {
-                viewMode = 1;
-                refreshNodeConnections();
+                if (viewMode != 1 && !mouseIsWithinConnector())
+                {
+                    viewMode = 1;
+                    refreshNodeConnections();
+                }
             }
         }
 
