@@ -1,25 +1,34 @@
 package com.fantasticsource.tiamatactions.gui.actioneditor;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.text.GUIFadingText;
 import com.fantasticsource.mctools.gui.element.text.GUIText;
 import com.fantasticsource.mctools.gui.element.view.GUIPanZoomView;
 import com.fantasticsource.mctools.gui.screen.CategorizedTextSelectionGUI;
+import com.fantasticsource.tiamatactions.TiamatActions;
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.*;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.Loader;
 import org.lwjgl.input.Keyboard;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+
 public class GUINodeView extends GUIPanZoomView
 {
+    protected static final String IN_JAR_PATH = "assets/" + MODID + "/";
+
     protected static CNode[] copiedNodes = new CNode[0];
     protected static int copiedNodesXOffset = 0, copiedNodesYOffset = 0;
 
@@ -401,5 +410,32 @@ public class GUINodeView extends GUIPanZoomView
         }
 
         return true;
+    }
+
+    public static void printMissingTextures()
+    {
+        ArrayList<String> missing = new ArrayList<>();
+        try
+        {
+            for (Class<? extends CNode> nodeClass : getNodeClasses())
+            {
+                String subPath = nodeClass.newInstance().getTexture().getResourcePath();
+                InputStream stream = MCTools.getJarResourceStream(TiamatActions.class, IN_JAR_PATH + subPath);
+                if (stream == null) missing.add(subPath);
+                else stream.close();
+            }
+        }
+        catch (InstantiationException | IllegalAccessException | IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        if (missing.size() > 0)
+        {
+            System.out.println();
+            System.out.println(TextFormatting.RED + "MISSING NODE TEXTURES...");
+            for (String s : missing) System.out.println(TextFormatting.RED + s);
+            System.out.println();
+        }
     }
 }
