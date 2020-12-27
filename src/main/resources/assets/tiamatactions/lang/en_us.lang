@@ -40,4 +40,4 @@ tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of ac
 
 
 tiamatactions.cmd.reload.usage=Reloads all actions from disk
-tiamatactions.cmd.execute.usage=Execute an action (actionName, [queueName], [playerName])
+tiamatactions.cmd.execute.usage=Execute an action (actionName, [queueName], [playerName OR entityUUID])

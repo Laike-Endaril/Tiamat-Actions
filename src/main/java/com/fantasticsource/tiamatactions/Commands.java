@@ -5,15 +5,17 @@ import com.fantasticsource.tiamatactions.action.ActionQueue;
 import com.fantasticsource.tiamatactions.action.CAction;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 import static net.minecraft.util.text.TextFormatting.AQUA;
@@ -145,14 +147,20 @@ public class Commands extends CommandBase
                     return;
                 }
 
-                EntityPlayerMP player = args.length > 3 ? (EntityPlayerMP) PlayerData.getEntity(args[3]) : sender instanceof EntityPlayerMP ? (EntityPlayerMP) sender : null;
-                if (player == null)
+                Entity entity = null;
+                if (args.length > 3)
+                {
+                    entity = PlayerData.getEntity(args[3]);
+                    if (entity == null) entity = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityFromUuid(UUID.fromString(args[3]));
+                }
+                else if (sender instanceof Entity) entity = (Entity) sender;
+                if (entity == null)
                 {
                     notifyCommandListener(sender, this, subUsage(cmd));
                     return;
                 }
 
-                action.queue(player, queue);
+                action.queue(entity, queue);
                 break;
 
             default:
