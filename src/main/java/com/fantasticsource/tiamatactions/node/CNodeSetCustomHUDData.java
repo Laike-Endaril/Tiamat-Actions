@@ -70,7 +70,7 @@ public class CNodeSetCustomHUDData extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        TiamatHUDAPI.sendCustomHUDData((EntityPlayerMP) mainAction.source, "" + inputs[0], Double.parseDouble("" + inputs[1]));
+        if (mainAction.source instanceof EntityPlayerMP) TiamatHUDAPI.sendCustomHUDData((EntityPlayerMP) mainAction.source, "" + inputs[0], Double.parseDouble("" + inputs[1]));
         return null;
     }
 }
