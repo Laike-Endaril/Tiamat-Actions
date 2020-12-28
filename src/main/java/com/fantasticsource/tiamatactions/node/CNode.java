@@ -309,7 +309,8 @@ public abstract class CNode extends Component
 
             CNodeTestCondition input = (CNodeTestCondition) subAction.EVENT_NODES.get(eventName).get(position);
 
-            if (input.executeTreeInternal(mainAction, subAction, results, force) == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
+            boolean cancel = (boolean) results.computeIfAbsent(position, o -> input.executeTreeInternal(mainAction, subAction, results, force) == CNodeTestCondition.CANCEL);
+            if (cancel) return CNodeTestCondition.CANCEL;
         }
 
         int i = 0;
