@@ -12,6 +12,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -211,9 +212,12 @@ public class Network
             EntityPlayerMP player = ctx.getServerHandler().player;
             if (MCTools.isOP(player))
             {
-                if (!CAction.ALL_ACTIONS.containsKey(packet.actionName)) new CAction(packet.actionName).save();
-                CAction action = CAction.ALL_ACTIONS.get(packet.actionName);
-                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> WRAPPER.sendTo(new OpenActionEditorPacket(action), player));
+                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() ->
+                {
+                    if (!CAction.ALL_ACTIONS.containsKey(packet.actionName)) new CAction(packet.actionName).save();
+                    CAction action = CAction.ALL_ACTIONS.get(packet.actionName);
+                    WRAPPER.sendTo(new OpenActionEditorPacket(action), player);
+                });
             }
             return null;
         }
@@ -314,11 +318,15 @@ public class Network
             EntityPlayerMP player = ctx.getServerHandler().player;
             if (MCTools.isOP(player))
             {
-                CAction oldAction = CAction.ALL_ACTIONS.get(packet.oldName);
-                if (oldAction != null) oldAction.delete();
-                packet.action.save();
+                MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+                server.addScheduledTask(() ->
+                {
+                    CAction oldAction = CAction.ALL_ACTIONS.get(packet.oldName);
+                    if (oldAction != null) oldAction.delete();
+                    packet.action.save();
 
-                WRAPPER.sendTo(new OpenMainActionEditorPacket(), ctx.getServerHandler().player);
+                    WRAPPER.sendTo(new OpenMainActionEditorPacket(), ctx.getServerHandler().player);
+                });
             }
             return null;
         }
@@ -360,8 +368,13 @@ public class Network
             EntityPlayerMP player = ctx.getServerHandler().player;
             if (MCTools.isOP(player))
             {
-                CAction action = CAction.ALL_ACTIONS.get(packet.name);
-                if (action != null) action.delete();
+                MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+                server.addScheduledTask(() ->
+                {
+
+                    CAction action = CAction.ALL_ACTIONS.get(packet.name);
+                    if (action != null) action.delete();
+                });
             }
             return null;
         }
@@ -400,17 +413,22 @@ public class Network
         @Override
         public IMessage onMessage(ExecuteKeyboundActionPacket packet, MessageContext ctx)
         {
-            Pair<String, String> pair = KEYBOUND_ACTION_NAMES.get(packet.key);
-            String actionName = pair.getKey();
-            if (actionName == null) return null;
+            MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+            server.addScheduledTask(() ->
+            {
+                Pair<String, String> pair = KEYBOUND_ACTION_NAMES.get(packet.key);
+                String actionName = pair.getKey();
+                if (actionName == null) return;
 
-            String queueName = pair.getValue();
+                String queueName = pair.getValue();
 
-            CAction action = CAction.ALL_ACTIONS.get(actionName);
-            if (action == null) return null;
+                CAction action = CAction.ALL_ACTIONS.get(actionName);
+                if (action == null) return;
 
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            action.queue(player, queueName, null);
+                EntityPlayerMP player = ctx.getServerHandler().player;
+                action.queue(player, queueName, null);
+            });
+
             return null;
         }
     }
@@ -451,21 +469,25 @@ public class Network
             EntityPlayerMP player = ctx.getServerHandler().player;
             if (MCTools.isOP(player))
             {
-                CAction action = CAction.ALL_ACTIONS.get(packet.name);
-                if (action != null)
+                MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+                server.addScheduledTask(() ->
                 {
-                    action = (CAction) action.copy();
-                    action.name += " Copy";
-                    if (CAction.ALL_ACTIONS.containsKey(action.name))
+                    CAction action = CAction.ALL_ACTIONS.get(packet.name);
+                    if (action != null)
                     {
-                        int i = 2;
-                        while (CAction.ALL_ACTIONS.containsKey(action.name + i)) i++;
-                        action.name += i;
+                        action = (CAction) action.copy();
+                        action.name += " Copy";
+                        if (CAction.ALL_ACTIONS.containsKey(action.name))
+                        {
+                            int i = 2;
+                            while (CAction.ALL_ACTIONS.containsKey(action.name + i)) i++;
+                            action.name += i;
+                        }
+                        CAction.ALL_ACTIONS.put(action.name, action);
                     }
-                    CAction.ALL_ACTIONS.put(action.name, action);
-                }
 
-                WRAPPER.sendTo(new OpenMainActionEditorPacket(), player);
+                    WRAPPER.sendTo(new OpenMainActionEditorPacket(), player);
+                });
             }
             return null;
         }
