@@ -233,6 +233,23 @@ public class CAction extends Component
     }
 
 
+    public void validate()
+    {
+        for (String event : EVENT_ENDPOINT_NODES.keySet()) validate(event);
+    }
+
+    public void validate(String event)
+    {
+        ExplicitPriorityQueue<CNode> queue = EVENT_ENDPOINT_NODES.get(event);
+        queue.clear();
+
+        for (CNode node : EVENT_NODES.get(event).values())
+        {
+            if (node.outputNodePositions.size() == 0) queue.add(node, Tools.getLong(node.y, node.x));
+        }
+    }
+
+
     @Override
     public CAction write(ByteBuf buf)
     {
@@ -370,6 +387,9 @@ public class CAction extends Component
             long pos = buf.readLong();
             endEndpointNodes.add(endNodes.get(pos), pos);
         }
+
+
+        validate();
 
 
         return this;
@@ -516,6 +536,9 @@ public class CAction extends Component
             long pos = cl.load(stream).value;
             endEndpointNodes.add(endNodes.get(pos), pos);
         }
+
+
+        validate();
 
 
         return this;

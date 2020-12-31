@@ -398,6 +398,8 @@ public class GUINodeView extends GUIPanZoomView
                     add(new GUINode(screen, (node.x - GUINode.HALF_SIZE) * wConversion, (node.y - GUINode.HALF_SIZE) * hConversion, node));
                 }
 
+                gui.action.validate(gui.event);
+
                 gui.refreshNodeConnections();
             }
         }
