@@ -60,6 +60,9 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Entity Getters", "Get Entity World", CNodeGetWorld.class);
         addOption("Entity Getters", "Get Entity Dimension", CNodeGetDimension.class);
         addOption("Entity Getters", "Get Entity Eye Position Vector", CNodeGetEyePosition.class);
+        addOption("Entity Getters", "Get Entity X", CNodeGetEntityX.class);
+        addOption("Entity Getters", "Get Entity Y", CNodeGetEntityY.class);
+        addOption("Entity Getters", "Get Entity Z", CNodeGetEntityZ.class);
         addOption("Entity Getters", "Get Entity Position Vector", CNodeGetPosition.class);
         addOption("Entity Getters", "Get Entity Look Vector", CNodeGetLookVector.class);
         addOption("Entity Getters", "Get Entity HP", CNodeGetEntityHP.class);
