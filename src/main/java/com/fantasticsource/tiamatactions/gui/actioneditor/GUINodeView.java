@@ -20,6 +20,7 @@ import org.lwjgl.input.Keyboard;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -324,24 +325,30 @@ public class GUINodeView extends GUIPanZoomView
 
             if (keyCode == Keyboard.KEY_C)
             {
-                copiedNodes = gui.action.EVENT_NODES.get(gui.event).values().toArray(new CNode[0]);
+                Collection<CNode> nodesToCopy = gui.action.EVENT_NODES.get(gui.event).values();
+                copiedNodes = new CNode[nodesToCopy.size()];
 
+                int i = 0;
                 copiedNodesXOffset = Integer.MAX_VALUE;
                 copiedNodesYOffset = Integer.MAX_VALUE;
-                for (CNode node : copiedNodes)
+                for (CNode node : nodesToCopy)
                 {
+                    copiedNodes[i++] = (CNode) node.copy();
                     if (node.x < copiedNodesXOffset) copiedNodesXOffset = node.x;
                     if (node.y < copiedNodesYOffset) copiedNodesYOffset = node.y;
                 }
             }
             else if (keyCode == Keyboard.KEY_X)
             {
-                copiedNodes = gui.action.EVENT_NODES.get(gui.event).values().toArray(new CNode[0]);
+                Collection<CNode> nodesToCopy = gui.action.EVENT_NODES.get(gui.event).values();
+                copiedNodes = new CNode[nodesToCopy.size()];
 
+                int i = 0;
                 copiedNodesXOffset = Integer.MAX_VALUE;
                 copiedNodesYOffset = Integer.MAX_VALUE;
-                for (CNode node : copiedNodes)
+                for (CNode node : nodesToCopy)
                 {
+                    copiedNodes[i++] = (CNode) node.copy();
                     if (node.x < copiedNodesXOffset) copiedNodesXOffset = node.x;
                     if (node.y < copiedNodesYOffset) copiedNodesYOffset = node.y;
                 }
