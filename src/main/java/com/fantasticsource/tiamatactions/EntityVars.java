@@ -1,11 +1,15 @@
 package com.fantasticsource.tiamatactions;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.LinkedHashMap;
+
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class EntityVars
 {
@@ -16,11 +20,14 @@ public class EntityVars
     {
         if (event.phase != TickEvent.Phase.END || ENTITY_VARS == null) return;
 
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        server.profiler.startSection(MODID + ": EntityVars removeif");
         ENTITY_VARS.entrySet().removeIf(entry ->
         {
             Entity entity = entry.getKey();
             return !entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead);
         });
+        server.profiler.endSection();
     }
 
     public static Object getValue(Entity entity, String key)

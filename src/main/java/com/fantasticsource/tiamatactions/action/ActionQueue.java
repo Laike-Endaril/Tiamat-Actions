@@ -4,7 +4,9 @@ import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.Entity;
 import net.minecraft.profiler.Profiler;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -12,6 +14,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public class ActionQueue
 {
@@ -146,8 +150,12 @@ public class ActionQueue
     {
         if (event.phase != TickEvent.Phase.END || ENTITY_ACTION_QUEUES == null) return;
 
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        server.profiler.startSection(MODID + ": Tick action queues");
+        server.profiler.startSection(MODID + ": Loop overhead");
         for (Map.Entry<Entity, LinkedHashMap<String, ActionQueue>> entry : ENTITY_ACTION_QUEUES.entrySet().toArray(new Map.Entry[0]))
         {
+            server.profiler.startSection(MODID + ": Remove if invalid1");
             Entity entity = entry.getKey();
             if (!entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead))
             {
@@ -155,9 +163,13 @@ public class ActionQueue
                 continue;
             }
 
+            server.profiler.endStartSection(MODID + ": Tick entity queues");
             for (ActionQueue queue : entry.getValue().values()) queue.tick(entity);
+            server.profiler.endStartSection(MODID + ": Remove if invalid2");
             if (!entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead)) ENTITY_ACTION_QUEUES.remove(entity);
         }
+        server.profiler.endSection();
+        server.profiler.endSection();
     }
 
     @SubscribeEvent
