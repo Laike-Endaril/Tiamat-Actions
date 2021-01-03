@@ -280,13 +280,21 @@ public abstract class CNode extends Component
             StackTraceElement[] stackTrace = e.getStackTrace();
             if (mainAction.loggedErrors.add(stackTrace))
             {
-                String header = TextFormatting.RED + "Exception caught in action: " + subAction.name + ", " + eventName + ", " + lastRunningNode.getClass().getSimpleName() + " @(" + lastRunningNode.x + ", " + lastRunningNode.y + ") (Main action: " + mainAction.name + ")";
-                System.err.println(header);
+                String headerLine = TextFormatting.RED + "Exception caught in action: " + subAction.name + ", " + eventName + ", " + lastRunningNode.getClass().getSimpleName() + " @(" + lastRunningNode.x + ", " + lastRunningNode.y + ") (Main action: " + mainAction.name + ")";
+                System.err.println(headerLine);
+                if (mainAction.source instanceof EntityPlayerMP)
+                {
+                    mainAction.source.sendMessage(new TextComponentString(headerLine));
+                }
+
+                headerLine = TextFormatting.RED + "Entity: " + mainAction.source;
+                System.err.println(headerLine);
+
                 e.printStackTrace();
 
                 if (mainAction.source instanceof EntityPlayerMP)
                 {
-                    mainAction.source.sendMessage(new TextComponentString(header));
+                    mainAction.source.sendMessage(new TextComponentString(headerLine));
 
                     StringWriter errors = new StringWriter();
                     e.printStackTrace(new PrintWriter(errors));
