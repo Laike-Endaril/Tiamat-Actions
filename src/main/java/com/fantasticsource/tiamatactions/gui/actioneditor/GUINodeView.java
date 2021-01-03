@@ -169,6 +169,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Java", "Invoke Method", CNodeInvokeMethod.class);
 
         addOption("Misc.", "Debug", CNodeDebug.class);
+        addOption("Misc.", "Message Player", CNodeMessagePlayer.class);
         addOption("Misc.", "Comment", CNodeComment.class);
         addOption("Misc.", "Evaluate", CNodeEval.class);
         addOption("Misc.", "Run Command", CNodeCommand.class);
