@@ -102,8 +102,11 @@ public class CAction extends Component
         if ((queue == null || queue.queue.size() == 0) && action.tickEndpointNodes.size() == 0)
         {
             action.execute(source, "init");
-            action.execute(source, "start");
-            action.execute(source, "end");
+            if (action.mainAction.active)
+            {
+                action.execute(source, "start");
+                action.execute(source, "end");
+            }
             return action.result;
         }
 
@@ -240,12 +243,12 @@ public class CAction extends Component
 
     public void validate(String event)
     {
-        ExplicitPriorityQueue<CNode> queue = EVENT_ENDPOINT_NODES.get(event);
-        queue.clear();
+        ExplicitPriorityQueue<CNode> endpoints = EVENT_ENDPOINT_NODES.get(event);
+        endpoints.clear();
 
         for (CNode node : EVENT_NODES.get(event).values())
         {
-            if (node.outputNodePositions.size() == 0) queue.add(node, Tools.getLong(node.y, node.x));
+            if (node.outputNodePositions.size() == 0) endpoints.add(node, Tools.getLong(node.y, node.x));
         }
     }
 
@@ -329,6 +332,7 @@ public class CAction extends Component
             long pos = buf.readLong();
             CNode node = (CNode) readMarked(buf);
             node.actionName = name;
+            node.eventName = "init";
             initNodes.put(pos, node);
         }
 
@@ -338,6 +342,7 @@ public class CAction extends Component
             long pos = buf.readLong();
             CNode node = (CNode) readMarked(buf);
             node.actionName = name;
+            node.eventName = "start";
             startNodes.put(pos, node);
         }
 
@@ -347,6 +352,7 @@ public class CAction extends Component
             long pos = buf.readLong();
             CNode node = (CNode) readMarked(buf);
             node.actionName = name;
+            node.eventName = "tick";
             tickNodes.put(pos, node);
         }
 
@@ -356,6 +362,7 @@ public class CAction extends Component
             long pos = buf.readLong();
             CNode node = (CNode) readMarked(buf);
             node.actionName = name;
+            node.eventName = "end";
             endNodes.put(pos, node);
         }
 
@@ -478,6 +485,7 @@ public class CAction extends Component
             long pos = cl.load(stream).value;
             CNode node = (CNode) loadMarked(stream);
             node.actionName = name;
+            node.eventName = "init";
             initNodes.put(pos, node);
         }
 
@@ -487,6 +495,7 @@ public class CAction extends Component
             long pos = cl.load(stream).value;
             CNode node = (CNode) loadMarked(stream);
             node.actionName = name;
+            node.eventName = "start";
             startNodes.put(pos, node);
         }
 
@@ -496,6 +505,7 @@ public class CAction extends Component
             long pos = cl.load(stream).value;
             CNode node = (CNode) loadMarked(stream);
             node.actionName = name;
+            node.eventName = "tick";
             tickNodes.put(pos, node);
         }
 
@@ -505,6 +515,7 @@ public class CAction extends Component
             long pos = cl.load(stream).value;
             CNode node = (CNode) loadMarked(stream);
             node.actionName = name;
+            node.eventName = "end";
             endNodes.put(pos, node);
         }
 
