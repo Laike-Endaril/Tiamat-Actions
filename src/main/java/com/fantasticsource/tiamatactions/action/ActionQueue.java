@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
+import com.fantasticsource.tools.ReflectionTool;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.Entity;
 import net.minecraft.profiler.Profiler;
@@ -13,7 +14,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
@@ -152,23 +152,17 @@ public class ActionQueue
 
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         server.profiler.startSection(MODID + ": Tick action queues");
-        server.profiler.startSection(MODID + ": Loop overhead");
-        for (Map.Entry<Entity, LinkedHashMap<String, ActionQueue>> entry : ENTITY_ACTION_QUEUES.entrySet().toArray(new Map.Entry[0]))
-        {
-            server.profiler.endStartSection(MODID + ": Remove if invalid1");
-            Entity entity = entry.getKey();
-            if (!entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead))
-            {
-                ENTITY_ACTION_QUEUES.remove(entity);
-                continue;
-            }
 
-            server.profiler.endStartSection(MODID + ": Tick entity queues");
+        ENTITY_ACTION_QUEUES.entrySet().removeIf(entry ->
+        {
+            Entity entity = entry.getKey();
+            if (!entity.isEntityAlive() || (entity.isDead && !entity.isAddedToWorld())) return true;
+
             for (ActionQueue queue : entry.getValue().values()) queue.tick(entity);
-            server.profiler.endStartSection(MODID + ": Remove if invalid2");
-            if (!entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead)) ENTITY_ACTION_QUEUES.remove(entity);
-        }
-        server.profiler.endSection();
+
+            return !entity.isEntityAlive() || (entity.isDead && !entity.isAddedToWorld());
+        });
+
         server.profiler.endSection();
     }
 
@@ -183,6 +177,11 @@ public class ActionQueue
             if (!entity.isEntityAlive()) continue;
 
             String[] tokens = Tools.fixedSplit(s, ",");
+            if (tokens.length > 2)
+            {
+                if (!ReflectionTool.getClassByName(tokens[2]).isAssignableFrom(entity.getClass())) continue;
+            }
+
             CAction action = CAction.ALL_ACTIONS.get(tokens[1].trim());
             if (action == null) continue;
 

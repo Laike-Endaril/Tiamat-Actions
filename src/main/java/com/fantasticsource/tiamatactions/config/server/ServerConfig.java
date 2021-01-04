@@ -47,7 +47,11 @@ public class ServerConfig
     @Config.Comment(
             {
                     "A list of actions to run when entities spawn.  Syntax is...",
-                    "QueueName, ActionName",
+                    "QueueName, ActionName, [full.package.and.EntityClass]",
+                    "",
+                    "Eg...",
+                    "SpawnQueue, SpawnAction",
+                    "SpawnQueue, SpawnAction, net.minecraft.entity.player.EntityPlayerMP"
             })
     @Config.RequiresMcRestart
     public String[] spawnActions = new String[0];
