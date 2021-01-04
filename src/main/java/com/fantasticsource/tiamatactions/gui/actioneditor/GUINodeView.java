@@ -111,6 +111,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Blocks", "Vector to Block Position", CNodeVectorToBlockPos.class);
         addOption("Blocks", "Blocks in Ray", CNodeBlocksInRay.class);
 
+        addOption("Math", "Calculate", CNodeCalc.class);
         addOption("Math", "Output Vector", CNodeVector.class);
         addOption("Math", "XYZ to Vector", CNodeXYZToVector.class);
         addOption("Math", "Get Vector X", CNodeGetVectorX.class);
