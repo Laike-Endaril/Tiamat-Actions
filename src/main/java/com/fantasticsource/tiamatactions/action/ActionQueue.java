@@ -155,7 +155,7 @@ public class ActionQueue
         server.profiler.startSection(MODID + ": Loop overhead");
         for (Map.Entry<Entity, LinkedHashMap<String, ActionQueue>> entry : ENTITY_ACTION_QUEUES.entrySet().toArray(new Map.Entry[0]))
         {
-            server.profiler.startSection(MODID + ": Remove if invalid1");
+            server.profiler.endStartSection(MODID + ": Remove if invalid1");
             Entity entity = entry.getKey();
             if (!entity.isEntityAlive() || (!entity.isAddedToWorld() && entity.isDead))
             {
