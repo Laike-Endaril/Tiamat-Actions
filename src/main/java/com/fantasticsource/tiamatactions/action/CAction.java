@@ -1,6 +1,7 @@
 package com.fantasticsource.tiamatactions.action;
 
 import com.fantasticsource.mctools.MCTools;
+import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.node.CNode;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.component.CInt;
@@ -131,8 +132,10 @@ public class CAction extends Component
     protected void execute(Entity source, String event)
     {
         Profiler profiler = source.world.profiler;
-        profiler.startSection("Tiamat Action: " + name);
-        profiler.startSection(event);
+
+        boolean profile = TiamatActionsConfig.serverSettings.profilingMode.equals("actions");
+        if (profile) profiler.startSection("Tiamat Action: " + name);
+        if (profile) profiler.startSection(event);
 
         HashMap<Long, Object> results = new HashMap<>();
         switch (event)
@@ -154,8 +157,8 @@ public class CAction extends Component
                 break;
         }
 
-        profiler.endSection();
-        profiler.endSection();
+        if (profile) profiler.endSection();
+        if (profile) profiler.endSection();
     }
 
 

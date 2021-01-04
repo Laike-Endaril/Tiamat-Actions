@@ -36,7 +36,8 @@ public class ActionQueue
     protected void tick(Entity source)
     {
         Profiler profiler = source.world.profiler;
-        profiler.startSection("Tiamat Action Queue: " + name);
+        boolean profile = TiamatActionsConfig.serverSettings.profilingMode.equals("actions");
+        if (profile) profiler.startSection("Tiamat Action Queue: " + name);
 
         boolean entityDead = !source.isEntityAlive() || (!source.isAddedToWorld() && source.isDead);
         boolean queueTicked = false;
@@ -47,7 +48,7 @@ public class ActionQueue
             {
                 if (entityDead)
                 {
-                    profiler.endSection();
+                    if (profile) profiler.endSection();
                     return;
                 }
 
@@ -60,7 +61,7 @@ public class ActionQueue
             {
                 if (queueTicked)
                 {
-                    profiler.endSection();
+                    if (profile) profiler.endSection();
                     return;
                 }
 
@@ -75,12 +76,12 @@ public class ActionQueue
             }
             else
             {
-                profiler.endSection();
+                if (profile) profiler.endSection();
                 return;
             }
         }
 
-        profiler.endSection();
+        if (profile) profiler.endSection();
     }
 
     public static ArrayList<String> existingQueues()

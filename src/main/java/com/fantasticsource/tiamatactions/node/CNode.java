@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.tiamatactions.action.CAction;
+import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.gui.actioneditor.EventEditorGUI;
 import com.fantasticsource.tiamatactions.gui.actioneditor.GUINode;
 import com.fantasticsource.tools.Tools;
@@ -13,6 +14,7 @@ import com.fantasticsource.tools.datastructures.ExplicitPriorityQueue;
 import com.fantasticsource.tools.datastructures.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -27,6 +29,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
+import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
 public abstract class CNode extends Component
 {
@@ -331,8 +335,18 @@ public abstract class CNode extends Component
             if (inputResults[i++] == CNodeTestCondition.CANCEL) return CNodeTestCondition.CANCEL;
         }
 
+
         lastRunningNode = this;
-        return execute(mainAction, subAction, inputResults);
+
+
+        if (!TiamatActionsConfig.serverSettings.profilingMode.equals("nodetypes")) return execute(mainAction, subAction, inputResults);
+
+
+        Profiler profiler = mainAction.source.world.profiler;
+        profiler.startSection(MODID + ": " + getClass().getSimpleName());
+        Object result = execute(mainAction, subAction, inputResults);
+        profiler.endSection();
+        return result;
     }
 
     protected abstract Object execute(CAction mainAction, CAction subAction, Object... inputs);

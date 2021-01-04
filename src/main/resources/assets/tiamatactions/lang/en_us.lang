@@ -22,6 +22,8 @@ tiamatactions.config.spawnActions=Spawn Actions
 tiamatactions.config.spawnActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions to run when entities spawn.  Syntax is...QueueName, ActionName, [full.package.and.EntityClass]Eg...SpawnQueue, SpawnActionSpawnQueue, SpawnAction, net.minecraft.entity.player.EntityPlayerMP\n \n
 tiamatactions.config.forgeEntityEventActions=Forge EntityEvent Actions
 tiamatactions.config.forgeEntityEventActions.tooltip=FILLSCREEN FIXNEWLINES This lets you trigger server-side actions when a Forge EntityEvent occurs.  Syntax is...\nfull.package.and.ClassNameOfEntityEvent, ActionName, QueueName\n\nThe entity involved in the EntityEvent is the one who will execute the action\nThe action argument will be the EntityEvent that triggered the action\n \n
+tiamatactions.config.profilingMode=Profiling Mode
+tiamatactions.config.profilingMode.tooltip=FILLSCREEN FIXNEWLINES Which profiling mode to use when profiling; valid entries are...actionsnodetypes\n \n
 
 tiamatactions.config.guiSettings=GUI Settings
 tiamatactions.config.tooltipAction=Tooltip Action

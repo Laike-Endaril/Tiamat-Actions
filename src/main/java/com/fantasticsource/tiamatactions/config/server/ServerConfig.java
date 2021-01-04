@@ -68,4 +68,15 @@ public class ServerConfig
             })
     @Config.RequiresMcRestart
     public String[] forgeEntityEventActions = new String[0];
+
+
+    @Config.Name("Profiling Mode")
+    @Config.LangKey(MODID + ".config.profilingMode")
+    @Config.Comment(
+            {
+                    "Which profiling mode to use when profiling; valid entries are...",
+                    "actions",
+                    "nodetypes"
+            })
+    public String profilingMode = "actions";
 }
