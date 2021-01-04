@@ -153,15 +153,23 @@ public class ActionQueue
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         server.profiler.startSection(MODID + ": Tick action queues");
 
-        ENTITY_ACTION_QUEUES.entrySet().removeIf(entry ->
+        Entity[] entities = ENTITY_ACTION_QUEUES.keySet().toArray(new Entity[0]);
+        LinkedHashMap<String, ActionQueue>[] queueSets = ENTITY_ACTION_QUEUES.values().toArray(new LinkedHashMap[0]);
+        for (int i = 0; i < entities.length; i++)
         {
-            Entity entity = entry.getKey();
-            if (!entity.isEntityAlive() || (entity.isDead && !entity.isAddedToWorld())) return true;
+            Entity entity = entities[i];
+            LinkedHashMap<String, ActionQueue> queueSet = queueSets[i];
 
-            for (ActionQueue queue : entry.getValue().values()) queue.tick(entity);
+            if (!entity.isEntityAlive() || (entity.isDead && !entity.isAddedToWorld()))
+            {
+                ENTITY_ACTION_QUEUES.remove(entity);
+                continue;
+            }
 
-            return !entity.isEntityAlive() || (entity.isDead && !entity.isAddedToWorld());
-        });
+            for (ActionQueue queue : queueSet.values()) queue.tick(entity);
+
+            if (!entity.isEntityAlive() || (entity.isDead && !entity.isAddedToWorld())) ENTITY_ACTION_QUEUES.remove(entity);
+        }
 
         server.profiler.endSection();
     }
@@ -179,7 +187,7 @@ public class ActionQueue
             String[] tokens = Tools.fixedSplit(s, ",");
             if (tokens.length > 2)
             {
-                if (!ReflectionTool.getClassByName(tokens[2]).isAssignableFrom(entity.getClass())) continue;
+                if (!ReflectionTool.getClassByName(tokens[2].trim()).isAssignableFrom(entity.getClass())) continue;
             }
 
             CAction action = CAction.ALL_ACTIONS.get(tokens[1].trim());
