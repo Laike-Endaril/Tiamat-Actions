@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.LinkedHashMap;
 
-import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+import static com.fantasticsource.tiamatactions.TiamatActions.NAME;
 
 public class EntityVars
 {
@@ -21,7 +21,7 @@ public class EntityVars
         if (event.phase != TickEvent.Phase.END || ENTITY_VARS == null) return;
 
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        server.profiler.startSection(MODID + ": EntityVars removeif");
+        server.profiler.startSection(NAME + ": EntityVars removeif");
         ENTITY_VARS.entrySet().removeIf(entry ->
         {
             Entity entity = entry.getKey();

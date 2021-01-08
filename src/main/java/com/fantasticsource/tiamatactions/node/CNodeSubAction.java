@@ -85,10 +85,7 @@ public class CNodeSubAction extends CNode
         if (newSubAction == null) throw new IllegalArgumentException("Could not find action with name: " + inputs[0]);
         if (newSubAction.tickEndpointNodes.size() > 0) throw new IllegalArgumentException("Cannot run actions with tick tasks as sub-actions!");
 
-        if (inputs.length == 1)
-        {
-            return newSubAction.queue(mainAction.source, null, mainAction.mainAction);
-        }
+        if (inputs.length == 1) return newSubAction.queue(mainAction.source, null, mainAction);
 
 
         if (inputs.length == 2)
@@ -96,17 +93,17 @@ public class CNodeSubAction extends CNode
             Object arg = inputs[1];
             if (arg != null && arg.getClass().isArray())
             {
-                for (Object o : (Object[]) arg) newSubAction.queue(mainAction.source, null, mainAction.mainAction, o);
+                for (Object o : (Object[]) arg) newSubAction.queue(mainAction.source, null, mainAction, o);
                 return null;
             }
 
             if (arg instanceof Iterable)
             {
-                for (Object o : (Iterable) arg) newSubAction.queue(mainAction.source, null, mainAction.mainAction, o);
+                for (Object o : (Iterable) arg) newSubAction.queue(mainAction.source, null, mainAction, o);
                 return null;
             }
 
-            return newSubAction.queue(mainAction.source, null, mainAction.mainAction, inputs[1]);
+            return newSubAction.queue(mainAction.source, null, mainAction, inputs[1]);
         }
 
 
@@ -115,17 +112,17 @@ public class CNodeSubAction extends CNode
             Object arg = inputs[i];
             if (arg.getClass().isArray())
             {
-                for (Object o : (Object[]) arg) newSubAction.queue(mainAction.source, null, mainAction.mainAction, o);
+                for (Object o : (Object[]) arg) newSubAction.queue(mainAction.source, null, mainAction, o);
                 continue;
             }
 
             if (arg instanceof Iterable)
             {
-                for (Object o : (Iterable) arg) newSubAction.queue(mainAction.source, null, mainAction.mainAction, o);
+                for (Object o : (Iterable) arg) newSubAction.queue(mainAction.source, null, mainAction, o);
                 return null;
             }
 
-            newSubAction.queue(mainAction.source, null, mainAction.mainAction, inputs[i]);
+            newSubAction.queue(mainAction.source, null, mainAction, inputs[i]);
         }
         return null;
     }

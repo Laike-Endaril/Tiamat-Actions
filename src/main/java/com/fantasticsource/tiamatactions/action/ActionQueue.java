@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+import static com.fantasticsource.tiamatactions.TiamatActions.NAME;
 
 public class ActionQueue
 {
@@ -37,7 +37,7 @@ public class ActionQueue
     {
         Profiler profiler = source.world.profiler;
         boolean profile = TiamatActionsConfig.serverSettings.profilingMode.equals("actions");
-        if (profile) profiler.startSection("Tiamat Action Queue: " + name);
+        if (profile) profiler.startSection("Queue: " + name);
 
         boolean entityDead = !source.isEntityAlive() || (!source.isAddedToWorld() && source.isDead);
         boolean queueTicked = false;
@@ -152,7 +152,7 @@ public class ActionQueue
         if (event.phase != TickEvent.Phase.END || ENTITY_ACTION_QUEUES == null) return;
 
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        server.profiler.startSection(MODID + ": Tick action queues");
+        server.profiler.startSection(NAME + ": Tick action queues");
 
         Entity[] entities = ENTITY_ACTION_QUEUES.keySet().toArray(new Entity[0]);
         LinkedHashMap<String, ActionQueue>[] queueSets = ENTITY_ACTION_QUEUES.values().toArray(new LinkedHashMap[0]);

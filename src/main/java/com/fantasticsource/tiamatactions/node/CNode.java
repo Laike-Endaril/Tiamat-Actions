@@ -2,7 +2,6 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.tiamatactions.action.CAction;
-import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tiamatactions.gui.actioneditor.EventEditorGUI;
 import com.fantasticsource.tiamatactions.gui.actioneditor.GUINode;
 import com.fantasticsource.tools.Tools;
@@ -29,12 +28,11 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-
-import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+import java.util.Stack;
 
 public abstract class CNode extends Component
 {
-    public static CNode lastRunningNode = null;
+    public static Stack<CNode> nodeStack = new Stack<>();
 
     public String actionName, eventName;
     public int x, y;
@@ -284,6 +282,7 @@ public abstract class CNode extends Component
             StackTraceElement[] stackTrace = e.getStackTrace();
             if (mainAction.loggedErrors.add(stackTrace))
             {
+                CNode lastRunningNode = nodeStack.peek();
                 String headerLine = TextFormatting.RED + "Exception caught in action: " + subAction.name + ", " + eventName + ", " + lastRunningNode.getClass().getSimpleName() + " @(" + lastRunningNode.x + ", " + lastRunningNode.y + ") (Main action: " + mainAction.name + ")";
                 System.err.println(headerLine);
                 if (mainAction.source instanceof EntityPlayerMP)
@@ -336,16 +335,26 @@ public abstract class CNode extends Component
         }
 
 
-        lastRunningNode = this;
-
-
-        if (!TiamatActionsConfig.serverSettings.profilingMode.equals("nodetypes")) return execute(mainAction, subAction, inputResults);
+        if (!mainAction.profilingNodes) return execute(mainAction, subAction, inputResults);
 
 
         Profiler profiler = mainAction.source.world.profiler;
-        profiler.startSection(MODID + ": " + getClass().getSimpleName());
+        boolean subNode = nodeStack.size() > 0;
+        if (subNode) profiler.endSection();
+        Class cls = getClass();
+        profiler.startSection(cls == CNodeSubAction.class ? cls.getSimpleName() + " (execution count inaccurate)" : cls.getSimpleName());
+
+        nodeStack.push(this);
         Object result = execute(mainAction, subAction, inputResults);
+        nodeStack.pop();
+
         profiler.endSection();
+        if (subNode)
+        {
+            cls = nodeStack.peek().getClass();
+            profiler.startSection(cls == CNodeSubAction.class ? cls.getSimpleName() + " (execution count inaccurate)" : cls.getSimpleName());
+        }
+
         return result;
     }
 

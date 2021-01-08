@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
+import static com.fantasticsource.tiamatactions.TiamatActions.NAME;
 
 public class CAction extends Component
 {
@@ -30,7 +31,7 @@ public class CAction extends Component
     public Entity source;
     public ActionQueue queue;
     public CAction mainAction;
-    public boolean active = true, started = false;
+    public boolean active = true, started = false, profilingNodes = TiamatActionsConfig.serverSettings.profilingMode.equals("nodetypes");
     public final LinkedHashMap<String, ExplicitPriorityQueue<CNode>> EVENT_ENDPOINT_NODES = new LinkedHashMap<>();
     public final LinkedHashMap<String, LinkedHashMap<Long, CNode>> EVENT_NODES = new LinkedHashMap<>();
     public final ExplicitPriorityQueue<CNode>
@@ -102,12 +103,17 @@ public class CAction extends Component
         //"Execute immediate" style
         if ((queue == null || queue.queue.size() == 0) && action.tickEndpointNodes.size() == 0)
         {
+            if (action == mainAction) source.world.profiler.startSection(NAME + ": Non-Queue Action Execution");
+
             action.execute(source, "init");
             if (action.mainAction.active)
             {
                 action.execute(source, "start");
                 action.execute(source, "end");
             }
+
+            if (action == mainAction) source.world.profiler.endSection();
+
             return action.result;
         }
 
@@ -134,8 +140,8 @@ public class CAction extends Component
         Profiler profiler = source.world.profiler;
 
         boolean profile = TiamatActionsConfig.serverSettings.profilingMode.equals("actions");
-        if (profile) profiler.startSection("Tiamat Action: " + name);
-        if (profile) profiler.startSection(event);
+        if (profile) profiler.startSection("Action: " + name);
+        if (profile) profiler.startSection("Event: " + event);
 
         HashMap<Long, Object> results = new HashMap<>();
         switch (event)
