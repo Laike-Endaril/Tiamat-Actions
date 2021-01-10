@@ -12,10 +12,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 import static net.minecraft.util.text.TextFormatting.AQUA;
@@ -160,7 +157,16 @@ public class Commands extends CommandBase
                     return;
                 }
 
-                action.queue(entity, queue);
+                if (args.length > 5)
+                {
+                    LinkedHashMap<String, Object> vars = new LinkedHashMap<>();
+                    for (int i = 4; i < args.length - 1; i += 2)
+                    {
+                        vars.put(args[i], args[i + 1]);
+                    }
+                    action.queue(entity, queue, null, null, vars);
+                }
+                else action.queue(entity, queue);
                 break;
 
             default:
