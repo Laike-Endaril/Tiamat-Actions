@@ -1,7 +1,5 @@
 Change rendering of nodes
 
-Fix "nodetype" profiling calls so that they don't nest
-
 Nodes...
 Path (pattern: linear, circular, spiral, etc ... speed: constant, accelerating, etc)
 Combine paths (eg. linear y positive + spiral x/z out = spiraling upwards and outwards)

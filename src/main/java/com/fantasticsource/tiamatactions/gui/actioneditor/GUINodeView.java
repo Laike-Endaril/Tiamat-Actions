@@ -133,6 +133,7 @@ public class GUINodeView extends GUIPanZoomView
         addOption("Arrays", "Trim Array", CNodeTrimArray.class);
         addOption("Arrays", "Fill Array", CNodeFillArray.class);
 
+        addOption("Lists", "Create List", CNodeCreateList.class);
         addOption("Lists", "Get List Size", CNodeGetListSize.class);
         addOption("Lists", "List Contains", CNodeListContains.class);
         addOption("Lists", "Position in List", CNodePositionInList.class);
