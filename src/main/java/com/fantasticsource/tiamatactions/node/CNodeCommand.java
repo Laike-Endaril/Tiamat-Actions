@@ -2,6 +2,7 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Pair;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -76,7 +77,8 @@ public class CNodeCommand extends CNode
             command = command.replaceAll("@" + i, "" + inputs[i]);
         }
 
-        FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(mainAction.source, command);
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        server.commandManager.executeCommand(server, command);
 
         return null;
     }
