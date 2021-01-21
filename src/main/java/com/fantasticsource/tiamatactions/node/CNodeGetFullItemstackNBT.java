@@ -2,7 +2,7 @@ package com.fantasticsource.tiamatactions.node;
 
 import com.fantasticsource.tiamatactions.action.CAction;
 import com.fantasticsource.tools.datastructures.Pair;
-import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
@@ -10,25 +10,25 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeGetFullEntityNBT extends CNode
+public class CNodeGetFullItemstackNBT extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_full_entity_nbt.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_full_itemstack_nbt.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
     {
-        REQUIRED_INPUTS.put("entity", Entity.class);
+        REQUIRED_INPUTS.put("itemstack", ItemStack.class);
     }
 
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeGetFullEntityNBT()
+    public CNodeGetFullItemstackNBT()
     {
         super();
     }
 
-    public CNodeGetFullEntityNBT(String actionName, String event, int x, int y)
+    public CNodeGetFullItemstackNBT(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -43,7 +43,7 @@ public class CNodeGetFullEntityNBT extends CNode
     @Override
     public String getDescription()
     {
-        return "Get the *FULL* NBT of an entity";
+        return "Get the *FULL* NBT of an itemstack";
     }
 
 
@@ -70,7 +70,7 @@ public class CNodeGetFullEntityNBT extends CNode
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
         NBTTagCompound compound = new NBTTagCompound();
-        ((Entity) inputs[0]).writeToNBT(compound);
+        ((ItemStack) inputs[0]).writeToNBT(compound);
         return compound;
     }
 }

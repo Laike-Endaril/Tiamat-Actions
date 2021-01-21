@@ -10,9 +10,9 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.tiamatactions.TiamatActions.MODID;
 
-public class CNodeGetFullEntityNBT extends CNode
+public class CNodeGetEntityNBT extends CNode
 {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_full_entity_nbt.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "image/node/get_entity_nbt.png");
     protected static final LinkedHashMap<String, Class> REQUIRED_INPUTS = new LinkedHashMap<>();
 
     static
@@ -23,12 +23,12 @@ public class CNodeGetFullEntityNBT extends CNode
     /**
      * ONLY MEANT FOR USE WITH COMPONENT FUNCTIONS!
      */
-    public CNodeGetFullEntityNBT()
+    public CNodeGetEntityNBT()
     {
         super();
     }
 
-    public CNodeGetFullEntityNBT(String actionName, String event, int x, int y)
+    public CNodeGetEntityNBT(String actionName, String event, int x, int y)
     {
         super(actionName, event, x, y);
     }
@@ -43,7 +43,7 @@ public class CNodeGetFullEntityNBT extends CNode
     @Override
     public String getDescription()
     {
-        return "Get the *FULL* NBT of an entity";
+        return "Get an entity's NBT data";
     }
 
 
@@ -69,8 +69,6 @@ public class CNodeGetFullEntityNBT extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        NBTTagCompound compound = new NBTTagCompound();
-        ((Entity) inputs[0]).writeToNBT(compound);
-        return compound;
+        return ((Entity) inputs[0]).getEntityData();
     }
 }
