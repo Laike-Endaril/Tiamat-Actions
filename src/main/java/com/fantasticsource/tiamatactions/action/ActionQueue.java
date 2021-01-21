@@ -1,5 +1,6 @@
 package com.fantasticsource.tiamatactions.action;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.tiamatactions.config.TiamatActionsConfig;
 import com.fantasticsource.tools.ReflectionTool;
 import com.fantasticsource.tools.Tools;
@@ -23,7 +24,7 @@ public class ActionQueue
 
     public String name;
     public int size;
-    public boolean replaceLastIfFull;
+    public boolean replaceLastIfFull, closing = false;
     public ArrayList<CAction> queue = new ArrayList<>();
 
     public ActionQueue(String name, int size, boolean replaceLastIfFull)
@@ -39,31 +40,22 @@ public class ActionQueue
         boolean profile = TiamatActionsConfig.serverSettings.profilingMode.equals("actions");
         if (profile) profiler.startSection("Queue: " + name);
 
-        boolean entityDead = !source.isEntityAlive() || (!source.isAddedToWorld() && source.isDead);
         boolean queueTicked = false;
         while (queue.size() > 0)
         {
             CAction action = queue.get(0);
             if (!action.started)
             {
-                if (entityDead)
-                {
-                    if (profile) profiler.endSection();
-                    return;
-                }
+                if (closing) break;
 
                 action.execute(source, "start");
                 if (action.mainAction.active) action.started = true;
             }
 
-            if (entityDead || action.tickEndpointNodes.size() == 0) action.mainAction.active = false;
+            if (closing || action.tickEndpointNodes.size() == 0) action.mainAction.active = false;
             if (action.mainAction.active)
             {
-                if (queueTicked)
-                {
-                    if (profile) profiler.endSection();
-                    return;
-                }
+                if (queueTicked) break;
 
                 queueTicked = true;
                 action.execute(source, "tick");
@@ -73,12 +65,9 @@ public class ActionQueue
             {
                 if (action.mainAction.started) action.execute(source, "end");
                 queue.remove(0);
+                if (closing) break;
             }
-            else
-            {
-                if (profile) profiler.endSection();
-                return;
-            }
+            else break;
         }
 
         if (profile) profiler.endSection();
@@ -161,15 +150,15 @@ public class ActionQueue
             Entity entity = entities[i];
             LinkedHashMap<String, ActionQueue> queueSet = queueSets[i];
 
-            if (!entity.isEntityAlive() || (entity.isDead && !entity.isAddedToWorld()))
+            boolean close = !entity.isEntityAlive() || !MCTools.entityIsValid(entity);
+
+            for (ActionQueue queue : queueSet.values())
             {
-                ENTITY_ACTION_QUEUES.remove(entity);
-                continue;
+                if (close) queue.closing = true;
+                queue.tick(entity);
             }
 
-            for (ActionQueue queue : queueSet.values()) queue.tick(entity);
-
-            if (!entity.isEntityAlive() || (entity.isDead && !entity.isAddedToWorld())) ENTITY_ACTION_QUEUES.remove(entity);
+            if (close) ENTITY_ACTION_QUEUES.remove(entity);
         }
 
         server.profiler.endSection();
