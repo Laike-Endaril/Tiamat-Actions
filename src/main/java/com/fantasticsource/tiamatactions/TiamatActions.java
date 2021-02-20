@@ -26,7 +26,7 @@ public class TiamatActions
 {
     public static final String MODID = "tiamatactions";
     public static final String NAME = "Tiamat Actions";
-    public static final String VERSION = "1.12.2.000zzza";
+    public static final String VERSION = "1.12.2.000zzzb";
     public static final String DOMAIN = "tiamatrpg";
 
     private static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();
