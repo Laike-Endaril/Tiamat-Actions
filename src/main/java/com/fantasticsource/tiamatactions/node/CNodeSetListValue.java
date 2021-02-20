@@ -70,7 +70,7 @@ public class CNodeSetListValue extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        ((List) inputs[0]).set(Integer.parseInt("" + inputs[1]), inputs[2]);
+        ((List) inputs[0]).set(Integer.parseInt("" + inputs[1]) - 1, inputs[2]);
 
         return null;
     }

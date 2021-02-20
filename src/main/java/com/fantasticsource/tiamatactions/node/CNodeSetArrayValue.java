@@ -69,7 +69,7 @@ public class CNodeSetArrayValue extends CNode
     @Override
     public Object execute(CAction mainAction, CAction subAction, Object... inputs)
     {
-        ((Object[]) inputs[0])[Integer.parseInt("" + inputs[1])] = inputs[2];
+        ((Object[]) inputs[0])[Integer.parseInt("" + inputs[1]) - 1] = inputs[2];
 
         return null;
     }
