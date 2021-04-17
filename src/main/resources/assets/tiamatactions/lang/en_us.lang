@@ -34,8 +34,6 @@ tiamatactions.config.createEditNodeButton.tooltip=FILLSCREEN FIXNEWLINES Which m
 tiamatactions.config.createNodeConnectionButton=Create Node Connection (Mouse Button)
 tiamatactions.config.createNodeConnectionButton.tooltip=FILLSCREEN FIXNEWLINES Which mouse button creates connections between nodes in a node view (drag OR click one node, then next)\n \n
 
-tiamatactions.config.customAttributes=Custom Attributes
-tiamatactions.config.customAttributes.tooltip=FILLSCREEN FIXNEWLINES A list of custom attributes to add to living entities\nSyntax is...\nname, defaultValue, parentName, minValue, maxValue\nAll arguments except name are optional, but must include all preceding arguments\nThe full attribute name will end up as tiamatactions.<name>, eg 'strength' would end up as 'tiamatactions.strength'\nThe parent name must be the (partial) name of another custom attribute (ie. 'strength', not 'tiamatactions.strength'\n \n
 tiamatactions.config.keyboundActions=Keybound Actions
 tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of actions that can be run by a player via keybind\nSyntax is...\nkeybindName;ActionName;QueueName\nQueueName is optional.  Uses 'Main' queue if omitted or empty.  Uses a null queue ('execute immediate' style) if you enter the word 'null'\n\nEg...\ntest;TestAction\n...would make a keybind with the translation key tiamatactions.key.test, which would run an action named TestAction in an action queue named Main\n \n
 
@@ -43,3 +41,90 @@ tiamatactions.config.keyboundActions.tooltip=FILLSCREEN FIXNEWLINES A list of ac
 
 tiamatactions.cmd.reload.usage=Reloads all actions from disk
 tiamatactions.cmd.execute.usage=Execute an action (actionName, [queueName], [playerName OR entityUUID])
+
+
+
+attribute.name.tiamatactions.bodyTemperature=Body Temperature
+attribute.name.tiamatactions.coverage=Coverage
+
+attribute.name.tiamatactions.strength=Strength
+attribute.name.tiamatactions.interruptForce=Interrupt Force
+attribute.name.tiamatactions.knockbackForce=Knockback Force
+attribute.name.tiamatactions.tripForce=Trip Force
+attribute.name.tiamatactions.slashDamage=Slash Damage
+attribute.name.tiamatactions.pierceDamage=Pierce Damage
+attribute.name.tiamatactions.bluntDamage=Blunt Damage
+
+attribute.name.tiamatactions.dexterity=Dexterity
+attribute.name.tiamatactions.projectileAccuracy=Projectile Accuracy
+attribute.name.tiamatactions.finesse=Finesse
+attribute.name.tiamatactions.block=Block Chance
+attribute.name.tiamatactions.parry=Parry Chance
+attribute.name.tiamatactions.dodge=Dodge Chance
+attribute.name.tiamatactions.armorBypass=Armor Bypass Chance
+attribute.name.tiamatactions.vitalStrike=Vital Strike Chance
+
+attribute.name.tiamatactions.constitution=Constitution
+attribute.name.tiamatactions.healthRegen=Health Regen
+attribute.name.tiamatactions.stamina=Stamina
+attribute.name.tiamatactions.staminaRegen=Stamina Regen
+attribute.name.tiamatactions.stability=Stability
+attribute.name.tiamatactions.interruptStability=Interruption Resistance
+attribute.name.tiamatactions.knockbackStability=Knockback Resistance
+attribute.name.tiamatactions.tripStability=Trip Resistance
+
+attribute.name.tiamatactions.magicalForce=Magical Force
+attribute.name.tiamatactions.chemicalDamage=Chemical Damage
+attribute.name.tiamatactions.acidDamage=Acid Damage
+attribute.name.tiamatactions.biologicalDamage=Biological Damage
+attribute.name.tiamatactions.healingDamage=Healing
+attribute.name.tiamatactions.poisonDamage=Poison Damage
+attribute.name.tiamatactions.energyDamage=Energy Damage
+attribute.name.tiamatactions.electricDamage=Electric Damage
+attribute.name.tiamatactions.thermalDamage=Thermal Damage
+attribute.name.tiamatactions.heatDamage=Heat Damage
+attribute.name.tiamatactions.coldDamage=Cold Damage
+
+attribute.name.tiamatactions.magicalSkill=Magical Skill
+attribute.name.tiamatactions.castSuccess=Cast Success Chance
+attribute.name.tiamatactions.dispel=Dispel Chance
+
+attribute.name.tiamatactions.magicalConstitution=Magical Constitution
+attribute.name.tiamatactions.mana=Mana
+attribute.name.tiamatactions.manaRegen=Mana Regen
+
+attribute.name.tiamatactions.defense=Defense
+attribute.name.tiamatactions.slashDefense=Slash Defense
+attribute.name.tiamatactions.pierceDefense=Pierce Defense
+attribute.name.tiamatactions.fallDefense=Fall Defense
+attribute.name.tiamatactions.bluntDefense=Blunt Defense
+
+attribute.name.tiamatactions.elementalResist=Elemental Resistance
+attribute.name.tiamatactions.chemicalResist=Chemical Resistance
+attribute.name.tiamatactions.acidResist=Acid Resistance
+attribute.name.tiamatactions.biologicalResist=Biological Resistance
+attribute.name.tiamatactions.healingResist=Healing Resistance
+attribute.name.tiamatactions.poisonResist=Poison Resistance
+attribute.name.tiamatactions.energyResist=Energy Resistance
+attribute.name.tiamatactions.electricResist=Electrical Resistance
+attribute.name.tiamatactions.thermalResist=Thermal Resistance
+attribute.name.tiamatactions.heatResist=Heat Resistance
+attribute.name.tiamatactions.coldResist=Cold Resistance
+
+attribute.name.tiamatactions.range=Range
+attribute.name.tiamatactions.meleeRange=Melee Range
+attribute.name.tiamatactions.minMeleeRange=Minimum Melee Range
+attribute.name.tiamatactions.maxMeleeRange=Maximum Melee Range
+attribute.name.tiamatactions.projectileRange=Projectile Range
+attribute.name.tiamatactions.minProjectileRange=Minimum Projectile Range
+attribute.name.tiamatactions.maxProjectileRange=Maximum Projectile Range
+
+attribute.name.tiamatactions.maxTargets=Maximum Targets
+attribute.name.tiamatactions.maxMeleeTargets=Maximum Melee Targets
+attribute.name.tiamatactions.maxProjectileTargets=Maximum Projectile Targets
+
+attribute.name.tiamatactions.maxAngle=Maximum Attack Angle
+attribute.name.tiamatactions.maxCombo=Maximum Combo Hits
+attribute.name.tiamatactions.projectileSpeed=Projectile Speed
+attribute.name.tiamatactions.windup=Windup Time
+attribute.name.tiamatactions.aoeTime=AOE Time

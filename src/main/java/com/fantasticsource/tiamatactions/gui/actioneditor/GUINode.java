@@ -57,7 +57,7 @@ public class GUINode extends GUIImage
         GUINodeView view = (GUINodeView) parent;
         if (view == null) return;
 
-        if (this == view.tempNode) setTooltip(null);
+        if (this == view.tempNode) setTooltip((String) null);
         else if (node instanceof CNodeComment)
         {
             setTooltip(node.getDescription().replaceAll("\\\\n", "\n"));
