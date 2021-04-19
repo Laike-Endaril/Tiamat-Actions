@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.044zzy,);after:tiamathud")
+@Mod(modid = TiamatActions.MODID, name = TiamatActions.NAME, version = TiamatActions.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.044zzz,);after:tiamathud")
 public class TiamatActions
 {
     public static final String MODID = "tiamatactions";
@@ -39,7 +39,6 @@ public class TiamatActions
 
         MinecraftForge.EVENT_BUS.register(TiamatActions.class);
         Network.init();
-        Attributes.init();
         DamageTypes.refresh();
         MinecraftForge.EVENT_BUS.register(EntityVars.class);
         MinecraftForge.EVENT_BUS.register(ActionQueue.class);
