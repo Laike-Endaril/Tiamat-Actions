@@ -180,7 +180,7 @@ public class CAction extends Component
         try
         {
             FileOutputStream stream = new FileOutputStream(file);
-            save(stream);
+            saveMarked(stream, this);
             stream.close();
         }
         catch (IOException e)
@@ -206,7 +206,7 @@ public class CAction extends Component
             try
             {
                 FileInputStream stream = new FileInputStream(file);
-                CAction action = new CAction().load(stream);
+                CAction action = (CAction) Component.loadMarked(stream);
                 action.name = filename.replace(".dat", "").replaceAll(Pattern.quote("\\"), "/");
                 stream.close();
                 ALL_ACTIONS.put(action.name, action);
