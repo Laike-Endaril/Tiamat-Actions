@@ -6,9 +6,11 @@ import com.fantasticsource.tiamatactions.action.CAction;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
@@ -23,8 +25,9 @@ public class Commands extends CommandBase
 
     static
     {
-        subcommands.addAll(Arrays.asList("reload"));
-        subcommands.addAll(Arrays.asList("execute"));
+        subcommands.add("reload");
+        subcommands.add("execute");
+        subcommands.add("debug");
     }
 
 
@@ -91,6 +94,9 @@ public class Commands extends CommandBase
                     case "execute":
                         result.addAll(CAction.ALL_ACTIONS.keySet());
                         break;
+
+                    case "debug":
+                        result.addAll(Arrays.asList(server.getOnlinePlayerNames()));
                 }
                 break;
 
@@ -137,8 +143,8 @@ public class Commands extends CommandBase
                     return;
                 }
 
-                String queue = args.length > 2 ? args[2] : "Main";
-                if (!ActionQueue.queueExists(queue))
+                String queueName = args.length > 2 ? args[2] : "Main";
+                if (!ActionQueue.queueExists(queueName))
                 {
                     notifyCommandListener(sender, this, subUsage(cmd));
                     return;
@@ -164,9 +170,29 @@ public class Commands extends CommandBase
                     {
                         vars.put(args[i], args[i + 1]);
                     }
-                    action.queue(entity, queue, null, null, vars);
+                    action.queue(entity, queueName, null, null, vars);
                 }
-                else action.queue(entity, queue);
+                else action.queue(entity, queueName);
+                break;
+
+            case "debug":
+                EntityPlayer target = PlayerData.getEntity(args[1]);
+                for (String queueName2 : ActionQueue.existingQueues())
+                {
+                    notifyCommandListener(sender, this, "");
+                    ActionQueue queue = ActionQueue.get(target, queueName2);
+                    notifyCommandListener(sender, this, TextFormatting.AQUA + queueName2 + (queue.replaceLastIfFull ? " (replaces last when full)" : " (ignores input when full)"));
+                    ArrayList<CAction> actions = ActionQueue.get(target, queueName2).queue;
+                    int i = 0;
+                    for (CAction action2 : actions)
+                    {
+                        notifyCommandListener(sender, this, "" + TextFormatting.AQUA + i + ": " + action2.name);
+                    }
+                    for (; i < queue.size; i++)
+                    {
+                        notifyCommandListener(sender, this, "" + TextFormatting.AQUA + i + ": ");
+                    }
+                }
                 break;
 
             default:
