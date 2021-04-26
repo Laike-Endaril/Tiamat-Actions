@@ -186,11 +186,11 @@ public class Commands extends CommandBase
                     int i = 0;
                     for (CAction action2 : actions)
                     {
-                        notifyCommandListener(sender, this, "" + TextFormatting.AQUA + i + ": " + action2.name);
+                        notifyCommandListener(sender, this, "" + TextFormatting.AQUA + i++ + ": " + action2.name);
                     }
-                    for (; i < queue.size; i++)
+                    while (i < queue.size)
                     {
-                        notifyCommandListener(sender, this, "" + TextFormatting.AQUA + i + ": ");
+                        notifyCommandListener(sender, this, "" + TextFormatting.AQUA + i++ + ": ");
                     }
                 }
                 break;
